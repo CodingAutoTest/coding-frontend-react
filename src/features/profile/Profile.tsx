@@ -1,138 +1,14 @@
-import {
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  TooltipProps,
-  PieLabelRenderProps,
-  Tooltip,
-} from 'recharts';
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import TierRow from '@/features/profile/components/TierRow';
-
-const tierData = [
-  { name: '브론즈', count: 10, color: '#B98B5A', percent: 10 },
-  { name: '실버', count: 20, color: '#97A5AD', percent: 20 },
-  { name: '골드', count: 15, color: '#FFBF61', percent: 15 },
-  { name: '플레티넘', count: 25, color: '#6FECC0', percent: 25 },
-  { name: '다이아', count: 20, color: '#61ABF5', percent: 20 },
-  { name: '마스터', count: 10, color: '#FF724F', percent: 10 },
-];
-
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
-  if (active && payload && payload.length) {
-    const { name, value } = payload[0].payload; // payload[0]의 payload 속성 사용
-    const total = tierData.reduce((sum, entry) => sum + entry.count, 0);
-    const percent = ((value / total) * 100).toFixed(1);
-    return (
-      <div className="bg-white border px-2 py-1 text-sm rounded shadow">
-        <p>
-          {name}: {percent}%
-        </p>
-      </div>
-    );
-  }
-  return null;
-};
-
-const renderCustomLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  index,
-}: PieLabelRenderProps & { index: number }) => {
-  const RADIAN = Math.PI / 180;
-  const radius = Number(innerRadius) + (Number(outerRadius) - Number(innerRadius)) / 2;
-  const x = Number(cx) + radius * Math.cos(-Number(midAngle) * RADIAN);
-  const y = Number(cy) + radius * Math.sin(-Number(midAngle) * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor="middle"
-      dominantBaseline="central"
-      fontSize={12}
-      fontWeight="bold"
-    >
-      {tierData[index].name}
-    </text>
-  );
-};
-
-// 분리된 컴포넌트
-const ChartComponent = () => {
-  return (
-    <div className="w-[921px] h-96 px-5 py-2.5 bg-neutral-100 rounded-2xl inline-flex flex-col justify-start items-center gap-4">
-      <div className="self-stretch flex flex-col justify-start items-start">
-        <div className="justify-start text-black text-[10px] font-semibold font-['Poppins']">
-          난이도 분포
-        </div>
-        <div className="justify-start text-black text-lg font-semibold font-['Poppins'] mb-4">
-          80문제 해결
-        </div>
-        <div className="h-64 inline-flex justify-start items-center gap-2">
-          <div className="w-96 h-96 p-2 transform -translate-x-10">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={tierData}
-                  dataKey="count"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={120}
-                  label={renderCustomLabel}
-                  labelLine={false}
-                >
-                  {tierData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} stroke="#fff" strokeWidth={2} />
-                  ))}
-                </Pie>
-                <Tooltip content={<CustomTooltip />} />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="w-[560px] h-52 inline-flex flex-col justify-center items-center gap-[3px] transform -translate-x-[60px]">
-            <div className="inline-flex justify-center items-center gap-[73px]">
-              <div className="w-48 flex justify-center items-center gap-2.5">
-                <div className="justify-start text-black text-[10px] font-semibold font-['Poppins']">
-                  난이도
-                </div>
-              </div>
-              <div className="justify-start text-black text-[10px] font-semibold font-['Poppins']">
-                문제
-              </div>
-            </div>
-            {tierData.map((tier, index) => (
-              <TierRow
-                key={index}
-                name={tier.name}
-                color={tier.color}
-                count={tier.count}
-                percent={tier.percent} // 퍼센트 계산
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+import TierChart from '@/features/profile/components/TierChart';
+import TagChart from '@/features/profile/components/TagChart';
 
 const Profile = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const components = [
-    <ChartComponent key="chart" />,
-    <div key="component-2" className="text-lg font-bold">
-      2번 컴포넌트
-    </div>,
+    <TierChart key="chart" />,
+    <TagChart key="tag" />,
     <div key="component-3" className="text-lg font-bold">
       3번 컴포넌트
     </div>,

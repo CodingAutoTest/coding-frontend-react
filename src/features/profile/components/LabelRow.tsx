@@ -1,25 +1,31 @@
-interface TierRowProps {
+import React from 'react';
+
+interface LabelRowProps {
   name: string;
-  color?: string;
   count: number;
   percent: number;
+  color?: string; // optional
 }
 
-const TierRow = ({ name, color, count, percent }: TierRowProps) => {
+const LabelRow = ({ name, count, percent, color }: LabelRowProps) => {
   return (
-    <div className="w-[560px] flex flex-col items-start">
+    <div className="w-[530px] flex flex-col items-start">
       <div className="w-full flex justify-start items-center">
-        <div data-svg-wrapper>
-          <svg
-            width="21"
-            height="15"
-            viewBox="0 0 21 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="0.5" y="0.5" width="14" height="14" rx="4" fill={color} />
-          </svg>
-        </div>
+        {color ? (
+          <div data-svg-wrapper>
+            <svg
+              width="21"
+              height="15"
+              viewBox="0 0 21 15"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="0.5" y="0.5" width="14" height="14" rx="4" fill={color} />
+            </svg>
+          </div>
+        ) : (
+          <div style={{ width: 21, height: 15 }} />
+        )}
         <div className="w-96 flex justify-start items-center gap-2.5">
           <div className="justify-start text-black text-sm font-normal font-['Poppins']">
             {name}
@@ -45,4 +51,4 @@ const TierRow = ({ name, color, count, percent }: TierRowProps) => {
   );
 };
 
-export default TierRow;
+export default LabelRow;
