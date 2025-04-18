@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        'nunito-sans': ['"Nunito Sans"', 'sans-serif'],
+        inter: ['"Inter"', 'sans-serif'],
+      },
       colors: {
         PRIMARY: '#4866C9',
         DEFAULT: '#232323',
