@@ -25,15 +25,15 @@ export const ProblemHeader: React.FC<ProblemHeaderProps> = ({
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center">
           {difficulty && <TierBadge difficulty={difficulty.difficulty} size={20} />}
-          <h1 className="text-[32px] font-bold text-[#232323] ml-2">{problemData.title}</h1>
+          <h1 className="text-[32px] font-bold text-DEFAULT ml-2">{problemData.title}</h1>
         </div>
 
         <div className="flex items-center gap-1 cursor-pointer" onClick={onToggleAlgorithm}>
-          <span className="text-[#232323] text-[14px] font-medium">알고리즘</span>
+          <span className="text-DEFAULT text-[14px] font-medium">알고리즘</span>
           {isAlgorithmVisible ? (
-            <ChevronUp className="w-4 h-4 text-[#232323]" />
+            <ChevronUp className="w-4 h-4 text-DEFAULT" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-[#232323]" />
+            <ChevronDown className="w-4 h-4 text-DEFAULT" />
           )}
         </div>
       </div>

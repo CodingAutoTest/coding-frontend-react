@@ -19,7 +19,7 @@ export const TestCaseSection: React.FC<TestCaseSectionProps> = ({
   output,
 }) => {
   return (
-    <div className="flex-1 min-h-0 flex flex-col bg-[#F4F4F4] rounded-[10px] shadow-md">
+    <div className="flex-1 min-h-0 flex flex-col bg-problem-COMPONENT_HEADER rounded-[10px] shadow-md">
       {/* 상단 바 */}
       <div className="bg-gray-200 px-5 py-2 rounded-t-[10px]">
         <span className="text-secondary text-base">테스트 케이스</span>

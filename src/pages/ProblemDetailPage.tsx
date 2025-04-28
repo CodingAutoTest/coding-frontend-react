@@ -46,18 +46,18 @@ const ProblemDetailPage: React.FC = () => {
   const output = testCases[selectedTestCase]?.output || '';
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#E2E2E2]">
+    <div className="flex flex-col min-h-screen bg-problem-BACKGROUND">
       {/* Header - 플로팅 */}
-      <div className="sticky top-0 z-50 bg-[#E2E2E2] h-[80px] px-[38px] flex items-center ">
+      <div className="sticky top-0 z-50 bg-problem-BACKGROUND h-[80px] px-[38px] flex items-center ">
         <Header />
       </div>
 
       {/* 메인 콘텐츠 */}
       <main className="flex flex-col lg:flex-row px-[38px] gap-[20px] py-[20px] flex-1 ">
         {/* 왼쪽 문제 설명 */}
-        <aside className="w-full lg:w-1/2 bg-[#F4F4F4] rounded-[10px] shadow-md flex flex-col ">
+        <aside className="w-full lg:w-1/2 bg-problem-COMPONENT_HEADER rounded-[10px] shadow-md flex flex-col ">
           {/* TabBar - 문제 탭 고정 */}
-          <div className="sticky top-[80px] z-40 bg-[#F4F4F4] rounded-t-[10px]">
+          <div className="sticky top-[80px] z-40 bg-problem-COMPONENT_HEADER rounded-t-[10px]">
             <TabBar tabs={TABS} activeTab={activeTab} onChange={setActiveTab} />
           </div>
 
@@ -79,7 +79,7 @@ const ProblemDetailPage: React.FC = () => {
         {/* 오른쪽 코드 에디터 & 테스트케이스 */}
         <section className="w-full lg:w-1/2 flex flex-col gap-[20px]">
           {/* 코드 에디터 영역 */}
-          <div className="flex-1 min-h-0 bg-[#F4F4F4] rounded-[10px] flex flex-col overflow-hidden">
+          <div className="flex-1 min-h-0 bg-problem-COMPONENT_HEADER rounded-[10px] flex flex-col overflow-hidden">
             <div className="flex-1 overflow-hidden">
               <CodeEditorBox
                 language={language}
@@ -92,14 +92,14 @@ const ProblemDetailPage: React.FC = () => {
               <button
                 onClick={handleExecute}
                 disabled={isExecuting}
-                className="bg-[#FAF9F6] text-[#232323] text-[16px] font-medium rounded-[10px] px-[25px] py-[10px] disabled:opacity-50"
+                className="bg-WHITE text-DEFAULT text-[16px] font-medium rounded-[10px] px-[25px] py-[10px] disabled:opacity-50"
               >
                 {isExecuting ? '실행 중...' : '실행'}
               </button>
               <button
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="bg-[#4866C9] text-white text-[16px] font-medium rounded-[10px] px-[25px] py-[10px] disabled:opacity-50"
+                className="bg-PRIMARY text-white text-[16px] font-medium rounded-[10px] px-[25px] py-[10px] disabled:opacity-50"
               >
                 {isSubmitting ? '제출 중...' : '제출'}
               </button>

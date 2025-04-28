@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
   const { user, loading } = useUserInfo(userId);
 
   return (
-    <header className="w-full px-[20px] py-[10px] flex items-center justify-between bg-[#E2E2E2]">
+    <header className="w-full px-[20px] py-[10px] flex items-center justify-between bg-problem-BACKGROUND">
       {/* 왼쪽: 로고 + 메뉴 */}
       <div className="flex items-center gap-3">
         <img
@@ -40,7 +40,7 @@ export const Header: React.FC = () => {
 
       {/* 오른쪽: 사용자 이름 + 프로필 */}
       <div className="flex items-center gap-3">
-        <span className="text-[#232323] text-medium whitespace-nowrap">
+        <span className="text-DEFAULT text-medium whitespace-nowrap">
           {loading ? '불러오는 중...' : `${user?.name ?? '익명'}님`}
         </span>
         <img

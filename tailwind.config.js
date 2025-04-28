@@ -10,10 +10,16 @@ export default {
       colors: {
         PRIMARY: '#4866C9',
         DEFAULT: '#232323',
+        WHITE: '#FFFFFF',
         DISABLED: '#979797',
         divider: {
           DEFAULT: '#E6EFF5',
           DARK: '#D8E3E9',
+        },
+        problem: {
+          BACKGROUND: '#E2E2E2',
+          DIVIDER: '#73808D',
+          COMPONENT_HEADER: '#F4F4F4',
         },
       },
     },
