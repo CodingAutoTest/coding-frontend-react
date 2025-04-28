@@ -11,7 +11,7 @@ export default {
         PRIMARY: '#4866C9',
         DEFAULT: '#232323',
         DISABLED: '#979797',
-        DIVIDER: {
+        divider: {
           DEFAULT: '#E6EFF5',
           DARK: '#D8E3E9',
         },

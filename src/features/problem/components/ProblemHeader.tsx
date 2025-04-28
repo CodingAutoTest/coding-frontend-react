@@ -1,0 +1,76 @@
+import React from 'react';
+import { ProblemType } from '@/features/problem/types/problem.type';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import TierBadge from '@/global/components/TierBadge';
+import StatCard from '@/features/problem/components/StatCard';
+import { useProblemDifficulty } from '@/features/problem/hooks/useProblemDifficulty';
+import { IMAGES } from '@/global/contants/images';
+
+type ProblemHeaderProps = {
+  problemData: ProblemType;
+  isAlgorithmVisible: boolean;
+  onToggleAlgorithm: () => void;
+};
+
+export const ProblemHeader: React.FC<ProblemHeaderProps> = ({
+  problemData,
+  isAlgorithmVisible,
+  onToggleAlgorithm,
+}) => {
+  const tags = problemData.tags ?? [];
+  const difficulty = useProblemDifficulty(problemData.id);
+
+  return (
+    <div className="w-full mb-5 px-[22px]">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center">
+          {difficulty && <TierBadge difficulty={difficulty.difficulty} size={20} />}
+          <h1 className="text-[32px] font-bold text-[#232323] ml-2">{problemData.title}</h1>
+        </div>
+
+        <div className="flex items-center gap-1 cursor-pointer" onClick={onToggleAlgorithm}>
+          <span className="text-[#232323] text-[14px] font-medium">알고리즘</span>
+          {isAlgorithmVisible ? (
+            <ChevronUp className="w-4 h-4 text-[#232323]" />
+          ) : (
+            <ChevronDown className="w-4 h-4 text-[#232323]" />
+          )}
+        </div>
+      </div>
+
+      {isAlgorithmVisible && (
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-gray-200 text-secondary px-3 py-1 rounded-full text-sm mr-2"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+
+      <div className="flex gap-5 mt-4">
+        <StatCard
+          label="시간 제한"
+          value={problemData.timeLimit}
+          unit="초"
+          iconUrl={IMAGES.PROBLEM_INFO.TIME_LIMIT}
+        />
+        <StatCard
+          label="메모리 제한"
+          value={problemData.memoryLimit}
+          unit="MB"
+          iconUrl={IMAGES.PROBLEM_INFO.MEMORY_LIMIT}
+        />
+        <StatCard
+          label="정답 비율"
+          value={problemData.acceptanceRate.toFixed(2)}
+          unit="%"
+          iconUrl={IMAGES.PROBLEM_INFO.ACCEPTANCE}
+        />
+      </div>
+    </div>
+  );
+};
