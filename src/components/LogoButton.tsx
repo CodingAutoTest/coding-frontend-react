@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '@/assets/problem-list/logo.svg';
 import { useNavigate } from 'react-router-dom';
 
-const HeaderLogoButton = () => {
+const LogoButton = () => {
   const navigate = useNavigate();
 
   const handleClick = (e: React.MouseEvent) => {
@@ -19,4 +19,4 @@ const HeaderLogoButton = () => {
   );
 };
 
-export default HeaderLogoButton;
+export default LogoButton;
