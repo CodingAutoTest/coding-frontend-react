@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+// components/TagChart.tsx
+import { FC, useState } from 'react';
 import {
   Radar,
   RadarChart,
@@ -9,7 +10,22 @@ import {
 } from 'recharts';
 import LabelList from '@/features/profile/components/LabelList';
 
-const tagList = [
+type TagDataType = {
+  name: string;
+  count: number;
+  percent: number;
+};
+
+type CustomTickProps = {
+  x: number;
+  y: number;
+  payload: {
+    value: string;
+  };
+  textAnchor?: string;
+};
+
+const tagList: TagDataType[] = [
   { name: '구현', count: 80, percent: 20 },
   { name: '자료구조', count: 80, percent: 20 },
   { name: '수학', count: 80, percent: 20 },
@@ -28,22 +44,13 @@ const tagList = [
   { name: '알고리즘', count: 70, percent: 30 },
 ];
 
-type CustomTickProps = {
-  x: number;
-  y: number;
-  payload: {
-    value: string;
-  };
-  textAnchor?: string;
-};
-
-const CustomTick = ({ x, y, payload, textAnchor }: CustomTickProps) => {
+const CustomTick: FC<CustomTickProps> = ({ x, y, payload, textAnchor }) => {
   const lines = payload.value.split(' ');
 
   return (
     <text x={x} y={y} textAnchor={textAnchor} fill="#666" fontSize={12}>
-      {lines.map((line: string, index: number) => (
-        <tspan x={x} dy={index === 0 ? 0 : 14} key={index}>
+      {lines.map((line, index) => (
+        <tspan key={index} x={x} dy={index === 0 ? 0 : 14}>
           {line}
         </tspan>
       ))}
@@ -51,7 +58,7 @@ const CustomTick = ({ x, y, payload, textAnchor }: CustomTickProps) => {
   );
 };
 
-const TagChart = () => {
+const TagChart: FC = () => {
   const [expanded, setExpanded] = useState(false);
 
   const chartData = tagList.slice(0, 8);
@@ -63,11 +70,9 @@ const TagChart = () => {
         expanded ? 'h-auto' : 'h-96'
       }`}
     >
-      {' '}
       <div className="self-stretch flex flex-col justify-start items-start gap-10">
-        <div className="justify-start text-black text-[10px] font-semibold font-['Poppins']">
-          태그 분포
-        </div>
+        <div className="text-black text-[10px] font-semibold">태그 분포</div>
+
         <div className="w-[880px] h-64 inline-flex justify-center items-center">
           <div className="w-96 h-96">
             <ResponsiveContainer width="100%" height="100%">
@@ -89,18 +94,16 @@ const TagChart = () => {
               </RadarChart>
             </ResponsiveContainer>
           </div>
+
           <div className="flex flex-col justify-center items-center gap-4">
-            <LabelList
-              data={allData}
-              labelTitle="태그"
-              showColor={false} // 색상 칸은 필요 없으니 false
-            />
+            <LabelList data={allData} labelTitle="태그" showColor={false} />
+
             <div
               className="relative cursor-pointer flex justify-center items-center"
               onClick={() => setExpanded(!expanded)}
             >
               <div className="w-24 h-7 bg-zinc-300 rounded-[5px]" />
-              <div className="absolute text-center text-neutral-800 text-sm font-semibold font-['Poppins']">
+              <div className="absolute text-center text-neutral-800 text-sm font-semibold">
                 {expanded ? '접기' : `더보기(+${tagList.length - 8})`}
               </div>
             </div>

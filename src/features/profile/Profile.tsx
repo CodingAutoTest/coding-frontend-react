@@ -2,16 +2,27 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import TierChart from '@/features/profile/components/TierChart';
 import TagChart from '@/features/profile/components/TagChart';
+import StreakChart, { DailySolveDataType } from '@/features/profile/components/StreakChart';
 
 const Profile = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  const sample: DailySolveDataType = {
+    '2024-04-01': 3,
+    '2024-04-02': 0,
+    '2024-04-03': 5,
+    '2024-04-04': 9,
+    '2024-04-05': 2,
+    '2024-04-06': 10,
+    '2024-04-07': 6,
+    '2024-04-08': 4,
+    '2024-04-09': 3,
+  };
+
   const components = [
-    <TierChart key="chart" />,
+    <TierChart key="tier" />,
     <TagChart key="tag" />,
-    <div key="component-3" className="text-lg font-bold">
-      3번 컴포넌트
-    </div>,
+    <StreakChart key="streak" dailySolveData={sample} />,
   ];
 
   const goToPrev = () => {
@@ -23,245 +34,127 @@ const Profile = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white flex flex-col items-center">
-      <div className="w-full px-20 relative bg-white inline-flex justify-between items-center overflow-hidden">
-        <img className="w-28 h-28" src="https://placehold.co/116x116" />
-        <div className="left-[308px] top-[47px] absolute flex justify-start items-center gap-12">
-          <div className="justify-start text-neutral-800 text-base font-bold font-['Nunito_Sans']">
-            문제
-          </div>
-          <div className="justify-start text-neutral-400 text-base font-bold font-['Nunito_Sans']">
-            클래스
-          </div>
-          <div className="justify-start text-neutral-800 text-base font-bold font-['Nunito_Sans']">
-            랭킹
-          </div>
-          <div className="justify-start text-neutral-400 text-base font-bold font-['Nunito_Sans']">
-            실전테스트
+    <main className="w-full min-h-screen bg-white flex flex-col items-center">
+      {/* Header */}
+      <header className="w-full px-20 py-4 flex justify-between items-center bg-white">
+        <div className="flex items-center gap-8">
+          <img src="https://placehold.co/116x116" alt="로고" className="w-28 h-28" />
+          <nav className="flex gap-12">
+            <a className="text-neutral-800 text-base font-bold" href="#problem">
+              문제
+            </a>
+            <a className="text-neutral-400 text-base font-bold" href="#class">
+              클래스
+            </a>
+            <a className="text-neutral-800 text-base font-bold" href="#ranking">
+              랭킹
+            </a>
+            <a className="text-neutral-400 text-base font-bold" href="#test">
+              실전테스트
+            </a>
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-8">
+          <span className="text-amber-400 font-bold">프리미엄</span>
+          <button className="text-neutral-800 font-bold">로그아웃</button>
+          <div className="p-2.5 bg-zinc-100 rounded-full">
+            {/* 프로필 아이콘 */}
+            <svg
+              width="40"
+              height="40"
+              viewBox="0 0 40 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M28.8236 12.1518C28.8236 17.0468 24.8988 20.9719 20.0003 20.9719C15.1035 20.9719 11.177 17.0468 11.177 12.1518C11.177 7.25675 15.1035 3.33337 20.0003 3.33337C24.8988 3.33337 28.8236 7.25675 28.8236 12.1518ZM20.0003 36.6667C12.7709 36.6667 6.66699 35.4917 6.66699 30.9583C6.66699 26.4233 12.8093 25.2899 20.0003 25.2899C27.2314 25.2899 33.3337 26.4649 33.3337 30.9983C33.3337 35.5334 27.1914 36.6667 20.0003 36.6667Z"
+                fill="#131313"
+              />
+            </svg>
           </div>
         </div>
-        <div className="flex justify-start items-center gap-10">
-          <div className="text-right justify-start text-amber-400 text-base font-bold font-['Nunito_Sans']">
-            프리미엄
-          </div>
-          <div className="justify-start text-neutral-800 text-base font-bold font-['Nunito_Sans']">
-            로그아웃
-          </div>
-          <div className="p-2.5 bg-zinc-100 rounded-[100px] flex justify-start items-start gap-2.5">
-            <div data-svg-wrapper className="relative">
-              <svg
-                width="40"
-                height="40"
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M28.8236 12.1518C28.8236 17.0468 24.8988 20.9719 20.0003 20.9719C15.1035 20.9719 11.177 17.0468 11.177 12.1518C11.177 7.25675 15.1035 3.33337 20.0003 3.33337C24.8988 3.33337 28.8236 7.25675 28.8236 12.1518ZM20.0003 36.6667C12.7709 36.6667 6.66699 35.4917 6.66699 30.9583C6.66699 26.4233 12.8093 25.2899 20.0003 25.2899C27.2314 25.2899 33.3337 26.4649 33.3337 30.9983C33.3337 35.5334 27.1914 36.6667 20.0003 36.6667Z"
-                  fill="#131313"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="w-full h-72 flex flex-col justify-start items-center relative">
-        <img className="w-full h-52 bg-center bg-cover" src="src/assets/images/background.png" />
-        <div className="w-[836px] h-28 inline-flex justify-between items-end relative">
+      </header>
+
+      {/* Profile Banner */}
+      <section className="w-full h-72 relative flex flex-col items-center">
+        <img
+          src="src/assets/images/background.png"
+          alt="배경 이미지"
+          className="w-full h-52 object-cover"
+        />
+        <div className="w-[836px] flex justify-between items-end relative">
           <img
-            className="w-24 h-24 bg-white rounded-full border border-black absolute rounded-[90px] top-[-50px] left-0 z-10"
             src="src/assets/images/profile.png"
+            alt="프로필 이미지"
+            className="w-24 h-24 rounded-full border border-black absolute -top-12 left-0 z-10 bg-white"
           />
-          <div className="ml-auto">
-            <button className="w-32 h-11 px-6 py-3 bg-slate-600/50 rounded-[5px] flex justify-center items-center gap-2.5">
-              <span className="text-black text-lg font-normal font-['Roboto']">프로필편집</span>
-            </button>
-          </div>
+          <button className="ml-auto px-6 py-3 bg-slate-600/50 rounded flex items-center mt-5">
+            <span className="text-black text-lg">프로필 편집</span>
+          </button>
         </div>
-      </div>
-      <div className="w-[874px] h-20 flex flex-col justify-center items-start">
-        <div className="justify-start text-black text-2xl font-semibold font-['Poppins']">
-          changwook
-        </div>
-        <div className="self-stretch inline-flex justify-between items-center">
-          <div className="w-16 flex justify-start items-center gap-[3px]">
-            <div data-svg-wrapper>
-              <svg
-                width="10"
-                height="12"
-                viewBox="0 0 10 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <g filter="url(#filter0_d_917_3563)">
-                  <path
-                    d="M6.28508 10.2583C5.5756 10.9528 4.42531 10.9528 3.71584 10.2583L0.532107 7.14183C-0.177369 6.44734 -0.177369 5.32134 0.532107 4.62685L3.71584 1.51037C4.42531 0.815879 5.5756 0.815879 6.28508 1.51037L9.46881 4.62685C10.1783 5.32134 10.1783 6.44734 9.46881 7.14183L6.28508 10.2583Z"
-                    fill="url(#paint0_linear_917_3563)"
-                  />
-                  <path
-                    d="M5.93532 9.901C5.42021 10.4052 4.58071 10.4052 4.0656 9.901L0.881867 6.78452C0.372711 6.28612 0.372711 5.48256 0.881867 4.98416L4.0656 1.86768C4.58071 1.36344 5.42021 1.36344 5.93532 1.86768L9.11905 4.98416C9.62821 5.48256 9.62821 6.28612 9.11905 6.78452L5.93532 9.901Z"
-                    stroke="white"
-                    strokeOpacity="0.4"
-                  />
-                </g>
-                <defs>
-                  <filter
-                    id="filter0_d_917_3563"
-                    x="0"
-                    y="0.989502"
-                    width="10.001"
-                    height="10.7898"
-                    filterUnits="userSpaceOnUse"
-                    colorInterpolationFilters="sRGB"
-                  >
-                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feColorMatrix
-                      in="SourceAlpha"
-                      type="matrix"
-                      values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                      result="hardAlpha"
-                    />
-                    <feOffset dy="1" />
-                    <feComposite in2="hardAlpha" operator="out" />
-                    <feColorMatrix
-                      type="matrix"
-                      values="0 0 0 0 0.117138 0 0 0 0 0.176258 0 0 0 0 0.202862 0 0 0 1 0"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in2="BackgroundImageFix"
-                      result="effect1_dropShadow_917_3563"
-                    />
-                    <feBlend
-                      mode="normal"
-                      in="SourceGraphic"
-                      in2="effect1_dropShadow_917_3563"
-                      result="shape"
-                    />
-                  </filter>
-                  <linearGradient
-                    id="paint0_linear_917_3563"
-                    x1="5.00044"
-                    y1="11.5158"
-                    x2="5.00044"
-                    y2="0.252899"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#8AA8B5" />
-                    <stop offset="1" stopColor="#DCE5E8" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div className="text-slate-500 text-xs font-semibold font-['Poppins'] whitespace-nowrap">
-              Silver 600
-            </div>
+      </section>
+
+      {/* Profile Info */}
+      <section className="w-[874px] flex flex-col gap-2 mt-6 mb-5">
+        <h1 className="text-2xl font-semibold text-black">changwook</h1>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1 text-slate-500 text-xs font-semibold">
+            <span>Silver 600</span>
           </div>
-          <div className="justify-start text-zinc-400 text-[8px] font-semibold font-['Poppins'] ml-[-10px]">
-            Silver 600 | 승급까지 100
-          </div>
+          <span className="text-zinc-400 text-[8px] font-semibold">Silver 600 | 승급까지 100</span>
         </div>
-        <div className="relative w-[873px] h-4 bg-green-400/20 rounded-[5px]">
+        {/* Progress Bar */}
+        <div className="relative w-full h-4 bg-green-400/20 rounded">
+          {/* 여기에 실제 경험치 바를 추가 */}
           <div
-            className="absolute top-0 left-0 h-full bg-green-400 rounded-[5px]"
-            style={{ width: '80%' }}
+            className="absolute top-0 left-0 h-4 bg-green-500 rounded"
+            style={{ width: '50%' }}
           />
         </div>
-      </div>
-      <div className="w-[1145px] h-[528px] flex flex-col justify-center items-center gap-14">
-        <div className="self-stretch inline-flex justify-center items-center gap-16">
+      </section>
+      {/* Chart Carousel */}
+      <section className="relative w-[921px] h-96 px-5 py-2.5 bg-neutral-100 rounded-2xl inline-flex flex-col justify-center items-center gap-12">
+        {/* 왼쪽 버튼 */}
+        <button
+          onClick={goToPrev}
+          disabled={currentIndex === 0}
+          className={`absolute -left-20 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full ${
+            currentIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-gray-200'
+          }`}
+        >
+          <ChevronLeft size={32} />
+        </button>
+
+        {/* 가운데 chart */}
+        <article className="w-[600px] flex justify-center">{components[currentIndex]}</article>
+
+        {/* 오른쪽 버튼 */}
+        <button
+          onClick={goToNext}
+          disabled={currentIndex === components.length - 1}
+          className={`absolute -right-20 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full ${
+            currentIndex === components.length - 1
+              ? 'opacity-30 cursor-not-allowed'
+              : 'hover:bg-gray-200'
+          }`}
+        >
+          <ChevronRight size={32} />
+        </button>
+      </section>
+      {/* 인디케이터 점 */}
+      <div className="flex items-center justify-center gap-3 mt-4 mb-4">
+        {components.map((_, index) => (
           <div
-            data-size="48"
-            className="w-0 h-12 relative origin-top-left -rotate-90 overflow-hidden"
-          >
-            <div data-svg-wrapper className="left-[4px] top-[4px] absolute">
-              <svg
-                width="45"
-                height="45"
-                viewBox="0 0 45 45"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M22.5 14.5L14.5 22.5M14.5 22.5L22.5 30.5M14.5 22.5H30.5M22.5 2.5C33.5457 2.5 42.5 11.4543 42.5 22.5C42.5 33.5457 33.5457 42.5 22.5 42.5C11.4543 42.5 2.5 33.5457 2.5 22.5C2.5 11.4543 11.4543 2.5 22.5 2.5Z"
-                  stroke="var(--Icon-Default-Default, #1E1E1E)"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-          <div className="relative w-[921px] h-96 px-5 py-2.5 bg-neutral-100 rounded-2xl inline-flex flex-col justify-center items-center gap-12">
-            <button
-              onClick={goToPrev}
-              disabled={currentIndex === 0}
-              className={`absolute -left-20 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full ${
-                currentIndex === 0 ? 'opacity-30 cursor-not-allowed' : 'hover:bg-gray-200'
-              }`}
-            >
-              <ChevronLeft size={28} />
-            </button>
-            {components[currentIndex]}
-            <button
-              onClick={goToNext}
-              disabled={currentIndex === components.length - 1}
-              className={`absolute -right-20 top-1/2 -translate-y-1/2 z-10 p-1 rounded-full ${
-                currentIndex === components.length - 1
-                  ? 'opacity-30 cursor-not-allowed'
-                  : 'hover:bg-gray-200'
-              }`}
-            >
-              <ChevronRight size={28} />
-            </button>
-          </div>
-          <div
-            data-size="48"
-            className="w-0 h-12 relative origin-top-left rotate-90 overflow-hidden"
-          >
-            <div data-svg-wrapper className="left-[4px] top-[4px] absolute">
-              <svg
-                width="45"
-                height="45"
-                viewBox="0 0 45 45"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M22.5 30.5L30.5 22.5M30.5 22.5L22.5 14.5M30.5 22.5H14.5M22.5 42.5C11.4543 42.5 2.5 33.5457 2.5 22.5C2.5 11.4543 11.4543 2.5 22.5 2.5C33.5457 2.5 42.5 11.4543 42.5 22.5C42.5 33.5457 33.5457 42.5 22.5 42.5Z"
-                  stroke="var(--Icon-Default-Default, #1E1E1E)"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div className="inline-flex justify-start items-center gap-14">
-          {Array.from({ length: components.length }).map((_, index) => (
-            <div key={index} data-svg-wrapper>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle
-                  cx="8"
-                  cy="8"
-                  r="7.5"
-                  fill={index === currentIndex ? '#375D5B' : '#D9D9D9'}
-                />
-              </svg>
-            </div>
-          ))}
-        </div>
+            key={index}
+            className="w-3 h-3 rounded-full"
+            style={{ backgroundColor: index === currentIndex ? '#375D5B' : '#D9D9D9' }}
+          />
+        ))}
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -1,16 +1,16 @@
-import React from 'react';
+import { FC } from 'react';
 
-interface LabelRowProps {
+type LabelRowProps = {
   name: string;
   count: number;
   percent: number;
-  color?: string; // optional
-}
+  color?: string;
+};
 
-const LabelRow = ({ name, count, percent, color }: LabelRowProps) => {
+const LabelRow: FC<LabelRowProps> = ({ name, count, percent, color }) => {
   return (
-    <div className="w-[530px] flex flex-col items-start">
-      <div className="w-full flex justify-start items-center">
+    <div className="flex w-[530px] flex-col items-start">
+      <div className="flex w-full items-center justify-start">
         {color ? (
           <div data-svg-wrapper>
             <svg
@@ -26,27 +26,21 @@ const LabelRow = ({ name, count, percent, color }: LabelRowProps) => {
         ) : (
           <div style={{ width: 21, height: 15 }} />
         )}
-        <div className="w-96 flex justify-start items-center gap-2.5">
-          <div className="justify-start text-black text-sm font-normal font-['Poppins']">
-            {name}
+        <div className="flex w-96 items-center justify-start gap-2.5">
+          <div className="text-sm font-normal text-black">{name}</div>
+        </div>
+        <div className="flex items-center justify-center">
+          <div className="flex w-3.5 flex-col items-center justify-center self-stretch gap-2.5">
+            <div className="text-xs font-semibold text-black">{count}</div>
           </div>
         </div>
-        <div className="flex justify-center items-center">
-          <div className="w-3.5 self-stretch inline-flex flex-col justify-center items-center gap-2.5">
-            <div className="justify-start text-black text-xs font-semibold font-['Poppins']">
-              {count}
-            </div>
-          </div>
-        </div>
-        <div className="w-24 h-7 inline-flex flex-col justify-center items-end">
-          <div className="self-stretch inline-flex justify-end items-center">
-            <div className="justify-start text-black text-xl font-semibold font-['Poppins']">
-              {percent}%
-            </div>
+        <div className="inline-flex h-7 w-24 flex-col items-end justify-center">
+          <div className="inline-flex w-full items-center justify-end">
+            <div className="text-xl font-semibold text-black">{percent}%</div>
           </div>
         </div>
       </div>
-      <div className="w-[530px] h-0 outline outline-1 outline-offset-[-0.5px] outline-black" />
+      <div className="h-0 w-[530px] outline outline-1 outline-offset-[-0.5px] outline-black" />
     </div>
   );
 };

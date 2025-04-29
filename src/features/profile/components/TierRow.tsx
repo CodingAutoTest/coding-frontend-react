@@ -1,46 +1,41 @@
-interface TierRowProps {
+// components/TierRow.tsx
+import { FC } from 'react';
+
+type TierRowProps = {
   name: string;
   color?: string;
   count: number;
   percent: number;
-}
+};
 
-const TierRow = ({ name, color, count, percent }: TierRowProps) => {
+const TierRow: FC<TierRowProps> = ({ name, color = '#000', count, percent }) => {
   return (
     <div className="w-[560px] flex flex-col items-start">
-      <div className="w-full flex justify-start items-center">
-        <div data-svg-wrapper>
-          <svg
-            width="21"
-            height="15"
-            viewBox="0 0 21 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <rect x="0.5" y="0.5" width="14" height="14" rx="4" fill={color} />
-          </svg>
+      <div className="w-full flex items-center gap-4">
+        <svg
+          width="21"
+          height="15"
+          viewBox="0 0 21 15"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="0.5" y="0.5" width="14" height="14" rx="4" fill={color} />
+        </svg>
+
+        <div className="w-96 flex items-center gap-2.5">
+          <span className="text-black text-sm font-normal">{name}</span>
         </div>
-        <div className="w-96 flex justify-start items-center gap-2.5">
-          <div className="justify-start text-black text-sm font-normal font-['Poppins']">
-            {name}
-          </div>
+
+        <div className="flex items-center justify-center w-3.5">
+          <span className="text-black text-xs font-semibold">{count}</span>
         </div>
-        <div className="flex justify-center items-center">
-          <div className="w-3.5 self-stretch inline-flex flex-col justify-center items-center gap-2.5">
-            <div className="justify-start text-black text-xs font-semibold font-['Poppins']">
-              {count}
-            </div>
-          </div>
-        </div>
-        <div className="w-24 h-7 inline-flex flex-col justify-center items-end">
-          <div className="self-stretch inline-flex justify-end items-center">
-            <div className="justify-start text-black text-xl font-semibold font-['Poppins']">
-              {percent}%
-            </div>
-          </div>
+
+        <div className="w-24 flex justify-end items-center">
+          <span className="text-black text-xl font-semibold">{percent}%</span>
         </div>
       </div>
-      <div className="w-[530px] h-0 outline outline-1 outline-offset-[-0.5px] outline-black" />
+
+      <div className="w-[530px] h-px bg-black mt-2" />
     </div>
   );
 };

@@ -1,32 +1,28 @@
-import React from 'react';
+import { FC } from 'react';
 import LabelRow from './LabelRow';
 
-type LabelItem = {
+type LabelItemType = {
   name: string;
   count: number;
   percent: number;
   color?: string;
 };
 
-interface LabelListProps {
-  data: LabelItem[];
+type LabelListProps = {
+  data: LabelItemType[];
   labelTitle: string;
   showColor?: boolean;
-}
+};
 
-const LabelList = ({ data, labelTitle, showColor = true }: LabelListProps) => {
+const LabelList: FC<LabelListProps> = ({ data, labelTitle, showColor = true }) => {
   return (
-    <div className="w-full flex flex-col justify-center items-center">
-      <div className="self-stretch flex flex-col justify-center items-center">
-        <div className="inline-flex justify-center items-center gap-10">
-          <div className="w-[223px] flex justify-center items-center">
-            <div className="justify-start text-neutral-800 text-[10px] font-semibold font-['Poppins']">
-              {labelTitle}
-            </div>
+    <div className="flex w-full flex-col items-center justify-center">
+      <div className="flex w-full flex-col items-center justify-center">
+        <div className="inline-flex items-center justify-center gap-10">
+          <div className="flex w-[223px] items-center justify-center">
+            <div className="text-[10px] font-semibold text-neutral-800">{labelTitle}</div>
           </div>
-          <div className="justify-start text-neutral-800 text-[10px] font-semibold font-['Poppins']">
-            문제
-          </div>
+          <div className="text-[10px] font-semibold text-neutral-800">문제</div>
         </div>
 
         {data.map((item, index) => (
