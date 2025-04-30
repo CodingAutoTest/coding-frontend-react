@@ -1,6 +1,6 @@
 import MainHeader from '@/components/MainHeader';
-import MainControlMenu from '@/feature/problem-list/components/MainControlMenu';
-import Ad from '@/feature/problem-list/components/Ad';
+import MainControlMenu from '@/features/problem-list/components/MainControlMenu';
+import Ad from '@/features/problem-list/components/Ad';
 
 const ProblemList = () => {
   return (

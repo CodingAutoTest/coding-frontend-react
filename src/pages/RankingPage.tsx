@@ -1,5 +1,6 @@
-// pages/RankingPage.tsx
+// src/pages/RankingPage.tsx
 import { useState, useEffect } from 'react';
+import MainHeader from '@/components/MainHeader';
 import RankingHeader from '@/features/ranking/components/RankingHearder';
 import RankingTable from '@/features/ranking/components/RankingTable';
 import SearchBar from '@/features/ranking/components/SearchBar';
@@ -16,38 +17,41 @@ const RankingPage = () => {
   }, []);
 
   return (
-    <main className="w-full max-w-[1051px] mx-auto gap-[43px] flex flex-col">
-      {/* 💡 헤더 공간만 확보 (실제 헤더는 나중에 구현) */}
-      <header className="h-[116px]" />
+    <>
+      {/* 🧭 상단 고정 헤더 */}
+      <MainHeader />
 
-      {myRanking && (
-        <section className="w-full">
-          <RankingHeader {...myRanking} />
-        </section>
-      )}
+      <main className="w-full max-w-[1051px] mx-auto gap-[43px] flex flex-col">
+        {/* 👤 내 랭킹 */}
+        {myRanking && (
+          <section className="w-full">
+            <RankingHeader {...myRanking} />
+          </section>
+        )}
 
-      {/* 🔍 검색창 우측 정렬 */}
-      <div className="w-full">
-        <div className="flex justify-end">
-          <SearchBar onSearch={setSearchName} />
+        {/* 🔍 검색창 */}
+        <div className="w-full">
+          <div className="flex justify-end">
+            <SearchBar onSearch={setSearchName} />
+          </div>
         </div>
-      </div>
 
-      {/* 📊 전체 랭킹 테이블 */}
-      <RankingTable
-        name={searchName}
-        sort={sort}
-        order={order}
-        onSortChange={(key) => {
-          if (sort === key) {
-            setOrder(order === 'asc' ? 'desc' : 'asc');
-          } else {
-            setSort(key);
-            setOrder('desc');
-          }
-        }}
-      />
-    </main>
+        {/* 📊 랭킹 테이블 */}
+        <RankingTable
+          name={searchName}
+          sort={sort}
+          order={order}
+          onSortChange={(key) => {
+            if (sort === key) {
+              setOrder(order === 'asc' ? 'desc' : 'asc');
+            } else {
+              setSort(key);
+              setOrder('desc');
+            }
+          }}
+        />
+      </main>
+    </>
   );
 };
 
