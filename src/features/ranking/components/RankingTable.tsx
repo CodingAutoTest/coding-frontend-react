@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { fetchRankingList, RankingItem } from '../api/fetch-ranking-list';
 import Pagination from './Pagination';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   name: string;
@@ -13,6 +14,7 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
   const [data, setData] = useState<RankingItem[]>([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,33 +37,37 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
       </header>
 
       <table className="w-full text-left">
-      <thead>
-  <tr className="text-sm text-gray-500 font-semibold border-b border-black">
-    <th className="py-3 px-4 text-center">순위</th>
-    <th className="py-3 px-4 text-center w-[20%]">티어</th>
-    <th className="py-3 px-4 w-[40%]">닉네임</th>
-    <th
-      className={`py-3 px-6 text-right cursor-pointer select-none ${
-        sort === 'rating' ? 'text-[#56C364]' : ''
-      }`}
-      onClick={() => onSortChange('rating')}
-    >
-      레이팅 {renderSortIcon('rating')}
-    </th>
-    <th className="py-3 px-6 text-right">마라톤</th>
-    <th
-      className={`py-3 px-6 text-right cursor-pointer select-none ${
-        sort === 'solvedCount' ? 'text-[#56C364]' : ''
-      }`}
-      onClick={() => onSortChange('solvedCount')}
-    >
-      해결한 문제 {renderSortIcon('solvedCount')}
-    </th>
-  </tr>
-</thead>
+        <thead>
+          <tr className="text-sm text-gray-500 font-semibold border-b border-black">
+            <th className="py-3 px-4 text-center">순위</th>
+            <th className="py-3 px-4 text-center w-[20%]">티어</th>
+            <th className="py-3 px-4 w-[40%]">닉네임</th>
+            <th
+              className={`py-3 px-6 text-right cursor-pointer select-none ${
+                sort === 'rating' ? 'text-[#56C364]' : ''
+              }`}
+              onClick={() => onSortChange('rating')}
+            >
+              레이팅 {renderSortIcon('rating')}
+            </th>
+            <th className="py-3 px-6 text-right">마라톤</th>
+            <th
+              className={`py-3 px-6 text-right cursor-pointer select-none ${
+                sort === 'solvedCount' ? 'text-[#56C364]' : ''
+              }`}
+              onClick={() => onSortChange('solvedCount')}
+            >
+              해결한 문제 {renderSortIcon('solvedCount')}
+            </th>
+          </tr>
+        </thead>
         <tbody className="text-gray-800 text-base">
           {data.map((item) => (
-            <tr key={item.rank} className="hover:bg-gray-50 transition border-b">
+            <tr
+              key={item.rank}
+              onClick={() => navigate(`/user/${item.userId}`)} // ✅ 추가
+              className="hover:bg-gray-50 transition border-b cursor-pointer"
+            >
               <td className="py-6 px-5 text-center  ">{item.rank}</td>
               <td className="py-6 px-5 text-center">
                 <div className="flex items-center justify-center  text-center space-x-2">

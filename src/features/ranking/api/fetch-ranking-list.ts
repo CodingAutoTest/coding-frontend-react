@@ -1,6 +1,7 @@
 import { api } from '@/lib/axios';
 
 export type RankingItem = {
+  userId: number; // ✅ 추가
   rank: number;
   name: string;
   profileImage: string;
