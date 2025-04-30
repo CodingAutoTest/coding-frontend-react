@@ -14,7 +14,7 @@ const LogoButton = () => {
     <img
       src={logo}
       onClick={handleClick}
-      className="w-[116px] h-[116px] left-[80px] top-0 absolute cursor-pointer"
+      className="w-[116px] h-[116px] left-[5.56%] top-0 absolute cursor-pointer"
     />
   );
 };
