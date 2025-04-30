@@ -9,7 +9,16 @@ type Props = {
   marathonDays: number;
   solvedCount: number;
 };
+// 맨 위에 추가
+const tierImages = import.meta.glob('/src/assets/tiers/*.svg', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>;
 
+const getTierImage = (tier: string) => {
+  const key = `/src/assets/tiers/${tier}.svg`; // 또는 tier.toLowerCase() 사용
+  return tierImages[key] || '/tiers/default-profile.svg';
+};
 const RankingHeader: FC<Props> = ({
   rank,
   name,
@@ -19,8 +28,7 @@ const RankingHeader: FC<Props> = ({
   marathonDays,
   solvedCount,
 }) => {
-  const tierIconPath = tier ? `/tiers/${tier.toLowerCase()}.svg` : '/tiers/default.svg';
-
+  const tierIconPath = getTierImage(tier);
   return (
     <section aria-labelledby="my-ranking" className="max-w-screen-xl mx-auto mt-6">
       <header id="my-ranking" className="sr-only">

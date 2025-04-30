@@ -9,6 +9,16 @@ type Props = {
   order: 'asc' | 'desc';
   onSortChange: (key: 'rating' | 'solvedCount') => void;
 };
+// 맨 위에 추가
+const tierImages = import.meta.glob('@/assets/tiers/*.svg', {
+  eager: true,
+  import: 'default',
+}) as Record<string, string>;
+
+const getTierImage = (tier: string) => {
+  const key = `/src/assets/tiers/${tier}.svg`; // 한글 그대로
+  return tierImages[key] || '/tiers/default-profile.svg'; // fallback 처리
+};
 
 const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
   const [data, setData] = useState<RankingItem[]>([]);
@@ -71,11 +81,7 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
               <td className="py-6 px-5 text-center  ">{item.rank}</td>
               <td className="py-6 px-5 text-center">
                 <div className="flex items-center justify-center  text-center space-x-2">
-                  <img
-                    src={`/tiers/${item.tier.toLowerCase()}.svg`}
-                    className="w-5 h-5"
-                    alt={item.tier}
-                  />
+                  <img src={getTierImage(item.tier)} className="w-5 h-5" alt={item.tier} />
                   <span>{item.tier}</span>
                 </div>
               </td>
