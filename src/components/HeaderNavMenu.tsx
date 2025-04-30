@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 const HeaderNavMenu = () => {
   const navigate = useNavigate();
   return (
-    <div className="left-[308px] h-full whitespace-nowrap my-auto absolute inline-flex justify-start items-center gap-[52px]">
+    <div className="left-[21.39%] h-full whitespace-nowrap my-auto absolute inline-flex justify-start items-center gap-[52px]">
       <HeaderNavButton
         text="문제"
         color="text-DEFAULT"

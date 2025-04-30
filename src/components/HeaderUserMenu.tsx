@@ -11,7 +11,7 @@ const HeaderUserMenu = ({ isLogin }: HeaderUserMenuProps) => {
   // API 사용 시 제거(Test 용 이미지)
   const navigate = useNavigate();
   return (
-    <div className="left-[1100px] h-full whitespace-nowrap my-auto absolute inline-flex justify-start items-center gap-[41px]">
+    <div className="left-[76.39%] h-full whitespace-nowrap my-auto absolute inline-flex justify-start items-center gap-[41px]">
       <HeaderNavButton
         text="프리미엄"
         color="text-[#FFC130]"
