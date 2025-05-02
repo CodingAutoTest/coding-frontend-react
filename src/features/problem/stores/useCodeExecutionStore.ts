@@ -9,7 +9,11 @@ export const useCodeExecution = () => {
       setIsExecuting(true);
       const results = await executeCode(code, language, testcaseIds);
       setExecuteResults(results);
-      return results;
+
+      const passedCount = results.filter((r) => r.status === 'Accepted').length;
+      const totalCount = results.length;
+
+      return { results, passedCount, totalCount };
     } catch (error) {
       console.error('Error executing code:', error);
       throw error;

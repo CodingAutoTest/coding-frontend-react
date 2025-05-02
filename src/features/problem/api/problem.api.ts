@@ -23,7 +23,8 @@ export const executeCode = async (
     language,
     testcase_ids: testcaseIds,
   });
-  return unwrap<ExecuteResultType[]>(response, 'result');
+
+  return response.data.result.result.results;
 };
 
 export const submitCode = async (
@@ -38,7 +39,9 @@ export const submitCode = async (
     code,
     user_id: userId,
   });
-  return unwrap<string>(response, 'result');
+
+  const result = unwrap<{ user_submission_problem_id: string }>(response, 'result');
+  return result.user_submission_problem_id;
 };
 
 export const fetchUser = async (userId: number): Promise<UserType> => {

@@ -26,7 +26,7 @@ export const TestCaseSection: React.FC<TestCaseSectionProps> = ({
       </div>
 
       {/* 내용 부분 - 배경 채우기용 */}
-      <div className="flex-1 min-h-0 px-5 py-4">
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4 scrollbar-hide">
         <TestCaseTabs
           testCases={testCases}
           selectedTestCase={selectedTestCase}

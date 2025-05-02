@@ -3,7 +3,7 @@ import { ProblemType } from '@/features/problem/types/problem.type';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import TierBadge from '@/global/components/TierBadge';
 import StatCard from '@/features/problem/components/StatCard';
-import { useProblemDifficulty } from '@/features/problem/hooks/useProblemDifficulty';
+import { useProblemDifficulty } from '@/global/hooks/useProblemDifficulty';
 import { IMAGES } from '@/global/contants/images';
 
 type ProblemHeaderProps = {
@@ -22,7 +22,7 @@ export const ProblemHeader: React.FC<ProblemHeaderProps> = ({
 
   return (
     <div className="w-full mb-5 px-[22px]">
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 w-full">
         <div className="flex items-center">
           {difficulty && <TierBadge difficulty={difficulty.difficulty} size={20} />}
           <h1 className="text-[32px] font-bold text-DEFAULT ml-2">{problemData.title}</h1>
@@ -39,7 +39,7 @@ export const ProblemHeader: React.FC<ProblemHeaderProps> = ({
       </div>
 
       {isAlgorithmVisible && (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 w-full">
           {tags.map((tag, index) => (
             <span
               key={index}
@@ -51,7 +51,7 @@ export const ProblemHeader: React.FC<ProblemHeaderProps> = ({
         </div>
       )}
 
-      <div className="flex gap-5 mt-4">
+      <div className="flex gap-5 mt-4 w-full">
         <StatCard
           label="시간 제한"
           value={problemData.timeLimit}

@@ -10,7 +10,10 @@ import goldIcon from '@/assets/tier_icons/gold.svg';
 import platinumIcon from '@/assets/tier_icons/platinum.svg';
 import diamondIcon from '@/assets/tier_icons/diamond.svg';
 import masterIcon from '@/assets/tier_icons/master.svg';
-
+import graphIcon from '@/assets/problem_result_icons/graph.svg';
+import resultIcon from '@/assets/problem_result_icons/result.svg';
+import testcaseIcon from '@/assets/problem_result_icons/testcase.svg';
+import infoIcon from '@/assets/problem_result_icons/info.svg';
 export const IMAGES = {
   LOGO: {
     DEFAULT: problemLogo,
@@ -23,6 +26,12 @@ export const IMAGES = {
     TIME_LIMIT: timeLimitIcon,
     MEMORY_LIMIT: memoryLimitIcon,
     ACCEPTANCE: acceptanceRateIcon,
+  },
+  PROBLEM_RESULT: {
+    GRAPH: graphIcon,
+    RESULT: resultIcon,
+    TESTCASE: testcaseIcon,
+    INFO: infoIcon,
   },
   TIER_ICONS: {
     BRONZE: bronzeIcon,

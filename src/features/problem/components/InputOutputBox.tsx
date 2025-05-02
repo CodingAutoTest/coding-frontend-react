@@ -13,7 +13,7 @@ export const InputOutputBox: React.FC<InputOutputBoxProps> = ({ input, output })
         <input
           value={input}
           readOnly
-          className="w-full bg-gray-300 text-secondary px-5 py-2 rounded-lg"
+          className="w-full bg-gray-300 text-secondary px-5 py-2 rounded-lg scrollbar-hide"
         />
       </div>
       <div>
@@ -21,7 +21,7 @@ export const InputOutputBox: React.FC<InputOutputBoxProps> = ({ input, output })
         <input
           value={output}
           readOnly
-          className="w-full bg-gray-300 text-secondary px-5 py-2 rounded-lg"
+          className="w-full bg-gray-300 text-secondary px-5 py-2 rounded-lg scrollbar-hide"
         />
       </div>
     </div>

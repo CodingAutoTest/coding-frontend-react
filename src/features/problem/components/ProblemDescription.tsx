@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { ProblemDescriptionProps } from '../types/problem.type';
 
-const Divider = () => <div className="bg-problem-DIVIDER h-[1px] w-full max-w-[619px] my-[12px]" />;
+const Divider = () => <div className="bg-problem-DIVIDER h-[1px] w-full my-[12px]" />;
 
 const Section = ({ title, content }: { title: string; content: string }) => (
-  <div className="flex flex-col w-full px-[20px] max-w-full mb-[32px]">
+  <div className="flex flex-col w-full px-[20px] mb-[32px]">
     <span className="text-DEFAULT text-[20px] font-bold mb-[10px]">{title}</span>
     <Divider />
     <div

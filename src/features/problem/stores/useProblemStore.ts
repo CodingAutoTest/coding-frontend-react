@@ -5,6 +5,7 @@ import {
   ProgrammingLanguage,
   ExecuteResultType,
 } from '@/features/problem/types/problem.type';
+import { SubmissionResultType } from '@/features/problem/types/problem-result.type'; // ⭐ 추가
 
 interface ProblemStore {
   // 문제 + 테스트케이스
@@ -21,7 +22,7 @@ interface ProblemStore {
 
   // 제출 상태
   isSubmitting: boolean;
-  submitResult: string;
+  submissionResult: SubmissionResultType | null; // ⭐ 수정: string → 객체
 
   setProblemData: (data: ProblemType) => void;
   setTestCases: (data: TestCaseType[]) => void;
@@ -30,7 +31,7 @@ interface ProblemStore {
   setIsExecuting: (val: boolean) => void;
   setExecuteResults: (results: ExecuteResultType[]) => void;
   setIsSubmitting: (val: boolean) => void;
-  setSubmitResult: (msg: string) => void;
+  setSubmissionResult: (result: SubmissionResultType) => void; // ⭐ 수정
 }
 
 export const useProblemStore = create<ProblemStore>((set) => ({
@@ -54,7 +55,7 @@ export const useProblemStore = create<ProblemStore>((set) => ({
 
   // 제출 관련
   isSubmitting: false,
-  submitResult: '',
+  submissionResult: null,
   setIsSubmitting: (val) => set({ isSubmitting: val }),
-  setSubmitResult: (msg) => set({ submitResult: msg }),
+  setSubmissionResult: (result) => set({ submissionResult: result }),
 }));
