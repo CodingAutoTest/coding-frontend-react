@@ -7,8 +7,7 @@ import PremiumInfoPage from './pages/PremiumInfoPage';
 import ErrorPage from './pages/ErrorPage'; // ✅ 404용
 import HomePage from './pages/ProblemList'; // ✅ 혹은 홈 페이지로 쓸 컴포넌트
 import ProblemDetailPage from './pages/ProblemDetailPage';
-
-import ProfilePage from '@/features/profile/Profile';
+import ProfilePage from './pages/Profile';
 
 function App() {
   return (
@@ -18,7 +17,7 @@ function App() {
       <Route path="/ranking" element={<RankingPage />} />
       <Route path="/premium" element={<PremiumInfoPage />} />
       <Route path="*" element={<ErrorPage />} />
-      <Route path="/api/user/:userId/profile" element={<ProfilePage />} />
+      <Route path="/user/:userId/profile" element={<ProfilePage />} />
       <Route path="/problems/:id" element={<ProblemDetailPage />} />
     </Routes>
   );

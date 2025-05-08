@@ -13,6 +13,6 @@ export interface UserProfileResponse {
 }
 
 export const getUserProfile = async (userId: number) => {
-  const res = await api.get(`/api/user/${userId}/profile`);
+  const res = await api.get(`/user/${userId}/profile`);
   return res.data.result.user as UserProfileResponse;
 };
