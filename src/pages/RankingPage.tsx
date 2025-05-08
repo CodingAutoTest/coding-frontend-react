@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import MainHeader from '@/components/MainHeader';
 import RankingHeader from '@/features/ranking/components/RankingHearder';
 import RankingTable from '@/features/ranking/components/RankingTable';
-import SearchBar from '@/features/ranking/components/SearchBar';
+import SearchBar from '@/components/SearchBar';
 import { fetchMyRanking, MyRanking } from '@/features/ranking/api/fetch-my-ranking';
 
 const RankingPage = () => {
@@ -32,7 +32,11 @@ const RankingPage = () => {
         {/* 🔍 검색창 */}
         <div className="w-full">
           <div className="flex justify-end">
-            <SearchBar onSearch={setSearchName} />
+            <SearchBar
+              placeholder="닉네임 검색"
+              onSearch={setSearchName}
+              width="407px" // 필요 시 조절
+            />
           </div>
         </div>
 
