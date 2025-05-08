@@ -22,7 +22,7 @@ const LabelList: FC<LabelListProps> = ({ data, labelTitle, showColor = true }) =
           <div className="flex w-[223px] items-center justify-center">
             <div className="text-[10px] font-semibold text-neutral-800">{labelTitle}</div>
           </div>
-          <div className="text-[10px] font-semibold text-neutral-800">문제</div>
+          <div className="text-[10px] font-semibold text-neutral-800 ml-[30px]">문제</div>
         </div>
 
         {data.map((item, index) => (

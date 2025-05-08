@@ -1,4 +1,4 @@
-// components/TagChart.tsx
+// src/features/profile/components/TagChart.tsx
 import { FC, useState } from 'react';
 import {
   Radar,
@@ -7,50 +7,29 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
   ResponsiveContainer,
+  Tooltip,
+  TooltipProps,
 } from 'recharts';
 import LabelList from '@/features/profile/components/LabelList';
+import { TagChartDataType } from '@/features/profile/utils/chartMapper';
 
-type TagDataType = {
-  name: string;
-  count: number;
-  percent: number;
+type Props = {
+  data: TagChartDataType[]; // { name, count }  배열이면 충분
 };
 
 type CustomTickProps = {
   x: number;
   y: number;
-  payload: {
-    value: string;
-  };
+  payload: { value: string };
   textAnchor?: string;
 };
 
-const tagList: TagDataType[] = [
-  { name: '구현', count: 80, percent: 20 },
-  { name: '자료구조', count: 80, percent: 20 },
-  { name: '수학', count: 80, percent: 20 },
-  { name: '문자열', count: 80, percent: 20 },
-  { name: '그래프', count: 80, percent: 20 },
-  { name: '탐색', count: 80, percent: 20 },
-  { name: '데이터 구조', count: 80, percent: 20 },
-  { name: '기하학', count: 80, percent: 20 },
-  { name: 'AI', count: 90, percent: 25 },
-  { name: '네트워크', count: 75, percent: 15 },
-  { name: '보안', count: 85, percent: 18 },
-  { name: '알고리즘', count: 70, percent: 30 },
-  { name: '알고리즘', count: 70, percent: 30 },
-  { name: '알고리즘', count: 70, percent: 30 },
-  { name: '알고리즘', count: 70, percent: 30 },
-  { name: '알고리즘', count: 70, percent: 30 },
-];
-
 const CustomTick: FC<CustomTickProps> = ({ x, y, payload, textAnchor }) => {
   const lines = payload.value.split(' ');
-
   return (
     <text x={x} y={y} textAnchor={textAnchor} fill="#666" fontSize={12}>
-      {lines.map((line, index) => (
-        <tspan key={index} x={x} dy={index === 0 ? 0 : 14}>
+      {lines.map((line, i) => (
+        <tspan key={i} x={x} dy={i === 0 ? 0 : 14}>
           {line}
         </tspan>
       ))}
@@ -58,22 +37,46 @@ const CustomTick: FC<CustomTickProps> = ({ x, y, payload, textAnchor }) => {
   );
 };
 
-const TagChart: FC = () => {
+/* 툴팁: 태그명 + 퍼센트 */
+const CustomTooltip: FC<TooltipProps<number, string>> = ({ active, payload }) => {
+  if (active && payload?.length) {
+    const { name, percent } = payload[0].payload as { name: string; percent: number };
+    return (
+      <div className="bg-white border px-2 py-1 text-sm rounded shadow">
+        {name}: {percent.toFixed(1)}%
+      </div>
+    );
+  }
+  return null;
+};
+
+const TagChart: FC<Props> = ({ data }) => {
   const [expanded, setExpanded] = useState(false);
 
-  const chartData = tagList.slice(0, 8);
-  const allData = tagList.slice(0, expanded ? tagList.length : 8);
+  /* 1️⃣ 전체 태그 문제 수 */
+  const totalTagCount = data.reduce((sum, d) => sum + d.count, 0) || 1;
+
+  /* 2️⃣ percent 계산 후 정렬 */
+  const withPercent = data.map((d) => ({
+    ...d,
+    percent: (d.count / totalTagCount) * 100,
+  }));
+  const sorted = [...withPercent].sort((a, b) => b.count - a.count);
+
+  const chartData = sorted.slice(0, 8); // 레이다 차트용 상위 8개
+  const listData = sorted.slice(0, expanded ? sorted.length : 8); // 리스트용
 
   return (
     <div
-      className={`w-[921px] px-5 py-2.5 bg-neutral-100 rounded-2xl inline-flex flex-col justify-start items-center gap-4 transition-all duration-300 ease-in-out ${
+      className={`w-[921px] px-5 py-2.5 bg-neutral-100 rounded-2xl flex flex-col items-center gap-4 transition-all ${
         expanded ? 'h-auto' : 'h-96'
       }`}
     >
-      <div className="self-stretch flex flex-col justify-start items-start gap-10">
+      <div className="self-stretch flex flex-col gap-10">
         <div className="text-black text-[10px] font-semibold">태그 분포</div>
 
-        <div className="w-[880px] h-64 inline-flex justify-center items-center">
+        <div className="w-[880px] h-64 flex justify-center items-center">
+          {/* ─── Radar 차트 ─── */}
           <div className="w-96 h-96">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
@@ -81,7 +84,7 @@ const TagChart: FC = () => {
                 <PolarAngleAxis dataKey="name" tick={(props) => <CustomTick {...props} />} />
                 <PolarRadiusAxis
                   angle={30}
-                  domain={[0, 100]}
+                  domain={[0, Math.max(...chartData.map((d) => d.count), 10)]}
                   tick={{ fontSize: 10, fill: '#999' }}
                 />
                 <Radar
@@ -91,22 +94,23 @@ const TagChart: FC = () => {
                   fill="#8884d8"
                   fillOpacity={0.6}
                 />
+                <Tooltip content={<CustomTooltip />} />
               </RadarChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="flex flex-col justify-center items-center gap-4">
-            <LabelList data={allData} labelTitle="태그" showColor={false} />
+          {/* ─── 태그 리스트 + 더보기 ─── */}
+          <div className="flex flex-col items-center gap-4">
+            <LabelList data={listData} labelTitle="태그" showColor={false} />
 
-            <div
-              className="relative cursor-pointer flex justify-center items-center"
-              onClick={() => setExpanded(!expanded)}
-            >
-              <div className="w-24 h-7 bg-zinc-300 rounded-[5px]" />
-              <div className="absolute text-center text-neutral-800 text-sm font-semibold">
-                {expanded ? '접기' : `더보기(+${tagList.length - 8})`}
+            {sorted.length > 8 && (
+              <div className="relative cursor-pointer" onClick={() => setExpanded(!expanded)}>
+                <div className="w-24 h-7 bg-zinc-300 rounded-[5px]" />
+                <div className="absolute inset-0 flex items-center justify-center text-neutral-800 text-sm font-semibold">
+                  {expanded ? '접기' : `더보기(+${sorted.length - 8})`}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

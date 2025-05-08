@@ -1,8 +1,15 @@
-import './App.css';
-import Profile from './features/profile/Profile';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
+import ProfilePage from '@/features/profile/Profile';
 
 function App() {
-  return <Profile />;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/api/user/:userId/profile" element={<ProfilePage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
