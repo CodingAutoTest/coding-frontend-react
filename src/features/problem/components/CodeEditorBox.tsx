@@ -21,13 +21,13 @@ export const CodeEditorBox: React.FC<CodeEditorBoxProps> = ({
     <div className="bg-light rounded-lg shadow-md flex flex-col overflow-hidden h-full">
       {/* 상단 고정 바 */}
       <div className="px-5 py-2 bg-gray-200 rounded-t-[10px] flex justify-between items-center shrink-0">
-        <span className="text-secondary text-[15px] font-medium">코드</span>
+        <span className="text-secondary text-[15px] font-inter">코드</span>
         <div className="relative">
           <button
             className="flex items-center gap-2 text-secondary"
             onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
           >
-            <span className="text-[15px]">{language} ▼</span>
+            <span className="text-[15px] font-inter">{language} ▼</span>
           </button>
           {isLanguageMenuOpen && (
             <div className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg py-2 min-w-[120px] z-10">

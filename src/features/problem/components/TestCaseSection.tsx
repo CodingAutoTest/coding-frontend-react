@@ -22,11 +22,11 @@ export const TestCaseSection: React.FC<TestCaseSectionProps> = ({
     <div className="flex-1 min-h-0 flex flex-col bg-problem-COMPONENT_HEADER rounded-[10px] shadow-md">
       {/* 상단 바 */}
       <div className="bg-gray-200 px-5 py-2 rounded-t-[10px]">
-        <span className="text-secondary text-base">테스트 케이스</span>
+        <span className="text-secondary text-base font-inter">테스트 케이스</span>
       </div>
 
       {/* 내용 부분 - 배경 채우기용 */}
-      <div className="flex-1 min-h-0 px-5 py-4">
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4 scrollbar-hide">
         <TestCaseTabs
           testCases={testCases}
           selectedTestCase={selectedTestCase}

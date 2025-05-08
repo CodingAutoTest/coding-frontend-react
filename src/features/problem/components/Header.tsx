@@ -7,9 +7,8 @@ import { IMAGES } from '@/global/contants/images';
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
-  const userId = Number(localStorage.getItem('userId')) || 1;
   const { isRunning, formattedTime, startTimer, stopTimer, resetTimer } = useTimer();
-  const { user, loading } = useUserInfo(userId);
+  const { user, loading } = useUserInfo();
 
   return (
     <header className="w-full px-[20px] py-[10px] flex items-center justify-between bg-problem-BACKGROUND">
@@ -40,7 +39,7 @@ export const Header: React.FC = () => {
 
       {/* 오른쪽: 사용자 이름 + 프로필 */}
       <div className="flex items-center gap-3">
-        <span className="text-DEFAULT text-medium whitespace-nowrap">
+        <span className="text-DEFAULT text-medium whitespace-nowrap font-inter">
           {loading ? '불러오는 중...' : `${user?.name ?? '익명'}님`}
         </span>
         <img

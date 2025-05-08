@@ -1,4 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useTimerStore } from '../stores/useTimerStore';
 
 type UseTimerReturnType = {
   time: number;
@@ -10,23 +11,23 @@ type UseTimerReturnType = {
 };
 
 export const useTimer = (): UseTimerReturnType => {
-  const [time, setTime] = useState<number>(0);
-  const [isRunning, setIsRunning] = useState<boolean>(false);
-  const timerRef = useRef<number | null>(null);
+  const { time, isRunning, startTimer, stopTimer, resetTimer, setTime } = useTimerStore();
 
   useEffect(() => {
+    let intervalId: number | null = null;
+
     if (isRunning) {
-      timerRef.current = window.setInterval(() => {
-        setTime((prevTime) => prevTime + 10);
+      intervalId = window.setInterval(() => {
+        setTime(time + 10);
       }, 10);
     }
 
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
+      if (intervalId) {
+        clearInterval(intervalId);
       }
     };
-  }, [isRunning]);
+  }, [isRunning, time, setTime]);
 
   const formatTime = (ms: number): string => {
     const hours = Math.floor(ms / 3600000);
@@ -36,19 +37,6 @@ export const useTimer = (): UseTimerReturnType => {
     return `${hours.toString().padStart(2, '0')}:${minutes
       .toString()
       .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-  };
-
-  const startTimer = (): void => {
-    setIsRunning(true);
-  };
-
-  const stopTimer = (): void => {
-    setIsRunning(false);
-  };
-
-  const resetTimer = (): void => {
-    setTime(0);
-    setIsRunning(false);
   };
 
   return {

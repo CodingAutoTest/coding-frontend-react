@@ -19,7 +19,7 @@ export const TestCaseTabs: React.FC<TestCaseTabsProps> = ({
       {testCases.map((_, index) => (
         <button
           key={index}
-          className={`px-8 py-2 rounded-lg  ${
+          className={`px-8 py-2 rounded-lg font-inter ${
             selectedTestCase === index ? 'bg-PRIMARY text-white' : 'bg-gray-300 text-secondary'
           }`}
           onClick={() => onTestCaseSelect(index)}

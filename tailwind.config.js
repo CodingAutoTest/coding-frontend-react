@@ -22,6 +22,8 @@ export default {
           BACKGROUND: '#E2E2E2',
           DIVIDER: '#73808D',
           COMPONENT_HEADER: '#F4F4F4',
+          FAIL: '#DF0404',
+          SUCCESS: '#008767',
         },
       },
     },
