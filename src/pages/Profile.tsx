@@ -13,6 +13,7 @@ import { useParams } from 'react-router-dom';
 import useUserProfile from '@/features/profile/hooks/useProfile';
 import { mapTierData, mapTagData } from '@/features/profile/utils/chartMapper';
 import LoadingSpinner from '@/features/profile/components/LoadingSpinner';
+import MainHeader from '@/components/MainHeader';
 
 const Profile: FC = () => {
   const { userId } = useParams<'userId'>();
@@ -56,32 +57,7 @@ const Profile: FC = () => {
   return (
     <main className="w-full min-h-screen bg-white flex flex-col items-center">
       {/* ===== 헤더 ===== */}
-      <header className="w-full px-20 py-4 flex justify-between items-center">
-        {/* 로고 & 네비 */}
-        <div className="flex items-center gap-8">
-          <img src="https://placehold.co/116x116" alt="로고" className="w-28 h-28" />
-          <nav className="flex gap-12">
-            {['문제', '클래스', '랭킹', '실전테스트'].map((txt, i) => (
-              <a
-                key={txt}
-                href="#!"
-                className={`text-base font-bold ${
-                  i % 2 === 0 ? 'text-neutral-800' : 'text-neutral-400'
-                }`}
-              >
-                {txt}
-              </a>
-            ))}
-          </nav>
-        </div>
-
-        {/* 우측 영역 */}
-        <div className="flex items-center gap-8">
-          <span className="text-amber-400 font-bold">프리미엄</span>
-          <button className="text-neutral-800 font-bold">로그아웃</button>
-          <div className="p-2.5 bg-zinc-100 rounded-full">{/* 프로필 아이콘 SVG */}</div>
-        </div>
-      </header>
+      <MainHeader />
 
       {/* ===== 프로필 배너 ===== */}
       <section className="w-full h-72 flex flex-col items-center relative">
