@@ -7,6 +7,6 @@ export type AlgorithmTag = {
 
 // 알고리즘 태그 조회
 export const getAlgorithmTags = async (): Promise<AlgorithmTag[]> => {
-  const response = await api.get<AlgorithmTag[]>('/api/tags');
+  const response = await api.get<AlgorithmTag[]>('/tags');
   return response.data;
 };

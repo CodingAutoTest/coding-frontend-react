@@ -1,6 +1,5 @@
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 import { ProblemType, TestCaseType, ExecuteResultType, UserType } from '../types/problem.api.type';
-import { unwrap } from '@/lib/axios';
 import { ProgrammingLanguage } from '../types/problem.type';
 
 export const fetchProblem = async (problemId: string): Promise<ProblemType> => {

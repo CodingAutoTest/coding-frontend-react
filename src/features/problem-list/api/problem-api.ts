@@ -23,7 +23,7 @@ export const getProblems = async (
   tagId?: number,
   search?: string,
 ): Promise<ProblemResponse> => {
-  const response = await api.get<ProblemResponse>('/api/problems', {
+  const response = await api.get<ProblemResponse>('/problems', {
     params: {
       page,
       size,
