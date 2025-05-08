@@ -1,6 +1,7 @@
 import { api } from '@/lib/axios';
 import { unwrap } from '@/lib/axios';
 import { SubmissionResultType } from '../types/problem-result.type';
+import { SubmissionHistoryType } from '../types/submission-history.type';
 
 export const fetchProblemSubmissionResult = async (
   submissionId: string,
@@ -8,4 +9,18 @@ export const fetchProblemSubmissionResult = async (
   const res = await api.get<{ result: SubmissionResultType }>(`/submissions/${submissionId}`);
   console.log(submissionId);
   return unwrap<SubmissionResultType>(res, 'result');
+};
+
+export const fetchProblemSubmissionHistory = async (
+  problemId: number,
+): Promise<SubmissionHistoryType[]> => {
+  const response = await api.get<{ result: SubmissionHistoryType[] }>(
+    `/submissions/history/${problemId}`,
+  );
+  return unwrap<SubmissionHistoryType[]>(response, 'result');
+};
+
+export const getSubmissionCode = async (submissionId: number) => {
+  const response = await api.get<{ result: string }>(`/submissions/code/${submissionId}`);
+  return unwrap<string>(response, 'result');
 };

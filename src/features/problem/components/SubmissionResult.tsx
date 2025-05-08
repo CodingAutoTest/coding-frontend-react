@@ -37,7 +37,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
         <div className="absolute bottom-10 right-1/3 animate-ping text-5xl">🎉</div>
 
         <div className="text-center animate-fadeIn">
-          <h1 className="text-4xl font-bold text-PRIMARY mb-4">Perfect!</h1>
+          <h1 className="text-4xl font-inter text-PRIMARY mb-4">Perfect!</h1>
           <p className="text-lg text-gray-600">40점 만점 축하합니다! 🎉</p>
         </div>
       </div>
@@ -78,7 +78,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
           <img src={IMAGES.PROBLEM_RESULT.RESULT} alt="result" className="w-10 h-10" />
           <div className="flex flex-col">
             <span className="text-xs text-gray-400">결과</span>
-            <span className="text-lg font-bold text-DEFAULT">
+            <span className="text-lg font-inter font-bold text-DEFAULT">
               {isEmpty ? '???' : resultSummary.error}
             </span>
           </div>
@@ -87,7 +87,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
           <img src={IMAGES.PROBLEM_RESULT.TESTCASE} alt="testcase" className="w-10 h-10" />
           <div className="flex flex-col items-end">
             <span className="text-xs text-gray-400">테스트케이스</span>
-            <span className="text-lg font-bold text-DEFAULT">
+            <span className="text-lg font-inter font-bold text-DEFAULT">
               {isEmpty ? '???/???' : `${resultSummary.passedCount}/${resultSummary.totalCount}`}
             </span>
           </div>
@@ -108,18 +108,15 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
 
       {/* AI 피드백 */}
       <div className="bg-white p-6 rounded-2xl shadow-md w-full">
-        <div className="text-lg font-bold mb-4">AI 피드백</div>
+        <div className="text-lg font-inter mb-4">AI 피드백</div>
         {isEmpty ? (
           <div className="text-gray-500 text-base">제출을 하고 결과를 받아보세요!</div>
         ) : (
           <>
-            <ul className="list-decimal list-inside space-y-2 text-gray-700 text-[15px] leading-relaxed">
-              {resultSummary.feedback
-                ?.split('\n')
-                .filter((line) => line.trim() !== '')
-                .map((feedback, index) => <li key={index}>{feedback}</li>)}
-            </ul>
-            <div className="mt-6 text-right font-bold text-xl text-PRIMARY">
+            <div className="text-gray-700 text-[15px] leading-relaxed whitespace-pre-line">
+              {resultSummary.feedback}
+            </div>
+            <div className="mt-6 text-right font-inter text-xl text-PRIMARY">
               총점: {resultSummary.totalScore}점
             </div>
           </>

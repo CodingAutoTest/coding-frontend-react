@@ -5,10 +5,10 @@ import { fetchProblemSubmissionResult } from '@/features/problem/api/problem-res
 export const useCodeSubmit = () => {
   const { code, language, isSubmitting, setIsSubmitting, setSubmissionResult } = useProblemStore();
 
-  const submit = async (problemId: number, userId: number) => {
+  const submit = async (problemId: number) => {
     try {
       setIsSubmitting(true);
-      const submissionId = await submitCode(problemId, code, language, userId);
+      const submissionId = await submitCode(problemId, code, language);
       const result = await fetchProblemSubmissionResult(submissionId);
       setSubmissionResult(result);
       return result;

@@ -16,13 +16,13 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen, type, messag
         {type === 'loading' && (
           <>
             <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
-            <div className="text-lg font-semibold">{message}</div>
+            <div className="text-lg font-inter">{message}</div>
           </>
         )}
 
         {type === 'alert' && (
           <>
-            <div className="text-lg font-semibold">{message}</div>
+            <div className="text-lg font-inter">{message}</div>
             <button
               onClick={onClose}
               className="mt-2 px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"

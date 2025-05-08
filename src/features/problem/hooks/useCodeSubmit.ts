@@ -9,11 +9,10 @@ export const useCodeSubmit = () => {
     problemId: number,
     code: string,
     language: ProgrammingLanguage,
-    userId: number,
   ): Promise<string> => {
     try {
       setIsSubmitting(true);
-      const submissionId = await submitCode(problemId, code, language, userId);
+      const submissionId = await submitCode(problemId, code, language);
       return submissionId; // 여기까지만 리턴
     } catch (error) {
       console.error('Error submitting code:', error);

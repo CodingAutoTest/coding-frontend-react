@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { fetchUser } from '../api/problem.api';
 import { UserType } from '../types/problem.api.type';
 
-export const useUserInfo = (userId: number) => {
+export const useUserInfo = () => {
   const [user, setUser] = useState<UserType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -10,7 +10,7 @@ export const useUserInfo = (userId: number) => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const userInfo = await fetchUser(userId);
+        const userInfo = await fetchUser();
         setUser(userInfo);
         setLoading(false);
       } catch (err) {
@@ -20,7 +20,7 @@ export const useUserInfo = (userId: number) => {
       }
     };
     fetchUserInfo();
-  }, [userId]);
+  }, []);
 
   return { user, loading, error };
 };

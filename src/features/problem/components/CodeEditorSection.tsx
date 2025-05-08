@@ -15,8 +15,8 @@ type CodeEditorSectionProps = {
   selectedTestCase: number;
   setSelectedTestCase: (index: number) => void;
   problemId: number;
-  userId: number;
   setActiveTab: (tab: TabType) => void;
+  onStopTimer: () => void;
 };
 
 export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
@@ -28,8 +28,8 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
   selectedTestCase,
   setSelectedTestCase,
   problemId,
-  userId,
   setActiveTab,
+  onStopTimer,
 }) => {
   const input = testCases[selectedTestCase]?.input || '';
   const output = testCases[selectedTestCase]?.output || '';
@@ -48,9 +48,9 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
         <footer className="bg-[#E9E9E9] rounded-b-[10px] shrink-0">
           <ActionButtons
             problemId={problemId}
-            userId={userId}
             testCases={testCases}
             setActiveTab={setActiveTab}
+            onStopTimer={onStopTimer}
           />
         </footer>
       </div>

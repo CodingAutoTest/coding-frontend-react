@@ -8,16 +8,16 @@ import { fetchProblemSubmissionResult } from '@/features/problem/api/problem-res
 
 type ActionButtonsProps = {
   problemId: number;
-  userId: number;
   testCases: TestCaseType[];
   setActiveTab: (tab: TabType) => void;
+  onStopTimer: () => void;
 };
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
   problemId,
-  userId,
   testCases,
   setActiveTab,
+  onStopTimer,
 }) => {
   const { code, language, setSubmissionResult } = useProblemStore();
   const { execute } = useCodeExecution();
@@ -37,6 +37,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
     if (!code.trim()) return openAlert('코드를 먼저 작성해주세요.');
     if (!testCases.length) return openAlert('테스트 케이스가 없습니다.');
 
+    console.log('실행 버튼 클릭 - 타이머 정지');
+    onStopTimer();
     setIsExecuting(true);
     setModalType('loading');
 
@@ -60,11 +62,13 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   const handleSubmit = async () => {
     if (!code.trim()) return openAlert('코드를 먼저 작성해주세요.');
 
+    console.log('제출 버튼 클릭 - 타이머 정지');
+    onStopTimer();
     setIsSubmitting(true);
     setModalType('loading');
 
     try {
-      const submissionId = await submit(problemId, code, language, userId);
+      const submissionId = await submit(problemId, code, language);
 
       const resultSummary = await fetchProblemSubmissionResult(submissionId);
 
@@ -106,11 +110,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
             {modalType === 'loading' ? (
               <>
                 <div className="w-12 h-12 border-4 border-gray-300 border-t-PRIMARY rounded-full animate-spin" />
-                <p className="text-xl font-bold text-gray-800">처리 중입니다...</p>
+                <p className="text-xl font-inter text-gray-800">처리 중입니다...</p>
               </>
             ) : (
               <>
-                <p className="text-xl font-bold text-gray-800">{modalMessage}</p>
+                <p className="text-xl font-inter text-gray-800">{modalMessage}</p>
                 <button
                   onClick={() => setModalType(null)}
                   className="mt-2 px-6 py-3 bg-PRIMARY text-WHITE text-lg rounded-xl hover:bg-PRIMARY/90 transition"

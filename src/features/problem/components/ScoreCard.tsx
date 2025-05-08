@@ -13,7 +13,7 @@ export const ScoreCard: React.FC<ScoreCardProps> = ({ label, score, tooltip }) =
       <img src={IMAGES.PROBLEM_RESULT.GRAPH} alt="graph" className="w-10 h-10" />
       <div className="flex flex-col">
         <span className="text-sm text-gray-500">{label}</span>
-        <span className="text-xl font-bold text-DEFAULT">
+        <span className="text-xl font-inter font-bold text-DEFAULT">
           {score === undefined || score === null ? '???' : `${score}점`}
         </span>
       </div>

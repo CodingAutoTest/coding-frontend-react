@@ -31,20 +31,18 @@ export const submitCode = async (
   problemId: number,
   code: string,
   language: ProgrammingLanguage,
-  userId: number,
 ) => {
   const response = await api.post(`/judge/submit`, {
     problem_id: problemId,
     language,
     code,
-    user_id: userId,
   });
 
   const result = unwrap<{ user_submission_problem_id: string }>(response, 'result');
   return result.user_submission_problem_id;
 };
 
-export const fetchUser = async (userId: number): Promise<UserType> => {
-  const response = await api.get(`/users/${userId}/nameAndImage`);
+export const fetchUser = async (): Promise<UserType> => {
+  const response = await api.get(`/users/nameAndImage`);
   return unwrap<UserType>(response, 'result');
 };

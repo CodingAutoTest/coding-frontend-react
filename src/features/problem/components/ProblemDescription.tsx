@@ -5,10 +5,10 @@ const Divider = () => <div className="bg-problem-DIVIDER h-[1px] w-full my-[12px
 
 const Section = ({ title, content }: { title: string; content: string }) => (
   <div className="flex flex-col w-full px-[20px] mb-[32px]">
-    <span className="text-DEFAULT text-[20px] font-bold mb-[10px]">{title}</span>
+    <span className="text-DEFAULT text-[20px] font-inter mb-[10px]">{title}</span>
     <Divider />
     <div
-      className="text-DEFAULT text-[15px] font-medium whitespace-pre-line break-words"
+      className="text-DEFAULT text-[15px] font-inter whitespace-pre-line break-words"
       dangerouslySetInnerHTML={{ __html: content }}
     />
   </div>
