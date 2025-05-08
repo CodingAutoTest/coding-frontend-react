@@ -12,6 +12,8 @@ type AlgorithmButtonProps = {
   onChange: (value: number) => void;
   onClose: () => void;
   onApply: (value: number) => void;
+  isLoading?: boolean;
+  onSearch: (value: string) => void;
 };
 
 const AlgorithmPopup = ({
@@ -21,6 +23,8 @@ const AlgorithmPopup = ({
   onChange,
   onClose,
   onApply,
+  isLoading = false,
+  onSearch,
 }: AlgorithmButtonProps) => {
   if (!isOpen) return null;
 
@@ -45,10 +49,6 @@ const AlgorithmPopup = ({
     onClose();
   };
 
-  const handleSearch = (value: string) => {
-    console.log(value);
-  };
-
   return (
     <div
       className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-40"
@@ -60,24 +60,29 @@ const AlgorithmPopup = ({
       >
         <header className="inline-flex items-center justify-between w-full">
           <div className="text-lg font-bold text-DEFAULT font-nunito-sans">알고리즘 선택</div>
-          <SearchBar
-            placeholder="알고리즘 검색"
-            icon={false}
-            width="310px"
-            onSearch={handleSearch}
-          />
+          <SearchBar placeholder="알고리즘 검색" icon={false} width="310px" onSearch={onSearch} />
         </header>
 
         <main className="flex flex-wrap content-start items-start justify-start w-full h-[434px] gap-4 overflow-y-auto scrollbar-hide">
-          {options.map((option) => (
-            <AlgorithmButton
-              key={option.value}
-              text={option.text}
-              value={option.value}
-              selectedValue={selectedValue}
-              onChange={handleChange}
-            />
-          ))}
+          {isLoading ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="text-DISABLED">로딩 중...</div>
+            </div>
+          ) : options.length === 0 ? (
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="text-DISABLED">검색 결과가 없습니다.</div>
+            </div>
+          ) : (
+            options.map((option) => (
+              <AlgorithmButton
+                key={option.value}
+                text={option.text}
+                value={option.value}
+                selectedValue={selectedValue}
+                onChange={handleChange}
+              />
+            ))
+          )}
         </main>
 
         <div className="w-full my-4">

@@ -26,7 +26,10 @@ const DropdownMenu = ({ text, value, selectedValue, onChange }: DropdownMenuProp
       className="w-auto inline-flex gap-2.5 items-center"
       onClick={handleClick}
     >
-      <img src={isChecked ? checkedIcon : uncheckedIcon} />
+      <img
+        src={isChecked ? checkedIcon : uncheckedIcon}
+        alt={isChecked ? '선택됨' : '선택되지 않음'}
+      />
       <div className="text-DEFAULT text-sm font-medium font-nunito-sans">{text}</div>
     </button>
   );

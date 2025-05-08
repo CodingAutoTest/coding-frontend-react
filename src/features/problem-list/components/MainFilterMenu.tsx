@@ -1,52 +1,76 @@
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import MainButton from './MainButton';
 import Dropdown from './Dropdown';
 import AlgorithmPopup from './AlgorithmPopup';
 import TagButton from './TagButton';
+import { useFilterStore } from '../stores/useFilterStore';
+import { getAlgorithmTags } from '../api/tag-api';
+import { useAuthStore } from '@/stores/useAuthStore';
 
-const MainFilterMenu = () => {
-  const [selectedButton, setSelectedButton] = useState<string>('');
-  const [selectedProblemStatus, setSelectedProblemStatus] = useState('');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('');
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState(0);
-  const [appliedAlgorithm, setAppliedAlgorithm] = useState(0);
+const MainFilterMenu: FC = () => {
+  const {
+    selectedButton,
+    selectedProblemStatus,
+    selectedDifficulty,
+    selectedAlgorithm,
+    appliedAlgorithm,
+    setSelectedProblemStatus,
+    setSelectedDifficulty,
+    setSelectedAlgorithm,
+    setAppliedAlgorithm,
+    handleButtonSelect,
+    handleAlgorithmClose,
+  } = useFilterStore();
+
+  const [algorithmOptions, setAlgorithmOptions] = useState<{ text: string; value: number }[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const isLogin = useAuthStore((state) => state.isLogin);
+
+  useEffect(() => {
+    const fetchAlgorithmTags = async () => {
+      if (selectedButton === 'algorithm') {
+        try {
+          setIsLoading(true);
+          const tags = await getAlgorithmTags();
+          const options = tags.map((tag) => ({
+            text: tag.name,
+            value: tag.id,
+          }));
+          setAlgorithmOptions(options);
+        } catch (error) {
+          console.error('Failed to fetch algorithm tags:', error);
+          setAlgorithmOptions([]);
+          return;
+        }
+        setIsLoading(false);
+      }
+    };
+
+    fetchAlgorithmTags();
+  }, [selectedButton]);
+
+  const filteredAlgorithmOptions =
+    searchQuery.trim() === ''
+      ? algorithmOptions
+      : algorithmOptions.filter((option) =>
+          option.text.toLowerCase().includes(searchQuery.toLowerCase()),
+        );
 
   const problemStatusOptions = [
-    { text: 'unsolved', value: 'unsolved' },
-    { text: 'solving', value: 'solving' },
-    { text: 'solved', value: 'solved' },
+    { text: '미해결', value: -1 },
+    { text: '해결 중', value: 0 },
+    { text: '해결 완료', value: 1 },
   ];
 
   const difficultyOptions = [
     { text: '브론즈', value: 'bronze' },
     { text: '실버', value: 'silver' },
     { text: '골드', value: 'gold' },
-    { text: '플레티넘', value: 'platinum' },
+    { text: '플래티넘', value: 'platinum' },
     { text: '다이아', value: 'diamond' },
     { text: '마스터', value: 'master' },
   ];
-
-  const algorithmOptions = [
-    { text: '수학', value: 1 },
-    { text: '그리디', value: 2 },
-    { text: '다이나믹 프로그래밍', value: 3 },
-    { text: 'BFS', value: 4 },
-    { text: 'DFS', value: 5 },
-    { text: '그래프', value: 6 },
-    { text: '그래프 탐색', value: 7 },
-  ];
-
-  const handleButtonSelect = (buttonId: string) => {
-    setSelectedButton((prev) => (prev === buttonId ? '' : buttonId)); // 토글 끄기
-    if (buttonId !== 'algorithm') {
-      setSelectedAlgorithm(0);
-    }
-  };
-
-  const handleAlgorithmClose = () => {
-    setSelectedButton('');
-    setSelectedAlgorithm(0);
-  };
 
   const isProblemStatusOpen = selectedButton === 'problemStatus';
   const isDifficultyOpen = selectedButton === 'difficulty';
@@ -58,14 +82,21 @@ const MainFilterMenu = () => {
         <MainButton
           text="문제 상태"
           icon
+          disabled={!isLogin}
           isSelected={isProblemStatusOpen}
           onSelect={() => handleButtonSelect('problemStatus')}
         />
         <Dropdown
           isOpen={isProblemStatusOpen}
           options={problemStatusOptions}
-          selectedValue={selectedProblemStatus}
-          onChange={setSelectedProblemStatus}
+          selectedValue={selectedProblemStatus?.toString() || ''}
+          onChange={(value) => {
+            if (value === '') {
+              setSelectedProblemStatus(undefined);
+            } else {
+              setSelectedProblemStatus(parseInt(value));
+            }
+          }}
         />
       </div>
       <div className="relative">
@@ -90,17 +121,22 @@ const MainFilterMenu = () => {
         />
         <AlgorithmPopup
           isOpen={isAlgorithmOpen}
-          options={algorithmOptions}
+          options={filteredAlgorithmOptions}
           selectedValue={selectedAlgorithm}
           onChange={setSelectedAlgorithm}
           onClose={handleAlgorithmClose}
           onApply={setAppliedAlgorithm}
+          isLoading={isLoading}
+          onSearch={setSearchQuery}
         />
       </div>
       {appliedAlgorithm !== 0 && (
         <TagButton
           text={algorithmOptions.find((option) => option.value === appliedAlgorithm)?.text || ''}
-          onRemove={() => setAppliedAlgorithm(0)}
+          onRemove={() => {
+            setAppliedAlgorithm(0);
+            setSelectedAlgorithm(0);
+          }}
         />
       )}
     </div>

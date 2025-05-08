@@ -4,7 +4,7 @@ type DropdownProps = {
   isOpen: boolean;
   options: {
     text: string;
-    value: string;
+    value: string | number;
   }[];
   selectedValue: string;
   onChange: (value: string) => void;
@@ -21,9 +21,9 @@ const Dropdown = ({ isOpen, options, selectedValue, onChange }: DropdownProps) =
       <div className="flex flex-col justify-center items-start gap-2.5">
         {options.map((option) => (
           <DropdownMenu
-            key={option.value}
+            key={option.value.toString()}
             text={option.text}
-            value={option.value}
+            value={option.value.toString()}
             selectedValue={selectedValue}
             onChange={onChange}
           />

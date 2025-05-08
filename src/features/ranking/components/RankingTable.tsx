@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { fetchRankingList, RankingItem } from '../api/fetch-ranking-list';
-import Pagination from './Pagination';
+import Pagination from '@/components/Pagination';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {

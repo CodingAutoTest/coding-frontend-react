@@ -1,4 +1,3 @@
-// features/ranking/components/Pagination.tsx
 import { FC } from 'react';
 
 type Props = {

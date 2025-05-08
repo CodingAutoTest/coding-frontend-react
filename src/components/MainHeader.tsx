@@ -1,9 +1,10 @@
 import LogoButton from '@/components/LogoButton';
 import HeaderNavMenu from '@/components/HeaderNavMenu';
 import HeaderUserMenu from '@/components/HeaderUserMenu';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const MainHeader = () => {
-  const isLogin = false; // 로그인 여부
+  const isLogin = useAuthStore((state) => state.isLogin);
 
   return (
     <header className="w-full h-[116px] bg-white sticky top-0 z-10">
