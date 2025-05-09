@@ -6,26 +6,16 @@ import { useFilterStore } from '../stores/useFilterStore';
 import unsolvedIcon from '@/assets/problem-list/unsolved-icon.svg';
 import solvingIcon from '@/assets/problem-list/solving-icon.svg';
 import solvedIcon from '@/assets/problem-list/solved-icon.svg';
-
-const getDifficultyNumber = (difficulty: string): number | undefined => {
-  const difficultyMap: Record<string, number> = {
-    bronze: 1,
-    silver: 2,
-    gold: 3,
-    platinum: 4,
-    diamond: 5,
-    master: 6,
-  };
-  return difficultyMap[difficulty];
-};
+import TierBadge from '@/components/TierBadge';
+import { getDifficultyText } from '@/constants/difficulty';
 
 const getStatusIcon = (status: number) => {
   switch (status) {
-    case -1:
-      return <img src={unsolvedIcon} alt="미해결" />;
     case 0:
-      return <img src={solvingIcon} alt="해결 중" />;
+      return <img src={unsolvedIcon} alt="미해결" />;
     case 1:
+      return <img src={solvingIcon} alt="해결 중" />;
+    case 2:
       return <img src={solvedIcon} alt="해결 완료" />;
     default:
       return <img src={unsolvedIcon} alt="미해결" />;
@@ -36,19 +26,19 @@ const ProblemTable: FC = () => {
   const [data, setData] = useState<Problem[]>([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { selectedProblemStatus, selectedDifficulty, appliedAlgorithm, search } = useFilterStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
-        setIsLoading(true);
         const response = await getProblems(
           page,
           20,
           selectedProblemStatus || undefined,
-          getDifficultyNumber(selectedDifficulty) || undefined,
+          selectedDifficulty || undefined,
           appliedAlgorithm || undefined,
           search || undefined,
         );
@@ -68,7 +58,7 @@ const ProblemTable: FC = () => {
   if (isLoading) {
     return (
       <div className="w-full h-40 flex items-center justify-center">
-        <div className="text-gray-500">로딩 중...</div>
+        <div className="text-DEFAULT font-nunito-sans text-lg">로딩 중...</div>
       </div>
     );
   }
@@ -76,7 +66,7 @@ const ProblemTable: FC = () => {
   if (data.length === 0) {
     return (
       <div className="w-full h-40 flex items-center justify-center">
-        <div className="text-gray-500">문제가 없습니다.</div>
+        <div className="text-DISABLED font-nunito-sans text-  lg">문제가 없습니다.</div>
       </div>
     );
   }
@@ -101,12 +91,15 @@ const ProblemTable: FC = () => {
             >
               <td className="w-[100px] h-[22px] py-[22px]">
                 <div className="flex items-center justify-center">
-                  {getStatusIcon(problem.status || -1)}
+                  {getStatusIcon(problem.status)}
                 </div>
               </td>
               <td className="w-[100px] h-[22px] py-[22px]">
-                <div className="flex items-center justify-center text-center space-x-2">
-                  <span>{problem.difficulty}</span>
+                <div className="flex items-center justify-start pl-4 gap-[3px]">
+                  <TierBadge difficulty={problem.difficulty} size={20} />
+                  <span className="text-DEFAULT font-nunito-sans">
+                    {getDifficultyText(problem.difficulty)}
+                  </span>
                 </div>
               </td>
               <td className="pl-[100px] text-left py-[22px]">

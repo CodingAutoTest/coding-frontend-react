@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { getDifficultyIcon } from '@/global/contants/difficulty.constants';
+import { getDifficultyIcon } from '@/constants/difficulty';
 
 export type TierBadgeProps = {
   difficulty: number;

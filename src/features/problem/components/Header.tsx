@@ -3,7 +3,7 @@ import { Timer } from '@/features/problem/components/Timer';
 import { useUserInfo } from '../hooks/useUserInfo';
 import { useTimer } from '../hooks/useTimer';
 import { useNavigate } from 'react-router-dom';
-import { IMAGES } from '@/global/contants/images';
+import { IMAGES } from '@/constants/images';
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();

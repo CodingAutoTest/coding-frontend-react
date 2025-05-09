@@ -1,10 +1,10 @@
 import React from 'react';
 import { ProblemType } from '@/features/problem/types/problem.type';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import TierBadge from '@/global/components/TierBadge';
+import TierBadge from '@/components/TierBadge';
 import StatCard from '@/features/problem/components/StatCard';
-import { useProblemDifficulty } from '@/global/hooks/useProblemDifficulty';
-import { IMAGES } from '@/global/contants/images';
+import { useProblemDifficulty } from '@/hooks/useProblemDifficulty';
+import { IMAGES } from '@/constants/images';
 
 type ProblemHeaderProps = {
   problemData: ProblemType;

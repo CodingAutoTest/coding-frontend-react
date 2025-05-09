@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getDifficulty } from '@/global/api/global.api';
-import { DifficultyType } from '@/global/types/difficulty.types';
+import { getDifficulty } from '@/api/global.api';
+import { DifficultyType } from '@/types/difficulty';
 
 export const useProblemDifficulty = (problemId: number) => {
   const [difficulty, setDifficulty] = useState<DifficultyType | null>(null);

@@ -58,9 +58,9 @@ const MainFilterMenu: FC = () => {
         );
 
   const problemStatusOptions = [
-    { text: '미해결', value: -1 },
-    { text: '해결 중', value: 0 },
-    { text: '해결 완료', value: 1 },
+    { text: '미해결', value: 'unsolved' },
+    { text: '해결 중', value: 'solving' },
+    { text: '해결 완료', value: 'solved' },
   ];
 
   const difficultyOptions = [
@@ -89,12 +89,12 @@ const MainFilterMenu: FC = () => {
         <Dropdown
           isOpen={isProblemStatusOpen}
           options={problemStatusOptions}
-          selectedValue={selectedProblemStatus?.toString() || ''}
+          selectedValue={selectedProblemStatus || ''}
           onChange={(value) => {
             if (value === '') {
-              setSelectedProblemStatus(undefined);
+              setSelectedProblemStatus('');
             } else {
-              setSelectedProblemStatus(parseInt(value));
+              setSelectedProblemStatus(value);
             }
           }}
         />

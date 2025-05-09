@@ -5,7 +5,7 @@ export type Problem = {
   id: number;
   title: string;
   difficulty: number;
-  status?: number;
+  status: number;
   acceptanceRate: number;
 };
 
@@ -18,8 +18,8 @@ export type ProblemResponse = {
 export const getProblems = async (
   page: number,
   size: number,
-  status?: number,
-  tier?: number,
+  status?: string,
+  tier?: string,
   tagId?: number,
   search?: string,
 ): Promise<ProblemResponse> => {

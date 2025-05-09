@@ -20,3 +20,12 @@ export const getDifficultyIcon = (difficulty: number): string => {
   if (difficulty <= 25) return IMAGES.TIER_ICONS.DIAMOND;
   return IMAGES.TIER_ICONS.MASTER;
 };
+
+export const getDifficultyText = (difficulty: number): string => {
+  if (difficulty <= 5) return '브론즈';
+  if (difficulty <= 10) return '실버';
+  if (difficulty <= 15) return '골드';
+  if (difficulty <= 20) return '플레티넘';
+  if (difficulty <= 25) return '다이아';
+  return '마스터';
+};

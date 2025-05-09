@@ -1,5 +1,5 @@
 import React from 'react';
-import { IMAGES } from '@/global/contants/images';
+import { IMAGES } from '@/constants/images';
 
 type ScoreCardProps = {
   label: string;

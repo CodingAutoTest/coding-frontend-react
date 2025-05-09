@@ -2,13 +2,13 @@ import { create } from 'zustand';
 
 type FilterMenuState = {
   selectedButton: string;
-  selectedProblemStatus: number | undefined;
+  selectedProblemStatus: string;
   selectedDifficulty: string;
   selectedAlgorithm: number;
   appliedAlgorithm: number;
   search: string;
   setSelectedButton: (buttonId: string) => void;
-  setSelectedProblemStatus: (status: number | undefined) => void;
+  setSelectedProblemStatus: (status: string) => void;
   setSelectedDifficulty: (difficulty: string) => void;
   setSelectedAlgorithm: (algorithm: number) => void;
   setAppliedAlgorithm: (algorithm: number) => void;
@@ -19,7 +19,7 @@ type FilterMenuState = {
 
 export const useFilterStore = create<FilterMenuState>((set) => ({
   selectedButton: '',
-  selectedProblemStatus: undefined,
+  selectedProblemStatus: '',
   selectedDifficulty: '',
   selectedAlgorithm: 0,
   appliedAlgorithm: 0,

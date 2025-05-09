@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SubmissionResultType } from '../types/problem-result.type';
-import { IMAGES } from '@/global/contants/images';
+import { IMAGES } from '@/constants/images';
 import { ScoreCard } from './ScoreCard';
 
 type SubmissionResultProps = {
