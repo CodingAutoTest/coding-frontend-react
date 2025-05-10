@@ -44,7 +44,7 @@ const Pagination: FC<Props> = ({ currentPage, totalPages, onPageChange }) => {
   const pages = generatePages();
 
   return (
-    <nav className="flex justify-center mt-6 space-x-3">
+    <nav className="flex justify-center my-[43px] space-x-3">
       {/* ◀️ Prev */}
       <button
         disabled={currentPage === 0}
@@ -60,9 +60,9 @@ const Pagination: FC<Props> = ({ currentPage, totalPages, onPageChange }) => {
           <button
             key={idx}
             onClick={() => onPageChange(item)}
-            className={`px-5 py-3 rounded-md text-base font-semibold border ${
+            className={`px-5 py-3 rounded-md font-inter font-medium border ${
               currentPage === item
-                ? 'bg-blue-600 text-white'
+                ? 'bg-PRIMARY text-white'
                 : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
             }`}
           >

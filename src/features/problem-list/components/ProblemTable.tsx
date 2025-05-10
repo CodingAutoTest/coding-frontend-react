@@ -66,7 +66,7 @@ const ProblemTable: FC = () => {
   if (data.length === 0) {
     return (
       <div className="w-full h-40 flex items-center justify-center">
-        <div className="text-DISABLED font-nunito-sans text-  lg">문제가 없습니다.</div>
+        <div className="text-DEFAULT font-nunito-sans text-lg">문제가 없습니다</div>
       </div>
     );
   }
@@ -75,11 +75,11 @@ const ProblemTable: FC = () => {
     <section className="w-full" aria-labelledby="problem-table">
       <table className="w-full text-center">
         <thead>
-          <tr className="text-base text-DEFAULT font-medium font-nunito-sans border-b border-divider-DEFAULT">
-            <th className="w-[100px] h-[22px] pb-[22px]">상태</th>
-            <th className="w-[100px] h-[22px] pb-[22px]">난이도</th>
-            <th className="w-[751px] pl-[100px] text-left pb-[22px]">문제</th>
-            <th className="w-[100px] h-[22px] pb-[22px]">정답률</th>
+          <tr className="text-DEFAULT font-regular font-nunito-sans border-b border-divider-DEFAULT">
+            <th className="w-[100px] h-[22px] pb-[22px] font-normal">상태</th>
+            <th className="w-[100px] h-[22px] pb-[22px] font-normal">난이도</th>
+            <th className="w-[751px] pl-[100px] text-left pb-[22px] font-normal">문제</th>
+            <th className="w-[100px] h-[22px] pb-[22px] font-normal">정답률</th>
           </tr>
         </thead>
         <tbody>
@@ -87,7 +87,7 @@ const ProblemTable: FC = () => {
             <tr
               key={problem.id}
               onClick={() => navigate(`/problems/${problem.id}`)}
-              className="hover:bg-gray-50 transition cursor-pointer text-base text-DEFAULT font-regular font-inter border-b border-divider-DEFAULT"
+              className="hover:bg-gray-50 transition cursor-pointer text-DEFAULT font-regular font-inter border-b border-divider-DEFAULT"
             >
               <td className="w-[100px] h-[22px] py-[22px]">
                 <div className="flex items-center justify-center">
@@ -97,9 +97,7 @@ const ProblemTable: FC = () => {
               <td className="w-[100px] h-[22px] py-[22px]">
                 <div className="flex items-center justify-start pl-4 gap-[3px]">
                   <TierBadge difficulty={problem.difficulty} size={20} />
-                  <span className="text-DEFAULT font-nunito-sans">
-                    {getDifficultyText(problem.difficulty)}
-                  </span>
+                  <span className="text-DEFAULT">{getDifficultyText(problem.difficulty)}</span>
                 </div>
               </td>
               <td className="pl-[100px] text-left py-[22px]">

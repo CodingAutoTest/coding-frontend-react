@@ -85,7 +85,7 @@ const AlgorithmPopup = ({
           )}
         </main>
 
-        <div className="w-full my-4">
+        <div className="w-full">
           <svg
             width="100%"
             height="2"
