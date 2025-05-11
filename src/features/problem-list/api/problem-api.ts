@@ -1,4 +1,4 @@
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
 export type Problem = {
   userId?: number;
@@ -33,7 +33,7 @@ export const getProblems = async (
       ...(search && { search }),
     },
   });
-  return response.data;
+  return unwrap(response, 'problems');
 };
 
 // 문제 조회 수 증가
