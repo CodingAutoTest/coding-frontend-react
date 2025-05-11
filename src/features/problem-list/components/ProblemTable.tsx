@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Problem, getProblems } from '../api/problem-api';
+import { Problem, getProblems, fetchProblemViewCount } from '../api/problem-api';
 import Pagination from '@/components/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { useFilterStore } from '../stores/useFilterStore';
@@ -55,6 +55,11 @@ const ProblemTable: FC = () => {
     fetchData();
   }, [page, selectedProblemStatus, selectedDifficulty, appliedAlgorithm, search]);
 
+  const handleProblemClick = async (problemId: number) => {
+    await fetchProblemViewCount(problemId);
+    navigate(`/problems/${problemId}`);
+  };
+
   if (isLoading) {
     return (
       <div className="w-full h-40 flex items-center justify-center">
@@ -86,7 +91,7 @@ const ProblemTable: FC = () => {
           {data.map((problem) => (
             <tr
               key={problem.id}
-              onClick={() => navigate(`/problems/${problem.id}`)}
+              onClick={() => handleProblemClick(problem.id)}
               className="hover:bg-gray-50 transition cursor-pointer text-DEFAULT font-regular font-inter border-b border-divider-DEFAULT"
             >
               <td className="w-[100px] h-[22px] py-[22px]">

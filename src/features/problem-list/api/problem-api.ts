@@ -35,3 +35,12 @@ export const getProblems = async (
   });
   return response.data;
 };
+
+// 문제 조회 수 증가
+export const fetchProblemViewCount = async (problemId: number): Promise<void> => {
+  try {
+    await api.post(`/problems/${problemId}/view`);
+  } catch (error) {
+    console.error('Failed to increment view count:', error);
+  }
+};
