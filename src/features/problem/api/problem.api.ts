@@ -42,6 +42,6 @@ export const submitCode = async (
 };
 
 export const fetchUser = async (): Promise<UserType> => {
-  const response = await api.get(`/users/nameAndImage`);
+  const response = await api.get(`/user/nameAndImage`);
   return unwrap<UserType>(response, 'result');
 };
