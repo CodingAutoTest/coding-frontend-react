@@ -4,7 +4,7 @@ import { ProblemHeader } from './ProblemHeader';
 import ProblemDescription from './ProblemDescription';
 import { SubmissionResult } from './SubmissionResult';
 import { SubmissionHistory } from './SubmissionHistory';
-import { useSubmissionHistory } from '../hooks/useSubmissionHistory';
+import { useProblemStore } from '../stores/useProblemStore';
 import { TABS, TabType } from '../constants/tab.constants';
 import { ProblemType } from '../types/problem.type';
 import { SubmissionResultType } from '../types/problem-result.type';
@@ -28,7 +28,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
   submissionResult,
   onViewSubmissionCode,
 }) => {
-  const { data: submissionHistory } = useSubmissionHistory(problemData.id);
+  const { submissionHistory } = useProblemStore();
 
   return (
     <section className="w-full lg:w-1/2 flex flex-col gap-[20px]">
@@ -62,7 +62,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
           {activeTab === '제출내역' && (
             <div className="w-full h-full">
               <SubmissionHistory
-                submissions={submissionHistory}
+                submissions={submissionHistory || []}
                 onViewCode={onViewSubmissionCode}
               />
             </div>

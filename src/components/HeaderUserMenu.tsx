@@ -16,7 +16,7 @@ const HeaderUserMenu = ({ isLogin }: HeaderUserMenuProps) => {
         text="프리미엄"
         color="text-[#FFC130]"
         onClick={() => {
-          navigate('/premium');
+          navigate('/premiums');
         }}
       />
       {isLogin ? (

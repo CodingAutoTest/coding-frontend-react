@@ -24,7 +24,7 @@ export const fetchRankingList = async (
   order = 'desc',
   name = '',
 ): Promise<RankingListResponse> => {
-  const res = await api.get('/api/ranking', {
+  const res = await api.get('/rankings', {
     params: { page, size, sort, order, name },
   });
 

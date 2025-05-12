@@ -16,10 +16,10 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} /> {/* ✅ 루트 경로 추가 */}
       <Route path="/problems" element={<ProblemList />} />
-      <Route path="/ranking" element={<RankingPage />} />
-      <Route path="/premium" element={<PremiumInfoPage />} />
+      <Route path="/rankings" element={<RankingPage />} />
+      <Route path="/premiums" element={<PremiumInfoPage />} />
       <Route path="*" element={<ErrorPage />} />
-      <Route path="/user/:userId/profile" element={<ProfilePage />} />
+      <Route path="/users/:userId/profile" element={<ProfilePage />} />
       <Route path="/problems/:id" element={<ProblemDetailPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />

@@ -4,7 +4,10 @@ import { useCodeExecution } from '@/features/problem/hooks/useCodeExecution';
 import { useCodeSubmit } from '@/features/problem/hooks/useCodeSubmit';
 import { TestCaseType } from '@/features/problem/types/problem.type';
 import { TabType } from '@/features/problem/constants/tab.constants';
-import { fetchProblemSubmissionResult } from '@/features/problem/api/problem-result.api';
+import {
+  fetchProblemSubmissionResult,
+  fetchProblemSubmissionHistory,
+} from '@/features/problem/api/problem-result.api';
 
 type ActionButtonsProps = {
   problemId: number;
@@ -19,7 +22,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   setActiveTab,
   onStopTimer,
 }) => {
-  const { code, language, setSubmissionResult } = useProblemStore();
+  const { code, language, setSubmissionResult, setSubmissionHistory } = useProblemStore();
   const { execute } = useCodeExecution();
   const { submit } = useCodeSubmit();
 
@@ -71,8 +74,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
       const submissionId = await submit(problemId, code, language);
 
       const resultSummary = await fetchProblemSubmissionResult(submissionId);
-
       setSubmissionResult(resultSummary);
+
+      const history = await fetchProblemSubmissionHistory(problemId);
+      setSubmissionHistory(history);
+
       setActiveTab('결과');
     } catch (error) {
       console.error('제출 오류:', error);

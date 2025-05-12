@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useProblemDetail } from '@/features/problem/hooks/useProblemDetail';
 import { useProblemStore } from '@/features/problem/stores/useProblemStore';
@@ -7,7 +7,10 @@ import { ProblemSection } from '@/features/problem/components/ProblemContent';
 import { CodeEditorSection } from '@/features/problem/components/CodeEditorSection';
 import { TabType } from '@/features/problem/constants/tab.constants';
 import { getSubmissionCode } from '@/features/problem/api/problem-result.api';
-import { fetchProblemSubmissionResult } from '@/features/problem/api/problem-result.api';
+import {
+  fetchProblemSubmissionResult,
+  fetchProblemSubmissionHistory,
+} from '@/features/problem/api/problem-result.api';
 import { useTimerStore } from '@/features/problem/stores/useTimerStore';
 
 const ProblemDetailPage: React.FC = () => {
@@ -24,6 +27,7 @@ const ProblemDetailPage: React.FC = () => {
     setLanguage,
     submissionResult,
     setSubmissionResult,
+    setSubmissionHistory,
   } = useProblemStore();
   const { stopTimer } = useTimerStore();
 
@@ -31,6 +35,19 @@ const ProblemDetailPage: React.FC = () => {
   const [isAlgorithmVisible, setIsAlgorithmVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('문제');
   const [lastViewedSubmissionId, setLastViewedSubmissionId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      try {
+        const history = await fetchProblemSubmissionHistory(problemId);
+        setSubmissionHistory(history);
+      } catch (error) {
+        console.error('Failed to fetch submission history:', error);
+      }
+    };
+
+    fetchInitialData();
+  }, [problemId, setSubmissionHistory]);
 
   const handleTabChange = async (tab: TabType) => {
     if (tab === '결과' && lastViewedSubmissionId) {

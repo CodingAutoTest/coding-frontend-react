@@ -15,7 +15,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
 
   console.log(resultSummary);
   useEffect(() => {
-    if (resultSummary?.totalScore === 40) {
+    if (resultSummary?.aiFeedbackDto.totalScore === 40) {
       setShowCelebration(true);
       audio?.play();
 
@@ -25,7 +25,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
 
       return () => clearTimeout(timer);
     }
-  }, [resultSummary?.totalScore, audio]);
+  }, [resultSummary?.aiFeedbackDto.totalScore, audio]);
 
   if (showCelebration) {
     return (
@@ -45,27 +45,27 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
   }
 
   // resultSummary가 없을 때 기본값
-  const isEmpty = !resultSummary || !resultSummary.scores;
+  const isEmpty = !resultSummary || !resultSummary.aiFeedbackDto;
 
   const scoreItems = [
     {
       label: '정확성',
-      score: isEmpty ? undefined : resultSummary.scores.accuracy,
+      score: isEmpty ? undefined : resultSummary.aiFeedbackDto.accuracy,
       tooltip: '문제의 정답률을 평가합니다.',
     },
     {
       label: '효율성',
-      score: isEmpty ? undefined : resultSummary.scores.efficiency,
+      score: isEmpty ? undefined : resultSummary.aiFeedbackDto.efficiency,
       tooltip: '코드의 실행 속도와 메모리 사용을 평가합니다.',
     },
     {
       label: '가독성',
-      score: isEmpty ? undefined : resultSummary.scores.readability,
+      score: isEmpty ? undefined : resultSummary.aiFeedbackDto.readability,
       tooltip: '코드 가독성과 유지보수 용이성을 평가합니다.',
     },
     {
       label: '테스트 커버리지',
-      score: isEmpty ? undefined : resultSummary.scores.testCoverage,
+      score: isEmpty ? undefined : resultSummary.aiFeedbackDto.testCoverage,
       tooltip: '다양한 입력 케이스를 커버하는지를 평가합니다.',
     },
   ];
@@ -114,10 +114,10 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
         ) : (
           <>
             <div className="text-gray-700 text-[15px] leading-relaxed whitespace-pre-line">
-              {resultSummary.feedback}
+              {resultSummary.aiFeedbackDto.feedback}
             </div>
             <div className="mt-6 text-right font-inter text-xl text-PRIMARY">
-              총점: {resultSummary.totalScore}점
+              총점: {resultSummary.aiFeedbackDto.totalScore}점
             </div>
           </>
         )}

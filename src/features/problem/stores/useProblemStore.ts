@@ -5,7 +5,8 @@ import {
   ProgrammingLanguage,
   ExecuteResultType,
 } from '@/features/problem/types/problem.type';
-import { SubmissionResultType } from '@/features/problem/types/problem-result.type'; // ⭐ 추가
+import { SubmissionResultType } from '@/features/problem/types/problem-result.type';
+import { SubmissionHistoryType } from '@/features/problem/types/submission-history.type';
 
 interface ProblemStore {
   // 문제 + 테스트케이스
@@ -22,7 +23,8 @@ interface ProblemStore {
 
   // 제출 상태
   isSubmitting: boolean;
-  submissionResult: SubmissionResultType | null; // ⭐ 수정: string → 객체
+  submissionResult: SubmissionResultType | null;
+  submissionHistory: SubmissionHistoryType[] | null;
 
   setProblemData: (data: ProblemType) => void;
   setTestCases: (data: TestCaseType[]) => void;
@@ -31,7 +33,8 @@ interface ProblemStore {
   setIsExecuting: (val: boolean) => void;
   setExecuteResults: (results: ExecuteResultType[]) => void;
   setIsSubmitting: (val: boolean) => void;
-  setSubmissionResult: (result: SubmissionResultType) => void; // ⭐ 수정
+  setSubmissionResult: (result: SubmissionResultType) => void;
+  setSubmissionHistory: (history: SubmissionHistoryType[]) => void;
 }
 
 export const useProblemStore = create<ProblemStore>((set) => ({
@@ -56,6 +59,8 @@ export const useProblemStore = create<ProblemStore>((set) => ({
   // 제출 관련
   isSubmitting: false,
   submissionResult: null,
+  submissionHistory: null,
   setIsSubmitting: (val) => set({ isSubmitting: val }),
   setSubmissionResult: (result) => set({ submissionResult: result }),
+  setSubmissionHistory: (history) => set({ submissionHistory: history }),
 }));

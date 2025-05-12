@@ -17,7 +17,7 @@ const HeaderNavMenu = () => {
         text="랭킹"
         color="text-DEFAULT"
         onClick={() => {
-          navigate('/ranking');
+          navigate('/rankings');
         }}
       />
       <HeaderNavButton text="실전테스트" color="text-DISABLED" disabled />

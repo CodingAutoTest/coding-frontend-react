@@ -17,7 +17,7 @@ export const executeCode = async (
   language: ProgrammingLanguage,
   testcaseIds: number[],
 ): Promise<ExecuteResultType[]> => {
-  const response = await api.post(`/judge/execute`, {
+  const response = await api.post(`/judges/execute`, {
     code,
     language,
     testcase_ids: testcaseIds,
@@ -31,7 +31,7 @@ export const submitCode = async (
   code: string,
   language: ProgrammingLanguage,
 ) => {
-  const response = await api.post(`/judge/submit`, {
+  const response = await api.post(`/judges/submit`, {
     problem_id: problemId,
     language,
     code,
@@ -42,6 +42,6 @@ export const submitCode = async (
 };
 
 export const fetchUser = async (): Promise<UserType> => {
-  const response = await api.get(`/user/nameAndImage`);
+  const response = await api.get(`/users/nameAndImage`);
   return unwrap<UserType>(response, 'result');
 };

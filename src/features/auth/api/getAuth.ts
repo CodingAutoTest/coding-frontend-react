@@ -12,11 +12,11 @@ export type LoginPayload = {
 };
 
 export async function signup(payload: SignupPayload) {
-  const res = await axios.post('http://127.0.0.1:8080/user/signup', payload);
+  const res = await axios.post('http://127.0.0.1:8080/auth/signup', payload);
   return res.data;
 }
 
 export async function login(payload: LoginPayload) {
-  const res = await axios.post('http://127.0.0.1:8080/user/login', payload);
+  const res = await axios.post('http://127.0.0.1:8080/auth/login', payload);
   return res.data;
 }

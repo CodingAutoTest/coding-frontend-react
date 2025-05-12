@@ -11,7 +11,7 @@ export type MyRanking = {
 };
 
 export const fetchMyRanking = async (): Promise<MyRanking> => {
-  const res = await api.get('/api/me/ranking', {
+  const res = await api.get('/rankings/me', {
     params: {
       userid: 1, // ✅ 'userid'로 정확히 보내야 함!
     },
