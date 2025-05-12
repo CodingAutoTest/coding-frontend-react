@@ -16,6 +16,7 @@ const TierBadge: FC<TierBadgeProps> = ({ difficulty, size = 32 }) => {
       width={size}
       height={size}
       className="object-contain"
+      draggable={false}
     />
   );
 };

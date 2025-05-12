@@ -1,5 +1,5 @@
 // src/features/profile/api/get-user-profile.ts
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
 export interface UserProfileResponse {
   name: string;
@@ -12,7 +12,7 @@ export interface UserProfileResponse {
   solvedCountByDate: Record<string, number>;
 }
 
-export const getUserProfile = async (userId: number) => {
-  const res = await api.get(`/users/${userId}/profile`);
-  return res.data.result.user as UserProfileResponse;
+export const getUserProfile = async () => {
+  const response = await api.get(`/users/profile`);
+  return unwrap<UserProfileResponse>(response);
 };

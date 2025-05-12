@@ -1,7 +1,6 @@
 import { api, unwrap } from '@/lib/axios';
 
 export type Problem = {
-  userId?: number;
   id: number;
   title: string;
   difficulty: number;
@@ -33,7 +32,8 @@ export const getProblems = async (
       ...(search && { search }),
     },
   });
-  return unwrap(response, 'problems');
+  console.log('response', response);
+  return unwrap<ProblemResponse>(response);
 };
 
 // 문제 조회 수 증가

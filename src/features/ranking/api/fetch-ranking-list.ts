@@ -1,7 +1,6 @@
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
 export type RankingItem = {
-  userId: number; // ✅ 추가
   rank: number;
   name: string;
   profileImage: string;
@@ -24,17 +23,9 @@ export const fetchRankingList = async (
   order = 'desc',
   name = '',
 ): Promise<RankingListResponse> => {
-  const res = await api.get('/rankings', {
+  const response = await api.get('/rankings', {
     params: { page, size, sort, order, name },
   });
 
-  // ✅ 중첩 구조 풀어서 꺼내기
-  const data = res.data?.result?.result;
-
-  // 혹시라도 undefined면 기본값 줌
-  return {
-    rankings: data?.rankings ?? [],
-    totalPages: data?.totalPages ?? 1,
-    totalElements: data?.totalElements ?? 0,
-  };
+  return unwrap(response);
 };

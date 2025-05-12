@@ -17,7 +17,7 @@ const StatCard: FC<StatCardProps> = ({ label, value, unit, iconUrl }) => {
           {unit && <span className="text-[16px] font-inter ml-[2px]">{unit}</span>}
         </span>
       </div>
-      <img src={iconUrl} alt={`${label} 아이콘`} className="w-[40px] h-[40px]" />
+      <img src={iconUrl} alt={`${label} 아이콘`} className="w-[40px] h-[40px]" draggable={false} />
     </div>
   );
 };

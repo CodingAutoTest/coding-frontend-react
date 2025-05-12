@@ -75,7 +75,12 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
       {/* 상단 결과 요약 */}
       <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-md w-full">
         <div className="flex items-center gap-3">
-          <img src={IMAGES.PROBLEM_RESULT.RESULT} alt="result" className="w-10 h-10" />
+          <img
+            src={IMAGES.PROBLEM_RESULT.RESULT}
+            alt="result"
+            className="w-10 h-10"
+            draggable={false}
+          />
           <div className="flex flex-col">
             <span className="text-xs text-gray-400">결과</span>
             <span className="text-lg font-inter font-bold text-DEFAULT">
@@ -84,7 +89,12 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
           </div>
         </div>
         <div className="flex items-center gap-3 mr-2">
-          <img src={IMAGES.PROBLEM_RESULT.TESTCASE} alt="testcase" className="w-10 h-10" />
+          <img
+            src={IMAGES.PROBLEM_RESULT.TESTCASE}
+            alt="testcase"
+            className="w-10 h-10"
+            draggable={false}
+          />
           <div className="flex flex-col items-end">
             <span className="text-xs text-gray-400">테스트케이스</span>
             <span className="text-lg font-inter font-bold text-DEFAULT">

@@ -15,6 +15,7 @@ const LogoButton = () => {
       src={logo}
       onClick={handleClick}
       className="w-[116px] h-[116px] left-[5.56%] top-0 absolute cursor-pointer"
+      draggable={false}
     />
   );
 };

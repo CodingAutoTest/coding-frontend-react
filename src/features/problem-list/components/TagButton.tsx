@@ -11,7 +11,13 @@ const TagButton = ({ text, onRemove }: TagButtonProps) => {
       <div className="text-xs font-medium text-center text-PRIMARY font-inter overflow-hidden text-ellipsis whitespace-nowrap">
         {text}
       </div>
-      <img src={closeIcon} onClick={onRemove} className="cursor-pointer" alt="닫기" />
+      <img
+        src={closeIcon}
+        onClick={onRemove}
+        className="cursor-pointer"
+        alt="닫기"
+        draggable={false}
+      />
     </div>
   );
 };

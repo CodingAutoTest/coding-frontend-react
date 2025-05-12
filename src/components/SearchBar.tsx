@@ -31,6 +31,7 @@ const SearchBar = ({ placeholder, onSearch, icon = true, width = '407px' }: Sear
         type="text"
         value={searchValue}
         onChange={handleChange}
+        draggable={false}
         onKeyPress={handleKeyPress}
         placeholder={placeholder}
         className="w-full bg-transparent text-DEFAULT text-sm font-normal font-nunito-sans focus:outline-none"

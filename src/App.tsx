@@ -19,7 +19,7 @@ function App() {
       <Route path="/rankings" element={<RankingPage />} />
       <Route path="/premiums" element={<PremiumInfoPage />} />
       <Route path="*" element={<ErrorPage />} />
-      <Route path="/users/:userId/profile" element={<ProfilePage />} />
+      <Route path="/profile" element={<ProfilePage />} />
       <Route path="/problems/:id" element={<ProblemDetailPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />

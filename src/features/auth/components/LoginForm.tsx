@@ -23,7 +23,6 @@ export function LoginForm() {
 
     try {
       await login({ email, pw });
-      alert('로그인 성공!');
       navigate('/');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {

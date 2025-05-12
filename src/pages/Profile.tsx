@@ -9,21 +9,14 @@ import TierChart from '@/features/profile/components/TierChart';
 import TagChart from '@/features/profile/components/TagChart';
 import StreakChart from '@/features/profile/components/StreakChart';
 
-import { useParams } from 'react-router-dom';
 import useUserProfile from '@/features/profile/hooks/useProfile';
 import { mapTierData, mapTagData } from '@/features/profile/utils/chartMapper';
 import LoadingSpinner from '@/features/profile/components/LoadingSpinner';
 import MainHeader from '@/components/MainHeader';
 
 const Profile: FC = () => {
-  const { userId } = useParams<'userId'>();
-  const numericId = userId && !Number.isNaN(+userId) ? +userId : null;
-  const { profile, loading, error } = useUserProfile(numericId);
+  const { profile, loading, error } = useUserProfile();
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  if (!userId || Number.isNaN(numericId)) {
-    return <div>잘못된 접근입니다. (userId 없음)</div>;
-  }
 
   const goToPrev = () => setCurrentIndex((i) => Math.max(i - 1, 0));
   const goToNext = (len: number) => setCurrentIndex((i) => Math.min(i + 1, len - 1));
@@ -67,6 +60,7 @@ const Profile: FC = () => {
             src={profileImg}
             alt="프로필"
             className="w-24 h-24 rounded-full border border-black absolute -top-12 left-0 z-10 bg-white"
+            draggable={false}
           />
           <button className="ml-auto px-6 py-3 bg-slate-600/50 rounded flex items-center mt-5">
             <span className="text-black text-lg">프로필 편집</span>

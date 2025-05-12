@@ -54,7 +54,7 @@ const RankingHeader: FC<Props> = ({
             <td className="w-[100px] h-[22px] py-[22px] text-center">{rank}</td>
             <td className="w-[100px] h-[22px] py-[22px] text-center">
               <div className="flex items-center justify-center space-x-2">
-                <img src={tierIconPath} className="w-5 h-5" alt={tier} />
+                <img src={tierIconPath} className="w-5 h-5" alt={tier} draggable={false} />
                 <span>{tier}</span>
               </div>
             </td>

@@ -1,6 +1,6 @@
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
-export const getUserTagStats = async (userId: number): Promise<Record<string, number>> => {
-  const response = await api.get(`users/${userId}/stats/tag`);
-  return response.data.tagStats;
+export const getUserTagStats = async (): Promise<Record<string, number>> => {
+  const response = await api.get(`/users/stats/tag`);
+  return unwrap<Record<string, number>>(response);
 };

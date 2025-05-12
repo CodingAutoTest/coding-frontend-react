@@ -12,13 +12,13 @@ import { getDifficultyText } from '@/constants/difficulty';
 const getStatusIcon = (status: number) => {
   switch (status) {
     case 0:
-      return <img src={unsolvedIcon} alt="미해결" />;
+      return <img src={unsolvedIcon} alt="미해결" draggable={false} />;
     case 1:
-      return <img src={solvingIcon} alt="해결 중" />;
+      return <img src={solvingIcon} alt="해결 중" draggable={false} />;
     case 2:
-      return <img src={solvedIcon} alt="해결 완료" />;
+      return <img src={solvedIcon} alt="해결 완료" draggable={false} />;
     default:
-      return <img src={unsolvedIcon} alt="미해결" />;
+      return <img src={unsolvedIcon} alt="미해결" draggable={false} />;
   }
 };
 
@@ -60,6 +60,7 @@ const ProblemTable: FC = () => {
     navigate(`/problems/${problemId}`);
   };
 
+  console.log('data', data);
   if (isLoading) {
     return (
       <div className="w-full h-40 flex items-center justify-center">

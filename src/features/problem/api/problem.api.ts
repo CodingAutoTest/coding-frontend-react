@@ -4,12 +4,12 @@ import { ProgrammingLanguage } from '../types/problem.type';
 
 export const fetchProblem = async (problemId: string): Promise<ProblemType> => {
   const res = await api.get(`/problems/${problemId}`);
-  return unwrap<ProblemType>(res, 'result');
+  return unwrap<ProblemType>(res);
 };
 
 export const fetchTestCases = async (problemId: string): Promise<TestCaseType[]> => {
   const res = await api.get(`/testcases/${problemId}`);
-  return unwrap<TestCaseType[]>(res, 'result');
+  return unwrap<TestCaseType[]>(res);
 };
 
 export const executeCode = async (
@@ -23,7 +23,7 @@ export const executeCode = async (
     testcase_ids: testcaseIds,
   });
 
-  return response.data.result.result.results;
+  return unwrap<{ results: ExecuteResultType[] }>(response).results;
 };
 
 export const submitCode = async (
@@ -37,11 +37,10 @@ export const submitCode = async (
     code,
   });
 
-  const result = unwrap<{ user_submission_problem_id: string }>(response, 'result');
-  return result.user_submission_problem_id;
+  return unwrap<{ user_submission_problem_id: string }>(response).user_submission_problem_id;
 };
 
 export const fetchUser = async (): Promise<UserType> => {
   const response = await api.get(`/users/nameAndImage`);
-  return unwrap<UserType>(response, 'result');
+  return unwrap<UserType>(response);
 };

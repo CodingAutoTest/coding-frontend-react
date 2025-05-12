@@ -27,7 +27,12 @@ const ErrorPage: FC = () => {
 
         {/* 이미지 영역 */}
         <div className="flex-1">
-          <img src={errorImage} alt="500 Error" className="w-full max-w-md ml-auto " />
+          <img
+            src={errorImage}
+            alt="500 Error"
+            className="w-full max-w-md ml-auto "
+            draggable={false}
+          />
         </div>
       </div>
     </main>

@@ -1,6 +1,6 @@
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
-export const getUserStreakStats = async (userId: number): Promise<Record<string, number>> => {
-  const response = await api.get(`/users/${userId}/stats/streak`);
-  return response.data.streakStats;
+export const getUserStreakStats = async (): Promise<Record<string, number>> => {
+  const response = await api.get(`/users/stats/streak`);
+  return unwrap<Record<string, number>>(response);
 };

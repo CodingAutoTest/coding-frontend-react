@@ -9,7 +9,7 @@ const ProfileButton = ({ profileImage }: ProfileButtonProps) => {
   const navigate = useNavigate();
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    navigate('/users/1/profile');
+    navigate('/profile');
   };
 
   return (

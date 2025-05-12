@@ -1,4 +1,4 @@
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
 export type MyRanking = {
   rank: number;
@@ -11,11 +11,6 @@ export type MyRanking = {
 };
 
 export const fetchMyRanking = async (): Promise<MyRanking> => {
-  const res = await api.get('/rankings/me', {
-    params: {
-      userid: 1, // ✅ 'userid'로 정확히 보내야 함!
-    },
-  });
-
-  return res.data.result.myRanking;
+  const response = await api.get('/rankings/me');
+  return unwrap<MyRanking>(response);
 };

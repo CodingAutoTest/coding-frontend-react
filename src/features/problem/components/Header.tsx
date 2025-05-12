@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
   const { user, loading } = useUserInfo();
 
   return (
-    <header className="w-full px-[20px] py-[10px] flex items-center justify-between bg-problem-BACKGROUND">
+    <header className="w-full px-[20px] py-[10px] pt-[30px] flex items-center justify-between bg-problem-BACKGROUND">
       {/* 왼쪽: 로고 + 메뉴 */}
       <div className="flex items-center gap-3">
         <img
@@ -19,12 +19,14 @@ export const Header: React.FC = () => {
           alt="logo"
           className="w-[93px] h-[33px] cursor-pointer"
           onClick={() => navigate('/')}
+          draggable={false}
         />
         <img
           src={IMAGES.ICONS.MENU}
           alt="menu"
           className="w-[24px] h-[24px] cursor-pointer"
           onClick={() => navigate('/')}
+          draggable={false}
         />
       </div>
 
@@ -46,6 +48,7 @@ export const Header: React.FC = () => {
           src={user?.profileImage || IMAGES.ICONS.PROFILE}
           alt="profile"
           className="w-[40px] h-[40px] rounded-full object-cover"
+          draggable={false}
         />
       </div>
     </header>

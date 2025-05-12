@@ -1,4 +1,4 @@
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
 export type AlgorithmTag = {
   id: number;
@@ -8,5 +8,5 @@ export type AlgorithmTag = {
 // 알고리즘 태그 조회
 export const getAlgorithmTags = async (): Promise<AlgorithmTag[]> => {
   const response = await api.get<AlgorithmTag[]>('/tags');
-  return response.data;
+  return unwrap(response);
 };

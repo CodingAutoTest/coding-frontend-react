@@ -6,9 +6,8 @@ import { SubmissionHistoryType } from '../types/submission-history.type';
 export const fetchProblemSubmissionResult = async (
   submissionId: string,
 ): Promise<SubmissionResultType> => {
-  const res = await api.get<{ result: SubmissionResultType }>(`/submissions/${submissionId}`);
-  console.log(submissionId);
-  return unwrap<SubmissionResultType>(res, 'result');
+  const response = await api.get<{ result: SubmissionResultType }>(`/submissions/${submissionId}`);
+  return unwrap<SubmissionResultType>(response);
 };
 
 export const fetchProblemSubmissionHistory = async (
@@ -17,10 +16,10 @@ export const fetchProblemSubmissionHistory = async (
   const response = await api.get<{ result: SubmissionHistoryType[] }>(
     `/submissions/history/${problemId}`,
   );
-  return unwrap<SubmissionHistoryType[]>(response, 'result');
+  return unwrap<SubmissionHistoryType[]>(response);
 };
 
 export const getSubmissionCode = async (submissionId: number) => {
   const response = await api.get<{ result: string }>(`/submissions/code/${submissionId}`);
-  return unwrap<string>(response, 'result');
+  return unwrap<string>(response);
 };
