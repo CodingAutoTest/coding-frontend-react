@@ -40,7 +40,13 @@ const ProblemDetailPage: React.FC = () => {
     };
 
     fetchInitialData();
-  }, [problemId, setSubmissionHistory]);
+
+    // cleanup 함수: 페이지를 나갈 때 코드 초기화
+    return () => {
+      setCode('');
+      setLanguage('python');
+    };
+  }, [problemId, setSubmissionHistory, setCode, setLanguage]);
 
   const handleTabChange = async (tab: TabType) => {
     if (tab === '결과' && lastViewedSubmissionId) {
