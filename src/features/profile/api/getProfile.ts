@@ -1,24 +1,24 @@
-// src/features/profile/api/get-user-profile.ts
 import { api, unwrap } from '@/lib/axios';
 
 export interface UserProfileResponse {
   name: string;
   rating: number;
   solvedCount: number;
-  profileImage: string;
+  profileImage: string; // 백엔드가 주는 순수 path
   backgroundImage: string | null;
   tierCount: Record<number, number>;
   tagCount: Record<string, number>;
   solvedCountByDate: Record<string, number>;
 }
 
-export const getUserProfile = async (userId: number) => {
-  const res = await api.get(`/user/${userId}/profile`);
-  const user = res.data.result.user as UserProfileResponse;
+/** 내 프로필 조회 – userId는 JWT 안에서 해결되므로 필요 없음 */
+export const getUserProfile = async () => {
+  // 1) 통신
+  const dto = await api.get('/users/profile').then((res) => unwrap<UserProfileResponse>(res));
 
   return {
-    ...user,
-    profileImage: user.profileImage ? `http://127.0.0.1:8080${user.profileImage}` : '',
-    backgroundImage: user.backgroundImage ? `http://127.0.0.1:8080${user.backgroundImage}` : null,
+    ...dto,
+    profileImage: dto.profileImage ? `http://127.0.0.1:8080${dto.profileImage}` : '',
+    backgroundImage: dto.backgroundImage ? `http://127.0.0.1:8080${dto.backgroundImage}` : null,
   };
 };

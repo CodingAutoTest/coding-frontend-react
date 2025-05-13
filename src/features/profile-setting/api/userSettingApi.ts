@@ -1,6 +1,6 @@
-// src/features/profile-setting/api/userSettingApi.ts
-import { api } from '@/lib/axios';
+import { api, unwrap } from '@/lib/axios';
 
+/* ───────── DTO 타입 ───────── */
 export interface ModifyProfileDto {
   name: string;
   email: string;
@@ -18,29 +18,35 @@ export interface ChangePasswordDto {
   newPassword: string;
 }
 
+/* ───────── API ───────── */
+
 /** 1) 프로필 수정 */
-export function modifyProfile(userId: number, dto: ModifyProfileDto) {
-  return api.post<void>(`/user/${userId}/modify`, dto);
+export function modifyProfile(dto: ModifyProfileDto) {
+  return api.post<void>('/users/modify', dto);
 }
 
-/** 2) 이미지 업로드 (multipart/form-data) */
-export function uploadImages(userId: number, profileImage?: File, backgroundImage?: File) {
+/** 2) 이미지 업로드 (multipart/form‑data) */
+export async function uploadImages(profileImage?: File, backgroundImage?: File) {
   const form = new FormData();
   if (profileImage) form.append('profileImage', profileImage);
   if (backgroundImage) form.append('backgroundImage', backgroundImage);
-  return api
-    .post<UploadImageResponseDto>(`/user/${userId}/upload-image`, form, {
+
+  // axios 응답 전체 타입은 any 로 두고, unwrap 으로 딱 필요한 값만 꺼낸다
+  const urls = await api
+    .post('/users/upload-image', form, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
-    .then((res) => res.data);
+    .then((res) => unwrap<UploadImageResponseDto>(res));
+
+  return urls; // {profileImageUrl : string|null, backgroundImageUrl : string|null}
 }
 
 /** 3) 비밀번호 변경 */
-export function changePassword(userId: number, dto: ChangePasswordDto) {
-  return api.post<void>(`/user/${userId}/change-password`, dto);
+export function changePassword(dto: ChangePasswordDto) {
+  return api.post<void>('/users/change-password', dto);
 }
 
-/** 4) 계정 삭제 */
-export function removeUser(userId: number) {
-  return api.post<void>(`/user/${userId}/remove`);
+/** 4) 계정 삭제  */
+export function removeUser() {
+  return api.post<void>('/users/remove');
 }
