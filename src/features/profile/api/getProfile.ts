@@ -14,5 +14,11 @@ export interface UserProfileResponse {
 
 export const getUserProfile = async (userId: number) => {
   const res = await api.get(`/user/${userId}/profile`);
-  return res.data.result.user as UserProfileResponse;
+  const user = res.data.result.user as UserProfileResponse;
+
+  return {
+    ...user,
+    profileImage: user.profileImage ? `http://127.0.0.1:8080${user.profileImage}` : '',
+    backgroundImage: user.backgroundImage ? `http://127.0.0.1:8080${user.backgroundImage}` : null,
+  };
 };

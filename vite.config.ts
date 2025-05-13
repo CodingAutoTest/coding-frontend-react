@@ -21,6 +21,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''), // 👈 실제 경로로 바꿔줌
       },
+      '/static': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        secure: false,
+      },
     },
   },
   assetsInclude: ['**/*.svg', '**/*.png'],
