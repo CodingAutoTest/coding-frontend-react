@@ -20,6 +20,7 @@ export default {
         },
         problem: {
           BACKGROUND: '#E2E2E2',
+          TAB_BAR: '#E9E9E9',
           DIVIDER: '#73808D',
           COMPONENT_HEADER: '#F4F4F4',
           FAIL: '#DF0404',

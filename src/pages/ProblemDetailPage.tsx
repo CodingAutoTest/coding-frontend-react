@@ -49,15 +49,13 @@ const ProblemDetailPage: React.FC = () => {
   }, [problemId, setSubmissionHistory, setCode, setLanguage]);
 
   const handleTabChange = async (tab: TabType) => {
-    if (tab === '결과' && lastViewedSubmissionId) {
+    if (tab === '결과' && lastViewedSubmissionId && !submissionResult) {
       try {
         const result = await fetchProblemSubmissionResult(lastViewedSubmissionId);
         setSubmissionResult(result);
       } catch (error) {
         console.error('Failed to fetch submission result:', error);
       }
-    } else if (tab === '결과' && !lastViewedSubmissionId) {
-      setSubmissionResult(null);
     }
     setActiveTab(tab);
   };
@@ -68,6 +66,8 @@ const ProblemDetailPage: React.FC = () => {
       setCode(submittedCode);
       setLastViewedSubmissionId(String(submissionId));
       setActiveTab('문제');
+      // 코드 보기를 누를 때는 결과를 초기화
+      setSubmissionResult(null);
     } catch (error) {
       console.error('Failed to fetch submission code:', error);
     }

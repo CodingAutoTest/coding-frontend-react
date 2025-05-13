@@ -20,7 +20,7 @@ export const CodeEditorBox: React.FC<CodeEditorBoxProps> = ({
   return (
     <div className="bg-light rounded-lg shadow-md flex flex-col overflow-hidden h-full">
       {/* 상단 고정 바 */}
-      <div className="px-5 py-2 bg-gray-200 rounded-t-[10px] flex justify-between items-center shrink-0">
+      <div className="px-5 py-2 bg-problem-TAB_BAR rounded-t-[10px] flex justify-between items-center shrink-0">
         <span className="text-secondary text-[15px] font-inter">코드</span>
         <div className="relative">
           <button
