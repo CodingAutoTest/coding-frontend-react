@@ -129,7 +129,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
         </thead>
         <tbody>
           {sortedSubmissions.map((submission) => (
-            <tr key={submission.id} className="border-b hover:bg-gray-50">
+            <tr key={submission.submissionId} className="border-b hover:bg-gray-50">
               <td className="py-3 px-4 text-sm font-inter text-DEFAULT text-center">
                 {submission.no}
               </td>
@@ -154,7 +154,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
               </td>
               <td className="py-3 px-4 text-center">
                 <button
-                  onClick={() => onViewCode(submission.id)}
+                  onClick={() => onViewCode(submission.submissionId)}
                   className="text-sm text-PRIMARY hover:underline"
                 >
                   보기

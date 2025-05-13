@@ -13,7 +13,7 @@ export const useCodeSubmit = () => {
     try {
       setIsSubmitting(true);
       const submissionId = await submitCode(problemId, code, language);
-      return submissionId; // 여기까지만 리턴
+      return submissionId;
     } catch (error) {
       console.error('Error submitting code:', error);
       throw error;

@@ -12,29 +12,22 @@ import {
   fetchProblemSubmissionHistory,
 } from '@/features/problem/api/problem-result.api';
 import { useTimerStore } from '@/features/problem/stores/useTimerStore';
+import { SubmissionResultType } from '@/features/problem/types/problem-result.type';
 
 const ProblemDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const problemId = Number(id);
 
   const { loading, error } = useProblemDetail(problemId);
-  const {
-    problemData,
-    testCases,
-    code,
-    language,
-    setCode,
-    setLanguage,
-    submissionResult,
-    setSubmissionResult,
-    setSubmissionHistory,
-  } = useProblemStore();
+  const { problemData, testCases, code, language, setCode, setLanguage, setSubmissionHistory } =
+    useProblemStore();
   const { stopTimer } = useTimerStore();
 
   const [selectedTestCase, setSelectedTestCase] = useState(0);
   const [isAlgorithmVisible, setIsAlgorithmVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('문제');
   const [lastViewedSubmissionId, setLastViewedSubmissionId] = useState<string | null>(null);
+  const [submissionResult, setSubmissionResult] = useState<SubmissionResultType | null>(null);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -57,6 +50,8 @@ const ProblemDetailPage: React.FC = () => {
       } catch (error) {
         console.error('Failed to fetch submission result:', error);
       }
+    } else if (tab === '결과' && !lastViewedSubmissionId) {
+      setSubmissionResult(null);
     }
     setActiveTab(tab);
   };
@@ -69,6 +64,20 @@ const ProblemDetailPage: React.FC = () => {
       setActiveTab('문제');
     } catch (error) {
       console.error('Failed to fetch submission code:', error);
+    }
+  };
+
+  const handleSubmit = async (submissionId: string) => {
+    try {
+      const result = await fetchProblemSubmissionResult(submissionId);
+      setSubmissionResult(result);
+      setActiveTab('결과');
+
+      // 제출 내역 업데이트
+      const history = await fetchProblemSubmissionHistory(problemId);
+      setSubmissionHistory(history);
+    } catch (error) {
+      console.error('Failed to fetch submission result:', error);
     }
   };
 
@@ -107,6 +116,7 @@ const ProblemDetailPage: React.FC = () => {
           problemId={problemId}
           setActiveTab={handleTabChange}
           onStopTimer={stopTimer}
+          onSubmit={handleSubmit}
         />
       </main>
     </div>

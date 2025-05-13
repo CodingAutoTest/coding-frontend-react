@@ -3,26 +3,21 @@ import { useProblemStore } from '@/features/problem/stores/useProblemStore';
 import { useCodeExecution } from '@/features/problem/hooks/useCodeExecution';
 import { useCodeSubmit } from '@/features/problem/hooks/useCodeSubmit';
 import { TestCaseType } from '@/features/problem/types/problem.type';
-import { TabType } from '@/features/problem/constants/tab.constants';
-import {
-  fetchProblemSubmissionResult,
-  fetchProblemSubmissionHistory,
-} from '@/features/problem/api/problem-result.api';
 
 type ActionButtonsProps = {
   problemId: number;
   testCases: TestCaseType[];
-  setActiveTab: (tab: TabType) => void;
   onStopTimer: () => void;
+  onSubmit: (submissionId: string) => Promise<void>;
 };
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
   problemId,
   testCases,
-  setActiveTab,
   onStopTimer,
+  onSubmit,
 }) => {
-  const { code, language, setSubmissionResult, setSubmissionHistory } = useProblemStore();
+  const { code, language } = useProblemStore();
   const { execute } = useCodeExecution();
   const { submit } = useCodeSubmit();
 
@@ -72,14 +67,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
 
     try {
       const submissionId = await submit(problemId, code, language);
-
-      const resultSummary = await fetchProblemSubmissionResult(submissionId);
-      setSubmissionResult(resultSummary);
-
-      const history = await fetchProblemSubmissionHistory(problemId);
-      setSubmissionHistory(history);
-
-      setActiveTab('결과');
+      await onSubmit(submissionId);
     } catch (error) {
       console.error('제출 오류:', error);
       openAlert('제출 중 오류가 발생했습니다.');

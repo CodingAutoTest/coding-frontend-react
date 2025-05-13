@@ -10,13 +10,14 @@ type CodeEditorSectionProps = {
   language: ProgrammingLanguage;
   code: string;
   setCode: (code: string) => void;
-  setLanguage: (language: ProgrammingLanguage) => void;
+  setLanguage: (lang: ProgrammingLanguage) => void;
   testCases: TestCaseType[];
   selectedTestCase: number;
   setSelectedTestCase: (index: number) => void;
   problemId: number;
   setActiveTab: (tab: TabType) => void;
   onStopTimer: () => void;
+  onSubmit: (submissionId: string) => Promise<void>;
 };
 
 export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
@@ -30,6 +31,7 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
   problemId,
   setActiveTab,
   onStopTimer,
+  onSubmit,
 }) => {
   const input = testCases[selectedTestCase]?.input || '';
   const output = testCases[selectedTestCase]?.output || '';
@@ -51,6 +53,7 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
             testCases={testCases}
             setActiveTab={setActiveTab}
             onStopTimer={onStopTimer}
+            onSubmit={onSubmit}
           />
         </footer>
       </div>

@@ -1,5 +1,5 @@
 export type SubmissionHistoryType = {
-  id: number;
+  submissionId: number;
   createdAt: string;
   language: string;
   executionTime: number;
