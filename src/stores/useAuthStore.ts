@@ -2,10 +2,13 @@ import { create } from 'zustand';
 
 type AuthState = {
   isLogin: boolean;
-  setIsLogin: (isLogin: boolean) => void;
+  checkToken: () => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isLogin: true,
-  setIsLogin: (isLogin) => set({ isLogin }),
+  isLogin: false,
+  checkToken: () => {
+    const token = localStorage.getItem('token');
+    set({ isLogin: !!token });
+  },
 }));

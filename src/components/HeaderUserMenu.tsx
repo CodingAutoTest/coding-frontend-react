@@ -1,27 +1,39 @@
 import HeaderNavButton from './HeaderNavButton';
 import HeaderProfileButton from './ProfileButton';
 import { useNavigate } from 'react-router-dom';
-type HeaderUserMenuProps = {
-  isLogin: boolean; // 로그인 여부
-};
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useEffect } from 'react';
 
-const HeaderUserMenu = ({ isLogin }: HeaderUserMenuProps) => {
+const HeaderUserMenu = () => {
   const profileImage = '';
   // 값이 null, undefined, ''(빈 문자열), 0, false 등의 falsy한 값일 경우 기본 이미지 사용
   // API 사용 시 제거(Test 용 이미지)
   const navigate = useNavigate();
+  const isLogin = useAuthStore((state) => state.isLogin);
+  const checkToken = useAuthStore((state) => state.checkToken);
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    checkToken();
+    navigate('/');
+  };
+
   return (
     <div className="left-[76.39%] h-full whitespace-nowrap my-auto absolute inline-flex justify-start items-center gap-[41px]">
       <HeaderNavButton
         text="프리미엄"
         color="text-[#FFC130]"
         onClick={() => {
-          navigate('/premiums');
+          navigate('/premium');
         }}
       />
       {isLogin ? (
         <>
-          <HeaderNavButton text="로그아웃" color="text-DEFAULT" onClick={() => {}} />
+          <HeaderNavButton text="로그아웃" color="text-DEFAULT" onClick={handleLogout} />
           <HeaderProfileButton profileImage={profileImage} />
         </>
       ) : (

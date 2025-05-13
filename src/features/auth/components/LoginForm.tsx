@@ -6,10 +6,12 @@ import SingleCheckbox from './SingleCheckbox';
 import { useAgreementStore } from '../stores/useAgreementStore';
 import { login } from '../api/getAuth';
 import axios from 'axios';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export function LoginForm() {
   const { marketing, toggleMarketing } = useAgreementStore();
   const navigate = useNavigate();
+  const checkToken = useAuthStore((state) => state.checkToken);
 
   const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
@@ -23,6 +25,7 @@ export function LoginForm() {
 
     try {
       await login({ email, pw });
+      checkToken();
       navigate('/');
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {
