@@ -12,7 +12,13 @@ export interface UserProfileResponse {
   solvedCountByDate: Record<string, number>;
 }
 
-export const getUserProfile = async () => {
-  const response = await api.get(`/users/profile`);
-  return unwrap<UserProfileResponse>(response);
+export const getUserProfile = async (userId: number) => {
+  const res = await api.get(`/user/${userId}/profile`);
+  const user = res.data.result.user as UserProfileResponse;
+
+  return {
+    ...user,
+    profileImage: user.profileImage ? `http://127.0.0.1:8080${user.profileImage}` : '',
+    backgroundImage: user.backgroundImage ? `http://127.0.0.1:8080${user.backgroundImage}` : null,
+  };
 };

@@ -10,6 +10,7 @@ import ProblemDetailPage from './pages/ProblemDetailPage';
 import ProfilePage from './pages/Profile';
 import LoginPage from './features/auth/pages/LoginPage';
 import SignupPage from './features/auth/pages/SignupPage';
+import ProfileSetting from './pages/ProfileSetting'; // ✅ 프로필 설정 페이지
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path="/problems/:id" element={<ProblemDetailPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/:userId/profile-setting" element={<ProfileSetting />} />
     </Routes>
   );
 }
