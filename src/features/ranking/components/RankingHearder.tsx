@@ -40,7 +40,7 @@ const RankingHeader: FC<Props> = ({
 
       <table className="w-full text-center">
         <thead>
-          <tr className="text-base text-DEFAULT font-medium font-nunito-sans border-b border-divider-DEFAULT">
+          <tr className="text-base text-DEFAULT font-normal font-nunito-sans border-b border-divider-DEFAULT">
             <th className="w-[100px] h-[22px] pb-[22px]">순위</th>
             <th className="w-[100px] h-[22px] pb-[22px]">티어</th>
             <th className="w-[751px] pl-[100px] text-left pb-[22px]">닉네임</th>
@@ -54,7 +54,7 @@ const RankingHeader: FC<Props> = ({
             <td className="w-[100px] h-[22px] py-[22px] text-center">{rank}</td>
             <td className="w-[100px] h-[22px] py-[22px] text-center">
               <div className="flex items-center justify-center space-x-2">
-                <img src={tierIconPath} className="w-5 h-5" alt={tier} draggable={false} />
+                <img src={tierIconPath} className="w-5 h-5" alt={tier} />
                 <span>{tier}</span>
               </div>
             </td>

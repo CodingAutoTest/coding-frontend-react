@@ -37,7 +37,6 @@ const ConfirmPaymentModal: FC<Props> = ({ onClose }) => {
             amount: rsp.paid_amount,
             payMethod: rsp.pay_method,
             status: rsp.status,
-            userId: 85, // TODO: 현재 로그인한 사용자 ID로 교체
             planId: 1, // TODO: 실제 프리미엄 요금제 ID
           });
           alert('✅ 결제 성공 및 서버 전송 완료!');
