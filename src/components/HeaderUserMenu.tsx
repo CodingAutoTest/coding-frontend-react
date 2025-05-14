@@ -20,6 +20,7 @@ const HeaderUserMenu = () => {
     localStorage.removeItem('token');
     checkToken();
     navigate('/');
+    window.location.reload();
   };
 
   return (
