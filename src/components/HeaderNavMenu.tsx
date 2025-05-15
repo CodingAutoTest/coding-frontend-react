@@ -10,6 +10,7 @@ const HeaderNavMenu = () => {
         color="text-DEFAULT"
         onClick={() => {
           navigate('/problems');
+          window.location.reload();
         }}
       />
       <HeaderNavButton text="클래스" color="text-DISABLED" disabled />
@@ -18,6 +19,7 @@ const HeaderNavMenu = () => {
         color="text-DEFAULT"
         onClick={() => {
           navigate('/rankings');
+          window.location.reload();
         }}
       />
       <HeaderNavButton text="실전테스트" color="text-DISABLED" disabled />

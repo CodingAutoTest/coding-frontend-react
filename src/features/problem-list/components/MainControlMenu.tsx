@@ -12,7 +12,7 @@ const MainControlMenu = () => {
   return (
     <div className="flex justify-between items-center gap-[20px]">
       <MainFilterMenu />
-      <SearchBar placeholder="문제 검색" onSearch={handleSearch} />
+      <SearchBar placeholder="문제 검색" onSearch={handleSearch} debounceTime={300} />
     </div>
   );
 };

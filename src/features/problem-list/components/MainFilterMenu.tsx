@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, useRef } from 'react';
 import MainButton from './MainButton';
 import Dropdown from './Dropdown';
 import AlgorithmPopup from './AlgorithmPopup';
@@ -26,6 +26,9 @@ const MainFilterMenu: FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const isLogin = useAuthStore((state) => state.isLogin);
+
+  const problemStatusButtonRef = useRef<HTMLButtonElement>(null);
+  const difficultyButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const fetchAlgorithmTags = async () => {
@@ -80,6 +83,7 @@ const MainFilterMenu: FC = () => {
     <div className="relative flex items-center gap-[21px]" role="radiogroup">
       <div className="relative">
         <MainButton
+          ref={problemStatusButtonRef}
           text="문제 상태"
           icon
           disabled={!isLogin}
@@ -97,10 +101,13 @@ const MainFilterMenu: FC = () => {
               setSelectedProblemStatus(value);
             }
           }}
+          onClose={() => handleButtonSelect('problemStatus')}
+          buttonRef={problemStatusButtonRef as React.RefObject<HTMLElement>}
         />
       </div>
       <div className="relative">
         <MainButton
+          ref={difficultyButtonRef}
           text="난이도"
           icon
           isSelected={isDifficultyOpen}
@@ -111,6 +118,8 @@ const MainFilterMenu: FC = () => {
           options={difficultyOptions}
           selectedValue={selectedDifficulty}
           onChange={setSelectedDifficulty}
+          onClose={() => handleButtonSelect('difficulty')}
+          buttonRef={difficultyButtonRef as React.RefObject<HTMLElement>}
         />
       </div>
       <div className="relative">

@@ -1,24 +1,33 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import searchIcon from '@/assets/problem-list/search-icon.svg';
 
 type SearchBarProps = {
   placeholder: string;
+  onSearch: (value: string) => void;
   icon?: boolean;
   width?: string;
-  onSearch?: (value: string) => void;
+  debounceTime?: number;
 };
 
-const SearchBar = ({ placeholder, onSearch, icon = true, width = '407px' }: SearchBarProps) => {
+const SearchBar = ({
+  placeholder,
+  onSearch,
+  icon = true,
+  width = '407px',
+  debounceTime = 300,
+}: SearchBarProps) => {
   const [searchValue, setSearchValue] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onSearch(searchValue);
+    }, debounceTime);
+
+    return () => clearTimeout(timer);
+  }, [searchValue, onSearch, debounceTime]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && onSearch) {
-      onSearch(searchValue);
-    }
   };
 
   return (
@@ -32,7 +41,6 @@ const SearchBar = ({ placeholder, onSearch, icon = true, width = '407px' }: Sear
         value={searchValue}
         onChange={handleChange}
         draggable={false}
-        onKeyPress={handleKeyPress}
         placeholder={placeholder}
         className="w-full bg-transparent text-DEFAULT text-sm font-normal font-nunito-sans focus:outline-none"
       />
