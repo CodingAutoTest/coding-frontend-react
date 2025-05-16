@@ -3,12 +3,21 @@ import { fetchUser } from '../api/problem.api';
 import { UserType } from '../types/problem.api.type';
 
 export const useUserInfo = () => {
-  const [user, setUser] = useState<UserType | null>(null);
+  const [user, setUser] = useState<UserType | null>({
+    name: '익명',
+    profileImage: '',
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const userInfo = await fetchUser();
         setUser(userInfo);

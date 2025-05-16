@@ -6,10 +6,17 @@ export const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = token;
+  // 문제 데이터와 테스트 케이스를 가져오는 API는 토큰 체크 제외
+  if (config.url?.includes('/problems/') || config.url?.includes('/testcases/')) {
+    return config;
   }
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    // 토큰이 없으면 API 요청을 중단
+    return Promise.reject(new Error('No token available'));
+  }
+  config.headers.Authorization = token;
   return config;
 });
 

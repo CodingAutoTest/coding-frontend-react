@@ -14,6 +14,8 @@ import graphIcon from '@/assets/problem_result_icons/graph.svg';
 import resultIcon from '@/assets/problem_result_icons/result.svg';
 import testcaseIcon from '@/assets/problem_result_icons/testcase.svg';
 import infoIcon from '@/assets/problem_result_icons/info.svg';
+import lockIcon from '@/assets/problem_result_icons/lock.svg';
+
 export const IMAGES = {
   LOGO: {
     DEFAULT: problemLogo,
@@ -32,6 +34,7 @@ export const IMAGES = {
     RESULT: resultIcon,
     TESTCASE: testcaseIcon,
     INFO: infoIcon,
+    LOCK: lockIcon,
   },
   TIER_ICONS: {
     BRONZE: bronzeIcon,

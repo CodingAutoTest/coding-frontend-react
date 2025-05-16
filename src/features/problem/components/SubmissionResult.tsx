@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { SubmissionResultType } from '../types/problem-result.type';
 import { IMAGES } from '@/constants/images';
 import { ScoreCard } from './ScoreCard';
+import { useUserInfo } from '../hooks/useUserInfo';
 
 type SubmissionResultProps = {
   resultSummary?: SubmissionResultType | null;
 };
 
 export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummary }) => {
+  const { user } = useUserInfo();
+  const isAnonymous = !user || user.name === '익명';
   const [showCelebration, setShowCelebration] = useState(false);
   const [audio] = useState<HTMLAudioElement | null>(
     typeof Audio !== 'undefined' ? new Audio('/assets/sound/congrats.wav') : null,
@@ -122,7 +125,20 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
       {/* AI 피드백 */}
       <div className="bg-white p-6 rounded-2xl shadow-md w-full">
         <div className="text-lg font-inter mb-4">AI 피드백</div>
-        {isEmpty ? (
+        {isAnonymous ? (
+          <div className="text-gray-500 text-base text-center py-8 font-inter">
+            AI 피드백은 로그인 후 확인할 수 있습니다.
+            <br />
+            <button
+              type="button"
+              className="text-PRIMARY font-bold bg-transparent border-none p-0 m-0 align-baseline underline"
+              style={{ font: 'font-inter', cursor: 'pointer' }}
+              onClick={() => (window.location.href = '/login')}
+            >
+              로그인 하러 가기
+            </button>
+          </div>
+        ) : isEmpty ? (
           <div className="text-gray-500 text-base">제출을 하고 결과를 받아보세요!</div>
         ) : (
           <>

@@ -3,6 +3,8 @@ import { useProblemStore } from '@/features/problem/stores/useProblemStore';
 import { useCodeExecution } from '@/features/problem/hooks/useCodeExecution';
 import { useCodeSubmit } from '@/features/problem/hooks/useCodeSubmit';
 import { TestCaseType } from '@/features/problem/types/problem.type';
+import { IMAGES } from '@/constants/images';
+import { LoginModal } from '@/components/LoginModal';
 
 type ActionButtonsProps = {
   problemId: number;
@@ -25,6 +27,10 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [modalType, setModalType] = useState<'loading' | 'result' | 'alert' | null>(null);
   const [modalMessage, setModalMessage] = useState('');
+  const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const token = localStorage.getItem('token');
+  const isAnonymous = !token;
 
   const openAlert = (message: string) => {
     setModalMessage(message);
@@ -32,6 +38,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   };
 
   const handleExecute = async () => {
+    if (isAnonymous) {
+      setShowLoginModal(true);
+      return;
+    }
+
     if (!code.trim()) return openAlert('코드를 먼저 작성해주세요.');
     if (!testCases.length) return openAlert('테스트 케이스가 없습니다.');
 
@@ -58,6 +69,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   };
 
   const handleSubmit = async () => {
+    if (isAnonymous) {
+      setShowLoginModal(true);
+      return;
+    }
+
     if (!code.trim()) return openAlert('코드를 먼저 작성해주세요.');
 
     console.log('제출 버튼 클릭 - 타이머 정지');
@@ -80,46 +96,81 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   return (
     <>
       {/* 버튼 */}
-      <div className="flex justify-end gap-4 p-5">
+      <div className="flex justify-end gap-4 p-5 relative">
         <button
           onClick={handleExecute}
           disabled={isExecuting || isSubmitting}
-          className="px-8 py-2 rounded-lg bg-WHITE text-DEFAULT hover:bg-WHITE/90 disabled:cursor-not-allowed"
+          className="px-8 py-2 rounded-lg bg-WHITE text-DEFAULT hover:bg-WHITE/90 disabled:cursor-not-allowed relative group cursor-pointer"
         >
           {isExecuting ? '실행 중...' : '실행'}
+          {isAnonymous && (
+            <div className="absolute inset-0 flex items-center justify-center bg-white/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+              <img
+                src={IMAGES.PROBLEM_RESULT.LOCK}
+                alt="lock"
+                className="w-4 h-4"
+                draggable={false}
+              />
+            </div>
+          )}
         </button>
         <button
           onClick={handleSubmit}
           disabled={isExecuting || isSubmitting}
-          className="px-8 py-2 rounded-lg bg-PRIMARY text-WHITE hover:bg-PRIMARY/90 disabled:cursor-not-allowed"
+          className="px-8 py-2 rounded-lg bg-PRIMARY text-WHITE hover:bg-PRIMARY/90 disabled:cursor-not-allowed relative group cursor-pointer"
         >
           {isSubmitting ? '제출 중...' : '제출'}
+          {isAnonymous && (
+            <div className="absolute inset-0 flex items-center justify-center bg-PRIMARY/50 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+              <img
+                src={IMAGES.PROBLEM_RESULT.LOCK}
+                alt="lock"
+                className="w-4 h-4"
+                draggable={false}
+              />
+            </div>
+          )}
         </button>
       </div>
 
       {/* 모달 */}
-      {modalType && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-          <div className="w-[400px] p-8 bg-white rounded-2xl shadow-2xl text-center flex flex-col items-center gap-6">
-            {modalType === 'loading' ? (
-              <>
-                <div className="w-12 h-12 border-4 border-gray-300 border-t-PRIMARY rounded-full animate-spin" />
-                <p className="text-xl font-inter text-gray-800">처리 중입니다...</p>
-              </>
-            ) : (
-              <>
-                <p className="text-xl font-inter text-gray-800">{modalMessage}</p>
-                <button
-                  onClick={() => setModalType(null)}
-                  className="mt-2 px-6 py-3 bg-PRIMARY text-WHITE text-lg rounded-xl hover:bg-PRIMARY/90 transition"
-                >
-                  확인
-                </button>
-              </>
-            )}
+      {modalType === 'loading' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-PRIMARY"></div>
           </div>
         </div>
       )}
+
+      {modalType === 'result' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg">
+            <p className="text-DEFAULT">{modalMessage}</p>
+            <button
+              onClick={() => setModalType(null)}
+              className="mt-4 px-4 py-2 bg-PRIMARY text-white rounded-lg cursor-pointer"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
+
+      {modalType === 'alert' && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg">
+            <p className="text-DEFAULT">{modalMessage}</p>
+            <button
+              onClick={() => setModalType(null)}
+              className="mt-4 px-4 py-2 bg-PRIMARY text-white rounded-lg cursor-pointer"
+            >
+              확인
+            </button>
+          </div>
+        </div>
+      )}
+
+      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
     </>
   );
 };

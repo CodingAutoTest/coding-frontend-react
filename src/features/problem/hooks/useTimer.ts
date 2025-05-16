@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useTimerStore } from '../stores/useTimerStore';
 
 type UseTimerReturnType = {
@@ -12,19 +12,34 @@ type UseTimerReturnType = {
 
 export const useTimer = (): UseTimerReturnType => {
   const { time, isRunning, startTimer, stopTimer, resetTimer, setTime } = useTimerStore();
+  const startTimeRef = useRef<number>(0);
+  const lastTimeRef = useRef<number>(0);
 
   useEffect(() => {
-    let intervalId: number | null = null;
+    let animationFrameId: number;
+
+    const updateTimer = (currentTime: number) => {
+      if (!startTimeRef.current) {
+        startTimeRef.current = currentTime;
+        lastTimeRef.current = currentTime;
+      }
+
+      const delta = currentTime - lastTimeRef.current;
+      lastTimeRef.current = currentTime;
+
+      if (isRunning) {
+        setTime(time + delta);
+        animationFrameId = requestAnimationFrame(updateTimer);
+      }
+    };
 
     if (isRunning) {
-      intervalId = window.setInterval(() => {
-        setTime(time + 10);
-      }, 10);
+      animationFrameId = requestAnimationFrame(updateTimer);
     }
 
     return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
     };
   }, [isRunning, time, setTime]);

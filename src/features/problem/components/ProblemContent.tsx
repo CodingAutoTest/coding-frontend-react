@@ -17,6 +17,7 @@ type ProblemSectionProps = {
   setIsAlgorithmVisible: (visible: boolean) => void;
   submissionResult?: SubmissionResultType | null;
   onViewSubmissionCode: (submissionId: number) => void;
+  isAnonymous: boolean;
 };
 
 export const ProblemSection: React.FC<ProblemSectionProps> = ({
@@ -27,6 +28,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
   setIsAlgorithmVisible,
   submissionResult,
   onViewSubmissionCode,
+  isAnonymous,
 }) => {
   const { submissionHistory } = useProblemStore();
 
@@ -61,10 +63,25 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
 
           {activeTab === '제출내역' && (
             <div className="w-full h-full">
-              <SubmissionHistory
-                submissions={submissionHistory || []}
-                onViewCode={onViewSubmissionCode}
-              />
+              {isAnonymous ? (
+                <div className="text-gray-500 text-base text-center py-[200px] font-inter">
+                  제출 내역은 로그인 후 확인할 수 있습니다.
+                  <br />
+                  <button
+                    type="button"
+                    className="text-PRIMARY font-bold bg-transparent border-none p-0 m-0 align-baseline underline"
+                    style={{ font: 'font-inter', cursor: 'pointer' }}
+                    onClick={() => (window.location.href = '/login')}
+                  >
+                    로그인 하러 가기
+                  </button>
+                </div>
+              ) : (
+                <SubmissionHistory
+                  submissions={submissionHistory || []}
+                  onViewCode={onViewSubmissionCode}
+                />
+              )}
             </div>
           )}
         </div>
