@@ -49,7 +49,9 @@ export function SignupForm() {
     setRePassword(value);
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     if (!email || !pw || !rePassword || !name) return;
     if (!terms || !privacy) {
       setError('필수 항목에 동의해주세요.');
@@ -77,7 +79,7 @@ export function SignupForm() {
 
   return (
     <div className="w-[49%] ml-auto bg-white rounded-l-3xl shadow-2xl flex items-center justify-center px-12 py-16">
-      <div className="w-full max-w-md flex flex-col gap-6 text-base">
+      <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-6 text-base">
         <h2 className="text-3xl font-bold text-center">CAT 회원가입</h2>
 
         <div className="flex flex-col gap-4">
@@ -139,7 +141,7 @@ export function SignupForm() {
         </div>
 
         <button
-          onClick={handleSubmit}
+          type="submit"
           disabled={loading}
           className="w-full bg-[#6D89F6] text-white py-3 rounded-md hover:bg-[#5c75e4] transition text-lg disabled:opacity-50"
         >
@@ -147,7 +149,7 @@ export function SignupForm() {
         </button>
 
         {error && <p className="text-sm text-red-500 text-center mt-2">{error}</p>}
-      </div>
+      </form>
     </div>
   );
 }

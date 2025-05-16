@@ -36,9 +36,14 @@ export function LoginForm() {
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleLogin();
+  };
+
   return (
     <div className="w-[49%] ml-auto bg-white rounded-l-3xl shadow-2xl flex items-center justify-center px-12">
-      <div className="w-full max-w-md flex flex-col gap-10 text-base">
+      <form onSubmit={handleSubmit} className="w-full max-w-md flex flex-col gap-10 text-base">
         <h2 className="text-3xl font-bold text-center">CAT 로그인</h2>
 
         <div className="flex flex-col gap-5">
@@ -62,7 +67,7 @@ export function LoginForm() {
         </div>
 
         <button
-          onClick={handleLogin}
+          type="submit"
           className="w-full bg-[#6D89F6] text-white py-3 rounded-md hover:bg-[#5c75e4] transition text-base"
         >
           로그인
@@ -80,7 +85,7 @@ export function LoginForm() {
             회원가입
           </Link>
         </div>
-      </div>
+      </form>
     </div>
   );
 }
