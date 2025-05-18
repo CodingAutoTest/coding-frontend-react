@@ -65,7 +65,7 @@ const AlgorithmPopup = ({
       onClick={handleOverlayClick}
     >
       <div
-        className="relative flex flex-col items-center justify-start w-[521px] h-auto gap-5 px-6 py-5 bg-white rounded-[26px] shadow-[0px_13px_61px_0px_rgba(169,169,169,0.37)]"
+        className="relative flex flex-col items-center justify-start w-[523px] h-auto gap-5 px-6 py-5 bg-white rounded-[26px] shadow-[0px_13px_61px_0px_rgba(169,169,169,0.37)]"
         onClick={handlePopupClick}
       >
         <header className="inline-flex items-center justify-between w-full">

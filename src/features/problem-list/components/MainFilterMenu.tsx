@@ -6,6 +6,7 @@ import TagButton from './TagButton';
 import { useFilterStore } from '../stores/useFilterStore';
 import { getAlgorithmTags } from '../api/tag-api';
 import { useAuthStore } from '@/stores/useAuthStore';
+import { ResetButton } from './ResetButton';
 
 const MainFilterMenu: FC = () => {
   const {
@@ -62,8 +63,8 @@ const MainFilterMenu: FC = () => {
 
   const problemStatusOptions = [
     { text: '미해결', value: 'unsolved' },
-    { text: '해결 중', value: 'solving' },
-    { text: '해결 완료', value: 'solved' },
+    { text: '해결중', value: 'solving' },
+    { text: '해결완료', value: 'solved' },
   ];
 
   const difficultyOptions = [
@@ -139,6 +140,7 @@ const MainFilterMenu: FC = () => {
           onSearch={setSearchQuery}
         />
       </div>
+      <ResetButton />
       {appliedAlgorithm !== 0 && (
         <TagButton
           text={algorithmOptions.find((option) => option.value === appliedAlgorithm)?.text || ''}

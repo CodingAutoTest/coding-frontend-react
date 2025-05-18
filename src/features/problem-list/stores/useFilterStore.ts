@@ -15,6 +15,7 @@ type FilterMenuState = {
   setSearch: (search: string) => void;
   handleButtonSelect: (buttonId: string) => void;
   handleAlgorithmClose: () => void;
+  resetFilters: () => void;
 };
 
 export const useFilterStore = create<FilterMenuState>((set) => ({
@@ -47,4 +48,14 @@ export const useFilterStore = create<FilterMenuState>((set) => ({
       selectedButton: '',
       selectedAlgorithm: state.appliedAlgorithm,
     })),
+
+  resetFilters: () =>
+    set({
+      selectedButton: '',
+      selectedProblemStatus: '',
+      selectedDifficulty: '',
+      selectedAlgorithm: 0,
+      appliedAlgorithm: 0,
+      search: '',
+    }),
 }));
