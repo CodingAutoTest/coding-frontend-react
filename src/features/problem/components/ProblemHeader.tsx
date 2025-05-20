@@ -63,11 +63,11 @@ export const ProblemHeader: React.FC<ProblemHeaderProps> = ({
       </div>
 
       {isAlgorithmVisible && (
-        <div className="flex flex-wrap gap-2 w-full">
+        <div className="flex flex-wrap w-full">
           {tags.map((tag, index) => (
             <span
               key={index}
-              className="bg-gray-200 text-secondary px-3 py-1 rounded-full text-sm mr-2"
+              className="bg-gray-200 text-secondary px-2 py-1 rounded-full text-sm mr-2"
             >
               {tag}
             </span>

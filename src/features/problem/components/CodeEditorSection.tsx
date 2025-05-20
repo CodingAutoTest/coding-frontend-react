@@ -37,8 +37,8 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
   const output = testCases[selectedTestCase]?.output || '';
 
   return (
-    <section className="w-full lg:w-1/2 flex flex-col gap-[20px]">
-      <div className="flex-1 min-h-0 bg-problem-COMPONENT_HEADER rounded-[10px] flex flex-col overflow-hidden">
+    <section className="w-1/2 h-full flex flex-col gap-[20px]">
+      <div className="h-1/2 bg-problem-COMPONENT_HEADER rounded-[10px] flex flex-col overflow-hidden">
         <div className="flex-1 overflow-hidden">
           <CodeEditorBox
             language={language}
@@ -47,7 +47,7 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
             onLanguageChange={setLanguage}
           />
         </div>
-        <footer className="bg-[#E9E9E9] rounded-b-[10px] shrink-0">
+        <footer className="bg-[#E9E9E9] rounded-b-[10px]">
           <ActionButtons
             problemId={problemId}
             testCases={testCases}
@@ -58,7 +58,7 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
         </footer>
       </div>
 
-      <div className="flex-1 min-h-0 flex flex-col">
+      <div className="h-1/2 flex flex-col">
         <TestCaseSection
           testCases={testCases}
           selectedTestCase={selectedTestCase}

@@ -10,16 +10,14 @@ type TimerProps = {
 
 export const Timer: FC<TimerProps> = ({ formattedTime, isRunning, onStart, onStop, onReset }) => {
   return (
-    <div className="flex items-center px-4 py-2 w-full justify-center">
-      {/* 시간 표시 - 고정된 너비 설정 */}
-      <div className="w-[180px] text-center">
+    <div className="flex items-center justify-center gap-[10px]">
+      <div className="text-center">
         <span className="text-DEFAULT text-[36px] font-semibold font-inter tabular-nums">
           {formattedTime}
         </span>
       </div>
 
-      {/* 버튼 영역 */}
-      <div className="flex gap-2 ml-6">
+      <div className="flex gap-2">
         {!isRunning ? (
           <button
             onClick={onStart}

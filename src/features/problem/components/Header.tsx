@@ -23,7 +23,7 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <header className="w-full px-[20px] py-[10px] pt-[30px] flex items-center justify-between bg-problem-BACKGROUND">
+      <header className="w-full h-[80px] px-[38px] flex items-center justify-between bg-problem-BACKGROUND">
         {/* 왼쪽: 로고 + 메뉴 */}
         <div className="flex items-center gap-3">
           <img

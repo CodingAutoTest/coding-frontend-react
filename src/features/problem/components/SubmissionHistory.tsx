@@ -7,7 +7,6 @@ type SubmissionHistoryProps = {
 };
 
 type SortKey = 'no' | 'createdAt' | 'language' | 'executionTime' | 'memoryUsed' | 'status';
-
 type SortOrder = 'asc' | 'desc';
 
 export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
@@ -17,7 +16,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
   const [sortKey, setSortKey] = useState<SortKey>('no');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
-  if (!submissions || submissions.length === 0) {
+  if (!submissions?.length) {
     return (
       <div className="w-full h-full flex items-center justify-center">
         <p className="text-secondary">제출 내역이 없습니다.</p>
@@ -25,10 +24,7 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
     );
   }
 
-  const formatMemory = (memoryInKB: number) => {
-    const memoryInMB = Math.floor(memoryInKB / 1024);
-    return `${memoryInMB}MB`;
-  };
+  const formatMemory = (memoryInKB: number) => `${Math.floor(memoryInKB / 1024)}MB`;
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -39,120 +35,84 @@ export const SubmissionHistory: React.FC<SubmissionHistoryProps> = ({
     }
   };
 
-  // 초기 번호 부여 (가장 최근 제출이 가장 큰 번호)
   const submissionsWithNo = submissions.map((submission, index) => ({
     ...submission,
     no: submissions.length - index,
   }));
 
   const sortedSubmissions = [...submissionsWithNo].sort((a, b) => {
-    let aValue: number | string;
-    let bValue: number | string;
+    const getValue = (submission: typeof a) => {
+      switch (sortKey) {
+        case 'no':
+          return submission.no;
+        case 'createdAt':
+          return new Date(submission.createdAt).getTime();
+        case 'language':
+          return submission.language;
+        case 'executionTime':
+          return submission.executionTime;
+        case 'memoryUsed':
+          return submission.memoryUsed;
+        case 'status':
+          return submission.status ? 1 : 0;
+        default:
+          return '';
+      }
+    };
 
-    // 주 정렬 기준
-    if (sortKey === 'no') {
-      aValue = a.no;
-      bValue = b.no;
-    } else if (sortKey === 'createdAt') {
-      aValue = new Date(a.createdAt).getTime();
-      bValue = new Date(b.createdAt).getTime();
-    } else if (sortKey === 'language') {
-      aValue = a.language;
-      bValue = b.language;
-    } else if (sortKey === 'executionTime') {
-      aValue = a.executionTime;
-      bValue = b.executionTime;
-    } else if (sortKey === 'memoryUsed') {
-      aValue = a.memoryUsed;
-      bValue = b.memoryUsed;
-    } else if (sortKey === 'status') {
-      aValue = a.status ? 1 : 0;
-      bValue = b.status ? 1 : 0;
-    } else {
-      aValue = '';
-      bValue = '';
-    }
+    const aValue = getValue(a);
+    const bValue = getValue(b);
 
-    // 주 정렬 기준으로 비교
     if (aValue !== bValue) {
-      if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+      return sortOrder === 'asc' ? (aValue < bValue ? -1 : 1) : aValue < bValue ? 1 : -1;
     }
 
-    // 값이 같은 경우 No로 보조 정렬 (항상 오름차순)
     return a.no - b.no;
   });
+
+  const commonCellClass = 'py-3 px-4 text-sm font-inter text-DEFAULT text-center';
+  const commonHeaderClass = 'py-4 px-4 text-sm font-inter text-DEFAULT cursor-pointer';
 
   return (
     <div className="w-full h-full">
       <table className="w-full">
         <thead>
           <tr className="bg-white border-b">
-            <th
-              className="py-4 px-4 text-center text-sm font-inter text-DEFAULT cursor-pointer"
-              onClick={() => handleSort('no')}
-            >
+            <th className={commonHeaderClass} onClick={() => handleSort('no')}>
               No
             </th>
-            <th
-              className="py-4 px-4 text-center text-sm font-inter text-DEFAULT cursor-pointer"
-              onClick={() => handleSort('createdAt')}
-            >
+            <th className={commonHeaderClass} onClick={() => handleSort('createdAt')}>
               날짜
             </th>
-            <th
-              className="py-4 px-4 text-center text-sm font-inter text-DEFAULT cursor-pointer"
-              onClick={() => handleSort('language')}
-            >
+            <th className={commonHeaderClass} onClick={() => handleSort('language')}>
               언어
             </th>
-            <th
-              className="py-4 px-4 text-center text-sm font-inter text-DEFAULT cursor-pointer"
-              onClick={() => handleSort('executionTime')}
-            >
+            <th className={commonHeaderClass} onClick={() => handleSort('executionTime')}>
               시간
             </th>
-            <th
-              className="py-4 px-4 text-center text-sm font-inter text-DEFAULT cursor-pointer"
-              onClick={() => handleSort('memoryUsed')}
-            >
+            <th className={commonHeaderClass} onClick={() => handleSort('memoryUsed')}>
               메모리
             </th>
-            <th
-              className="py-4 px-4 text-center text-sm font-inter text-DEFAULT cursor-pointer"
-              onClick={() => handleSort('status')}
-            >
+            <th className={commonHeaderClass} onClick={() => handleSort('status')}>
               결과
             </th>
-            <th className="py-4 px-4 text-center text-sm font-inter text-DEFAULT">코드</th>
+            <th className={commonHeaderClass}>코드</th>
           </tr>
         </thead>
         <tbody>
           {sortedSubmissions.map((submission) => (
             <tr key={submission.submissionId} className="border-b hover:bg-gray-50">
-              <td className="py-3 px-4 text-sm font-inter text-DEFAULT text-center">
-                {submission.no}
-              </td>
-              <td className="py-3 px-4 text-sm font-inter text-DEFAULT text-center">
-                {submission.createdAt}
-              </td>
-              <td className="py-3 px-4 text-sm font-inter text-DEFAULT text-center">
-                {submission.language}
-              </td>
-              <td className="py-3 px-4 text-sm font-inter text-DEFAULT text-center">
-                {submission.executionTime}ms
-              </td>
-              <td className="py-3 px-4 text-sm font-inter text-DEFAULT text-center">
-                {formatMemory(submission.memoryUsed)}
-              </td>
-              <td className="py-3 px-4 text-sm text-center">
-                <span
-                  className={`${submission.status ? 'text-problem-SUCCESS' : 'text-problem-FAIL'}`}
-                >
+              <td className={commonCellClass}>{submission.no}</td>
+              <td className={commonCellClass}>{submission.createdAt}</td>
+              <td className={commonCellClass}>{submission.language}</td>
+              <td className={commonCellClass}>{submission.executionTime}ms</td>
+              <td className={commonCellClass}>{formatMemory(submission.memoryUsed)}</td>
+              <td className={commonCellClass}>
+                <span className={submission.status ? 'text-problem-SUCCESS' : 'text-problem-FAIL'}>
                   {submission.status ? '성공' : '실패'}
                 </span>
               </td>
-              <td className="py-3 px-4 text-center">
+              <td className={commonCellClass}>
                 <button
                   onClick={() => onViewCode(submission.submissionId)}
                   className="text-sm text-PRIMARY hover:underline"

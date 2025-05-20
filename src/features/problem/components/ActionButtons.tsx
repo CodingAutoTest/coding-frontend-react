@@ -5,10 +5,12 @@ import { useCodeSubmit } from '@/features/problem/hooks/useCodeSubmit';
 import { TestCaseType } from '@/features/problem/types/problem.type';
 import { IMAGES } from '@/constants/images';
 import { LoginModal } from '@/components/LoginModal';
+import { TabType } from '../constants/tab.constants';
 
 type ActionButtonsProps = {
   problemId: number;
   testCases: TestCaseType[];
+  setActiveTab: (tab: TabType) => void;
   onStopTimer: () => void;
   onSubmit: (submissionId: string) => Promise<void>;
 };
@@ -96,11 +98,11 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   return (
     <>
       {/* 버튼 */}
-      <div className="flex justify-end gap-4 p-5 relative">
+      <div className="flex justify-end gap-4 p-[10px] relative">
         <button
           onClick={handleExecute}
           disabled={isExecuting || isSubmitting}
-          className="px-8 py-2 rounded-lg bg-WHITE text-DEFAULT hover:bg-WHITE/90 disabled:cursor-not-allowed relative group cursor-pointer"
+          className="px-[20px] py-[5px] font-regular font-inter rounded-lg bg-WHITE text-DEFAULT hover:bg-WHITE/90 disabled:cursor-not-allowed relative group cursor-pointer"
         >
           {isExecuting ? '실행 중...' : '실행'}
           {isAnonymous && (
@@ -117,7 +119,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         <button
           onClick={handleSubmit}
           disabled={isExecuting || isSubmitting}
-          className="px-8 py-2 rounded-lg bg-PRIMARY text-WHITE hover:bg-PRIMARY/90 disabled:cursor-not-allowed relative group cursor-pointer"
+          className="px-[20px] py-[5px] font-regular font-inter rounded-lg bg-PRIMARY text-WHITE hover:bg-PRIMARY/90 disabled:cursor-not-allowed relative group cursor-pointer"
         >
           {isSubmitting ? '제출 중...' : '제출'}
           {isAnonymous && (

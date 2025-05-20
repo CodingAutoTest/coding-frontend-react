@@ -17,10 +17,6 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
   );
 
   useEffect(() => {
-    console.log('결과 업데이트:', resultSummary);
-  }, [resultSummary]);
-
-  useEffect(() => {
     if (resultSummary?.aiFeedbackDto.totalScore === 40) {
       setShowCelebration(true);
       audio?.play();
@@ -50,7 +46,6 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
     );
   }
 
-  // resultSummary가 없을 때 기본값
   const isEmpty = !resultSummary || !resultSummary.aiFeedbackDto;
 
   const scoreItems = [
@@ -78,7 +73,6 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
 
   return (
     <div className="flex flex-col gap-6 min-h-full w-full">
-      {/* 상단 결과 요약 */}
       <div className="flex items-center justify-between bg-white p-6 rounded-2xl shadow-md w-full">
         <div className="flex items-center gap-3">
           <img
@@ -110,7 +104,6 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
         </div>
       </div>
 
-      {/* 점수 카드 */}
       <div className="grid grid-cols-2 gap-4 w-full">
         {scoreItems.map((item, index) => (
           <ScoreCard
@@ -122,7 +115,6 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
         ))}
       </div>
 
-      {/* AI 피드백 */}
       <div className="bg-white p-6 rounded-2xl shadow-md w-full">
         <div className="text-lg font-inter mb-4">AI 피드백</div>
         {isAnonymous ? (
@@ -131,8 +123,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
             <br />
             <button
               type="button"
-              className="text-PRIMARY font-bold bg-transparent border-none p-0 m-0 align-baseline underline"
-              style={{ font: 'font-inter', cursor: 'pointer' }}
+              className="text-PRIMARY font-bold bg-transparent border-none p-0 m-0 align-baseline underline cursor-pointer font-inter"
               onClick={() => (window.location.href = '/login')}
             >
               로그인 하러 가기

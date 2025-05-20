@@ -99,14 +99,11 @@ const ProblemDetailPage: React.FC = () => {
   if (error || !problemData) return <div>문제를 불러오지 못했습니다.</div>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-problem-BACKGROUND">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-problem-BACKGROUND h-[80px] px-[38px] flex items-center">
-        <Header />
-      </div>
+    <div className="w-full h-screen bg-problem-BACKGROUND">
+      <Header />
 
       {/* Main */}
-      <main className="flex flex-col lg:flex-row px-[38px] gap-[20px] py-[20px] flex-1 min-h-0">
+      <main className="h-[calc(100vh-80px)] flex flex-row px-[38px] pb-[20px] gap-[20px]">
         {/* 왼쪽 섹션 */}
         <ProblemSection
           problemData={problemData}

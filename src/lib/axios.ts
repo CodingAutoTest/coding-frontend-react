@@ -7,7 +7,11 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   // 문제 데이터와 테스트 케이스를 가져오는 API는 토큰 체크 제외
-  if (config.url?.includes('/problems/') || config.url?.includes('/testcases/')) {
+  if (
+    config.url?.includes('/problems') ||
+    config.url?.includes('/testcases/') ||
+    config.url?.includes('/auth/')
+  ) {
     return config;
   }
 
