@@ -5,6 +5,9 @@ export const api = axios.create({
   withCredentials: true,
 });
 
+api.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+api.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
+
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -13,14 +16,14 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-api.interceptors.response.use(
-  (res) => res,
-  (error) => {
-    if (error.response?.status >= 400) {
-      window.location.href = '/error';
-    }
-    return Promise.reject(error);
-  },
-);
+// api.interceptors.response.use(
+//   (res) => res,
+//   (error) => {
+//     if (error.response?.status >= 400) {
+//       window.location.href = '/error';
+//     }
+//     return Promise.reject(error);
+//   },
+// );
 
 export const unwrap = <T>(response: AxiosResponse): T => response.data.result.result;
