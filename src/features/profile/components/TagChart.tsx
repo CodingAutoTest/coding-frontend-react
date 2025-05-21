@@ -64,7 +64,9 @@ const TagChart: FC<Props> = ({ data }) => {
   const sorted = [...withPercent].sort((a, b) => b.count - a.count);
 
   const chartData = sorted.slice(0, 8); // 레이다 차트용 상위 8개
-  const listData = sorted.slice(0, expanded ? sorted.length : 8); // 리스트용
+  const listData = sorted
+    .slice(0, expanded ? sorted.length : 8)
+    .map((d) => ({ ...d, percent: Math.round(d.percent) }));
 
   return (
     <div

@@ -1,6 +1,6 @@
 import { useState, FC } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import defaultProfileImg from '@/assets/images/profile.png';
 import defaultBgImg from '@/assets/images/background.png';
@@ -15,10 +15,16 @@ import LoadingSpinner from '@/features/profile/components/LoadingSpinner';
 import MainHeader from '@/components/MainHeader';
 import { getTierInfo } from '@/features/profile/utils/getTierInfo';
 
+// type ProfileProps = {
+//   showEdit?: boolean;
+// };
+
 const Profile: FC = () => {
   const navigate = useNavigate();
+  const { userName } = useParams();
+  const isMyPage = !userName;
 
-  const { profile, loading, error } = useUserProfile();
+  const { profile, loading, error } = useUserProfile(userName);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToPrev = () => setCurrentIndex((i) => Math.max(i - 1, 0));
@@ -67,18 +73,16 @@ const Profile: FC = () => {
             className="w-24 h-24 rounded-full border border-black absolute -top-12 left-0 z-10 bg-white"
             draggable={false}
           />
-          <button
-            type="button"
-            onClick={() => navigate('/profile-setting')}
-            className="
-        ml-auto mt-5 flex items-center
-        rounded-xl
-        bg-slate-600/50 px-6 py-3
-        transition-colors hover:bg-slate-600/70
-      "
-          >
-            <span className="text-lg text-black">프로필 편집</span>
-          </button>
+          {isMyPage && (
+            <button
+              type="button"
+              onClick={() => navigate('/profile-setting')}
+              className="ml-auto mt-5 flex items-center rounded-xl
+                         bg-slate-600/50 px-6 py-3 hover:bg-slate-600/70"
+            >
+              <span className="text-lg text-black">프로필 편집</span>
+            </button>
+          )}
         </div>
       </section>
 
