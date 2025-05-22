@@ -51,7 +51,7 @@ export const CodeEditorBox: React.FC<CodeEditorBoxProps> = ({
       </div>
 
       {/* 에디터는 남은 영역만큼만 차지 */}
-      <div className="flex-1 min-h-0">
+      <div className="flex-1 h-full">
         <Editor
           height="100%"
           defaultLanguage={language}
@@ -62,6 +62,13 @@ export const CodeEditorBox: React.FC<CodeEditorBoxProps> = ({
             fontSize: 14,
             automaticLayout: true,
             scrollBeyondLastLine: false,
+            lineNumbers: 'on',
+            wordWrap: 'on',
+            scrollbar: {
+              vertical: 'auto',
+              horizontal: 'auto',
+            },
+            fixedOverflowWidgets: true,
           }}
         />
       </div>

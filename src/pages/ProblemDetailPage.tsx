@@ -13,10 +13,13 @@ import {
 } from '@/features/problem/api/problem-result.api';
 import { useTimerStore } from '@/features/problem/stores/useTimerStore';
 import { SubmissionResultType } from '@/features/problem/types/problem-result.type';
+import { useUserInfo } from '@/features/problem/hooks/useUserInfo';
 
 const ProblemDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const problemId = Number(id);
+  const { user } = useUserInfo();
+  const isAnonymous = !user || user.name === '익명';
 
   const { loading, error } = useProblemDetail(problemId);
   const { problemData, testCases, code, language, setCode, setLanguage, setSubmissionHistory } =
@@ -31,6 +34,11 @@ const ProblemDetailPage: React.FC = () => {
 
   useEffect(() => {
     const fetchInitialData = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        return;
+      }
+
       try {
         const history = await fetchProblemSubmissionHistory(problemId);
         setSubmissionHistory(history);
@@ -49,13 +57,15 @@ const ProblemDetailPage: React.FC = () => {
   }, [problemId, setSubmissionHistory, setCode, setLanguage]);
 
   const handleTabChange = async (tab: TabType) => {
-    if (tab === '결과' && lastViewedSubmissionId && !submissionResult) {
+    if (tab === '결과' && lastViewedSubmissionId) {
       try {
         const result = await fetchProblemSubmissionResult(lastViewedSubmissionId);
         setSubmissionResult(result);
       } catch (error) {
         console.error('Failed to fetch submission result:', error);
       }
+    } else if (tab === '결과' && !lastViewedSubmissionId) {
+      setSubmissionResult(null);
     }
     setActiveTab(tab);
   };
@@ -66,8 +76,6 @@ const ProblemDetailPage: React.FC = () => {
       setCode(submittedCode);
       setLastViewedSubmissionId(String(submissionId));
       setActiveTab('문제');
-      // 코드 보기를 누를 때는 결과를 초기화
-      setSubmissionResult(null);
     } catch (error) {
       console.error('Failed to fetch submission code:', error);
     }
@@ -91,14 +99,11 @@ const ProblemDetailPage: React.FC = () => {
   if (error || !problemData) return <div>문제를 불러오지 못했습니다.</div>;
 
   return (
-    <div className="flex flex-col min-h-screen bg-problem-BACKGROUND">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-problem-BACKGROUND h-[80px] px-[38px] flex items-center">
-        <Header />
-      </div>
+    <div className="w-full h-screen bg-problem-BACKGROUND">
+      <Header />
 
       {/* Main */}
-      <main className="flex flex-col lg:flex-row px-[38px] gap-[20px] py-[20px] flex-1 min-h-0">
+      <main className="h-[calc(100vh-80px)] flex flex-row px-[38px] pb-[20px] gap-[20px]">
         {/* 왼쪽 섹션 */}
         <ProblemSection
           problemData={problemData}
@@ -108,6 +113,7 @@ const ProblemDetailPage: React.FC = () => {
           setIsAlgorithmVisible={setIsAlgorithmVisible}
           submissionResult={submissionResult}
           onViewSubmissionCode={handleViewSubmissionCode}
+          isAnonymous={isAnonymous}
         />
 
         {/* 오른쪽 섹션 */}

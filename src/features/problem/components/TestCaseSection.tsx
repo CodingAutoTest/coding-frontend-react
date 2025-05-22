@@ -19,14 +19,14 @@ export const TestCaseSection: React.FC<TestCaseSectionProps> = ({
   output,
 }) => {
   return (
-    <div className="flex-1 min-h-0 flex flex-col bg-problem-COMPONENT_HEADER rounded-[10px] shadow-md">
+    <div className="h-full bg-problem-COMPONENT_HEADER rounded-[10px] shadow-md flex flex-col">
+      <header className="bg-problem-TAB_BAR px-5 py-2 rounded-t-[10px] shrink-0">
+        <span className="text-base font-inter ">테스트 케이스</span>
+      </header>
       {/* 상단 바 */}
-      <div className="bg-problem-TAB_BAR px-5 py-2 rounded-t-[10px]">
-        <span className="text-secondary text-base font-inter">테스트 케이스</span>
-      </div>
 
-      {/* 내용 부분 - 배경 채우기용 */}
-      <div className="flex-1 min-h-0 overflow-y-auto px-5 py-4 scrollbar-hide">
+      {/* 내용 부분 - 스크롤 생기는 영역 */}
+      <div className="px-5 py-4 overflow-y-auto flex-1 scrollbar-hide">
         <TestCaseTabs
           testCases={testCases}
           selectedTestCase={selectedTestCase}

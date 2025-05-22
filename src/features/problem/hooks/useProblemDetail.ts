@@ -17,7 +17,6 @@ export const useProblemDetail = (problemId: number) => {
         ]);
         setProblemData(problemResponse);
         setTestCases(testCasesResponse);
-
         setError(null);
       } catch (err) {
         console.error('Error fetching problem data:', err);
