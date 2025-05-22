@@ -1,5 +1,6 @@
 // src/features/ranking/components/RankingHeader.tsx
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   rank: number;
@@ -30,6 +31,7 @@ const RankingHeader: FC<Props> = ({
   marathonDays,
   solvedCount,
 }) => {
+  const navigate = useNavigate();
   const tierIconPath = getTierImage(tier);
 
   return (
@@ -50,7 +52,10 @@ const RankingHeader: FC<Props> = ({
           </tr>
         </thead>
         <tbody className="text-base text-DEFAULT font-regular font-inter">
-          <tr className="hover:bg-gray-50 transition border-b border-divider-DEFAULT">
+          <tr
+            className="hover:bg-gray-50 transition border-b border-divider-DEFAULT cursor-pointer"
+            onClick={() => navigate('/users/my-pages')}
+          >
             <td className="w-[100px] h-[22px] py-[22px] text-center">{rank}</td>
             <td className="w-[100px] h-[22px] py-[22px] text-center">
               <div className="flex items-center justify-center space-x-2">
@@ -68,9 +73,9 @@ const RankingHeader: FC<Props> = ({
                 <span>{name}</span>
               </div>
             </td>
-            <td className="w-[100px] h-[22px] py-[22px] ">{rating}</td>
-            <td className="w-[100px] h-[22px] py-[22px] ">{marathonDays}일</td>
-            <td className="w-[100px] h-[22px] py-[22px] ">{solvedCount.toLocaleString()}</td>
+            <td className="w-[100px] h-[22px] py-[22px]">{rating}</td>
+            <td className="w-[100px] h-[22px] py-[22px]">{marathonDays}일</td>
+            <td className="w-[100px] h-[22px] py-[22px]">{solvedCount.toLocaleString()}</td>
           </tr>
         </tbody>
       </table>

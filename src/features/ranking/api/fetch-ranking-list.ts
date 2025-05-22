@@ -8,9 +8,18 @@ export const fetchRankingList = async (
   order = 'desc',
   name = '',
 ): Promise<RankingListResponse> => {
-  const response = await api.get('/rankings', {
-    params: { page, size, sort, order, name },
-  });
+  try {
+    const response = await api.get('/rankings', {
+      params: { page, size, sort, order, name },
+    });
 
-  return unwrap(response); // unwrap(response.data.result)
+    return unwrap(response);
+  } catch (error) {
+    console.error('❌ fetchRankingList 실패:', error);
+    return {
+      rankings: [],
+      totalPages: 1,
+      totalElements: 0, // ✅ 필수 필드 채움
+    };
+  }
 };

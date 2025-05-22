@@ -24,10 +24,10 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
 
       <table className="w-full text-center">
         <thead>
-          <tr className="text-base text-DEFAULT font-normal font-nunito-sans border-b border-divider-DEFAULT">
-            <th className="w-[100px] h-[22px] pb-[22px]">순위</th>
-            <th className="w-[100px] h-[22px] pb-[22px]">티어</th>
-            <th className="w-[751px] pl-[100px] text-left pb-[22px]">닉네임</th>
+          <tr className="text-base text-DEFAULT font-normal font-regular font-nunito-sans border-b border-divider-DEFAULT">
+            <th className="w-[100px] h-[22px] pb-[22px] font-normal">순위</th>
+            <th className="w-[100px] h-[22px] pb-[22px] font-normal">티어</th>
+            <th className="w-[751px] pl-[100px] text-left pb-[22px] font-normal">닉네임</th>
             <th
               className="w-[100px] h-[22px] pb-[22px] cursor-pointer select-none"
               onClick={() => onSortChange('rating')}
@@ -80,8 +80,8 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
         <tbody className="text-base text-DEFAULT font-regular font-inter">
           {data.map((item) => (
             <tr
-              key={item.rank}
-              onClick={() => navigate(`/user/${item.userId}/profile`)}
+              key={item.name}
+              onClick={() => navigate(`/users/profile/${item.name}/`)}
               className="hover:bg-gray-50 transition cursor-pointer border-b border-divider-DEFAULT"
             >
               <td className="w-[100px] h-[22px] py-[22px] text-center">{item.rank}</td>
