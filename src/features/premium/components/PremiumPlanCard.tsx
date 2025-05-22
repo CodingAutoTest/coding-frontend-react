@@ -1,9 +1,19 @@
-// features/premium/components/PremiumPlanCard.tsx
 import { FC, useState } from 'react';
 import ConfirmPaymentModal from './ConfirmPaymentModal';
+import { useNavigate } from 'react-router-dom';
 
 const PremiumPlanCard: FC = () => {
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login'); // 로그인 안 된 경우 로그인 페이지로 이동
+      return;
+    }
+    setShowModal(true);
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -37,7 +47,7 @@ const PremiumPlanCard: FC = () => {
           </div>
 
           <button
-            onClick={() => setShowModal(true)}
+            onClick={handleClick}
             className="w-full py-3 rounded-full bg-white text-gray-900 font-semibold hover:bg-gray-100 transition"
           >
             Upgrade to Premium

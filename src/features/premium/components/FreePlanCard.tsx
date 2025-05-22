@@ -25,9 +25,6 @@ const FreePlanCard: FC = () => {
             <li>✔️ 항목</li>
             <li>✔️ 항목</li>
           </ul>
-          <button className="w-full py-3 rounded-full bg-white text-gray-900 font-semibold hover:bg-gray-100 transition">
-            Sign up for free
-          </button>
         </div>
       </div>
     </div>

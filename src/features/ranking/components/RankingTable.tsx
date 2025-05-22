@@ -80,7 +80,7 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
         <tbody className="text-base text-DEFAULT font-regular font-inter">
           {data.map((item) => (
             <tr
-              key={item.rank}
+              key={item.name}
               onClick={() => navigate(`/users/profile/${item.name}/`)}
               className="hover:bg-gray-50 transition cursor-pointer border-b border-divider-DEFAULT"
             >

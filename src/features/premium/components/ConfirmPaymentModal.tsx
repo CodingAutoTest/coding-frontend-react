@@ -1,12 +1,15 @@
 // src/features/premium/components/ConfirmPaymentModal.tsx
 import { FC } from 'react';
 import { api } from '@/lib/axios'; // ✅ axios 인스턴스 가져오기
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   onClose: () => void;
 };
 
 const ConfirmPaymentModal: FC<Props> = ({ onClose }) => {
+  const navigate = useNavigate(); // ✅ 추가
+
   const amount = 7000;
   const tax = amount * 0.1;
   const total = amount + tax;
@@ -40,6 +43,8 @@ const ConfirmPaymentModal: FC<Props> = ({ onClose }) => {
             planId: 1, // TODO: 실제 프리미엄 요금제 ID
           });
           alert('✅ 결제 성공 및 서버 전송 완료!');
+          navigate('/'); // ✅ 결제 성공 시 홈으로 이동
+
           onClose();
         } catch (err) {
           console.error('서버 전송 실패', err);
