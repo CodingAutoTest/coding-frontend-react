@@ -35,3 +35,5 @@ export const LoadingModal: React.FC<LoadingModalProps> = ({ isOpen, type, messag
     </div>
   );
 };
+
+export default LoadingModal;
