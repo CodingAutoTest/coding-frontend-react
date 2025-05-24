@@ -35,26 +35,24 @@ const MainFilterMenu: FC = () => {
 
   useEffect(() => {
     const fetchAlgorithmTags = async () => {
-      if (selectedButton === 'algorithm') {
-        try {
-          setIsLoading(true);
-          const tags = await getAlgorithmTags();
-          const options = tags.map((tag) => ({
-            text: tag.name,
-            value: tag.id,
-          }));
-          setAlgorithmOptions(options);
-        } catch (error) {
-          console.error('Failed to fetch algorithm tags:', error);
-          setAlgorithmOptions([]);
-          return;
-        }
+      try {
+        setIsLoading(true);
+        const tags = await getAlgorithmTags();
+        const options = tags.map((tag) => ({
+          text: tag.name,
+          value: tag.id,
+        }));
+        setAlgorithmOptions(options);
+      } catch (error) {
+        console.error('Failed to fetch algorithm tags:', error);
+        setAlgorithmOptions([]);
+      } finally {
         setIsLoading(false);
       }
     };
 
     fetchAlgorithmTags();
-  }, [selectedButton]);
+  }, []);
 
   const filteredAlgorithmOptions =
     searchQuery.trim() === ''
@@ -89,7 +87,7 @@ const MainFilterMenu: FC = () => {
   return (
     <div className="flex flex-col gap-[10px]">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-[10px]">
+        <div className="flex items-center gap-[15px]">
           <div className="flex items-center gap-[20px]" role="radiogroup">
             <div className="relative">
               <MainButton
