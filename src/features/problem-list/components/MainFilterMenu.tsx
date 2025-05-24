@@ -84,8 +84,16 @@ const MainFilterMenu: FC = () => {
     setSearch(value);
   };
 
+  const getProblemStatusText = (status: string) => {
+    return problemStatusOptions.find((option) => option.value === status)?.text || '';
+  };
+
+  const getDifficultyText = (difficulty: string) => {
+    return difficultyOptions.find((option) => option.value === difficulty)?.text || '';
+  };
+
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div className="flex flex-col gap-[10px] pt-[10px]">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-[15px]">
           <div className="flex items-center gap-[20px]" role="radiogroup">
@@ -152,15 +160,29 @@ const MainFilterMenu: FC = () => {
         </div>
         <SearchBar placeholder="문제 검색" onSearch={handleSearch} debounceTime={300} />
       </div>
-      {appliedAlgorithm !== 0 && (
-        <TagButton
-          text={algorithmOptions.find((option) => option.value === appliedAlgorithm)?.text || ''}
-          onRemove={() => {
-            setAppliedAlgorithm(0);
-            setSelectedAlgorithm(0);
-          }}
-        />
-      )}
+      <div className="flex flex-wrap gap-2">
+        {selectedProblemStatus && (
+          <TagButton
+            text={getProblemStatusText(selectedProblemStatus)}
+            onRemove={() => setSelectedProblemStatus('')}
+          />
+        )}
+        {selectedDifficulty && (
+          <TagButton
+            text={getDifficultyText(selectedDifficulty)}
+            onRemove={() => setSelectedDifficulty('')}
+          />
+        )}
+        {appliedAlgorithm !== 0 && (
+          <TagButton
+            text={algorithmOptions.find((option) => option.value === appliedAlgorithm)?.text || ''}
+            onRemove={() => {
+              setAppliedAlgorithm(0);
+              setSelectedAlgorithm(0);
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 };
