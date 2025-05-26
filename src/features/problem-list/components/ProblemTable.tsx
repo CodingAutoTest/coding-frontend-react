@@ -24,10 +24,16 @@ const getStatusIcon = (status: number) => {
 
 const ProblemTable: FC = () => {
   const [data, setData] = useState<Problem[]>([]);
-  const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const { selectedProblemStatus, selectedDifficulty, appliedAlgorithm, search } = useFilterStore();
+  const {
+    selectedProblemStatus,
+    selectedDifficulty,
+    appliedAlgorithm,
+    search,
+    currentPage,
+    setCurrentPage,
+  } = useFilterStore();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +41,7 @@ const ProblemTable: FC = () => {
       setIsLoading(true);
       try {
         const response = await getProblems(
-          page,
+          currentPage,
           20,
           selectedProblemStatus || undefined,
           selectedDifficulty || undefined,
@@ -53,7 +59,7 @@ const ProblemTable: FC = () => {
       }
     };
     fetchData();
-  }, [page, selectedProblemStatus, selectedDifficulty, appliedAlgorithm, search]);
+  }, [currentPage, selectedProblemStatus, selectedDifficulty, appliedAlgorithm, search]);
 
   const handleProblemClick = async (problemId: number) => {
     await fetchProblemViewCount(problemId);
@@ -115,7 +121,7 @@ const ProblemTable: FC = () => {
         </tbody>
       </table>
 
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={(p) => setPage(p)} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
     </section>
   );
 };

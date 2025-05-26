@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AlgorithmButton from './AlgorithmButton';
 import SearchBar from '@/components/SearchBar';
 
@@ -26,6 +26,16 @@ const AlgorithmPopup = ({
   isLoading = false,
   onSearch,
 }: AlgorithmButtonProps) => {
+  const [searchValue, setSearchValue] = useState('');
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onSearch(searchValue);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchValue, onSearch]);
+
   if (!isOpen) return null;
 
   const handleChange = (value: number) => {
@@ -55,12 +65,18 @@ const AlgorithmPopup = ({
       onClick={handleOverlayClick}
     >
       <div
-        className="relative flex flex-col items-center justify-start w-[521px] h-auto gap-5 px-6 py-5 bg-white rounded-[26px] shadow-[0px_13px_61px_0px_rgba(169,169,169,0.37)]"
+        className="relative flex flex-col items-center justify-start w-[523px] h-auto gap-5 px-6 py-5 bg-white rounded-[26px] shadow-[0px_13px_61px_0px_rgba(169,169,169,0.37)]"
         onClick={handlePopupClick}
       >
         <header className="inline-flex items-center justify-between w-full">
           <div className="text-lg font-bold text-DEFAULT font-nunito-sans">알고리즘 선택</div>
-          <SearchBar placeholder="알고리즘 검색" icon={false} width="310px" onSearch={onSearch} />
+          <SearchBar
+            placeholder="알고리즘 검색"
+            icon={false}
+            width="310px"
+            onSearch={setSearchValue}
+            debounceTime={300}
+          />
         </header>
 
         <main className="flex flex-wrap content-start items-start justify-start w-full h-[434px] gap-4 overflow-y-auto scrollbar-hide">

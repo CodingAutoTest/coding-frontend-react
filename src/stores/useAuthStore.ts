@@ -6,7 +6,7 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isLogin: false,
+  isLogin: !!localStorage.getItem('token'),
   checkToken: () => {
     const token = localStorage.getItem('token');
     set({ isLogin: !!token });

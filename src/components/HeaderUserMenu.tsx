@@ -30,6 +30,7 @@ const HeaderUserMenu = () => {
         color="text-[#FFC130]"
         onClick={() => {
           navigate('/premium');
+          window.location.reload();
         }}
       />
       {isLogin ? (

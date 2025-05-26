@@ -8,6 +8,7 @@ const LogoButton = () => {
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate('/problems');
+    window.location.reload();
   };
 
   return (

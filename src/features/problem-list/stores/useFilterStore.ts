@@ -7,14 +7,17 @@ type FilterMenuState = {
   selectedAlgorithm: number;
   appliedAlgorithm: number;
   search: string;
+  currentPage: number;
   setSelectedButton: (buttonId: string) => void;
   setSelectedProblemStatus: (status: string) => void;
   setSelectedDifficulty: (difficulty: string) => void;
   setSelectedAlgorithm: (algorithm: number) => void;
   setAppliedAlgorithm: (algorithm: number) => void;
   setSearch: (search: string) => void;
+  setCurrentPage: (page: number) => void;
   handleButtonSelect: (buttonId: string) => void;
   handleAlgorithmClose: () => void;
+  resetFilters: () => void;
 };
 
 export const useFilterStore = create<FilterMenuState>((set) => ({
@@ -24,6 +27,7 @@ export const useFilterStore = create<FilterMenuState>((set) => ({
   selectedAlgorithm: 0,
   appliedAlgorithm: 0,
   search: '',
+  currentPage: 0,
 
   setSelectedButton: (buttonId) => set({ selectedButton: buttonId }),
   setSelectedProblemStatus: (status) => set({ selectedProblemStatus: status }),
@@ -31,6 +35,7 @@ export const useFilterStore = create<FilterMenuState>((set) => ({
   setSelectedAlgorithm: (algorithm) => set({ selectedAlgorithm: algorithm }),
   setAppliedAlgorithm: (algorithm) => set({ appliedAlgorithm: algorithm }),
   setSearch: (search) => set({ search }),
+  setCurrentPage: (page) => set({ currentPage: page }),
 
   handleButtonSelect: (buttonId) =>
     set((state) => {
@@ -47,4 +52,15 @@ export const useFilterStore = create<FilterMenuState>((set) => ({
       selectedButton: '',
       selectedAlgorithm: state.appliedAlgorithm,
     })),
+
+  resetFilters: () =>
+    set({
+      selectedButton: '',
+      selectedProblemStatus: '',
+      selectedDifficulty: '',
+      selectedAlgorithm: 0,
+      appliedAlgorithm: 0,
+      search: '',
+      currentPage: 0,
+    }),
 }));
