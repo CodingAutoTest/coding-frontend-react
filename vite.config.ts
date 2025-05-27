@@ -26,6 +26,10 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      '/auth': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
     },
   },
   assetsInclude: ['**/*.svg', '**/*.png'],
