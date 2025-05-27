@@ -2,19 +2,39 @@ import HeaderNavButton from './HeaderNavButton';
 import HeaderProfileButton from './ProfileButton';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '@/stores/useAuthStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchUser } from '@/features/problem/api/problem.api';
+import profile from '@/assets/problem-list/default-profile.svg';
 
 const HeaderUserMenu = () => {
-  const profileImage = '';
-  // 값이 null, undefined, ''(빈 문자열), 0, false 등의 falsy한 값일 경우 기본 이미지 사용
-  // API 사용 시 제거(Test 용 이미지)
+  const [profileImage, setProfileImage] = useState<string>('');
   const navigate = useNavigate();
   const isLogin = useAuthStore((state) => state.isLogin);
   const checkToken = useAuthStore((state) => state.checkToken);
 
   useEffect(() => {
     checkToken();
-  }, []);
+  }, [checkToken]);
+
+  useEffect(() => {
+    const getUserImage = async () => {
+      if (isLogin) {
+        try {
+          const userData = await fetchUser();
+          if (userData?.profileImage) {
+            setProfileImage(userData.profileImage);
+          } else {
+            setProfileImage(profile);
+          }
+        } catch (error) {
+          console.error('프로필 이미지를 가져오는데 실패했습니다:', error);
+          setProfileImage(profile);
+        }
+      }
+    };
+
+    getUserImage();
+  }, [isLogin]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');

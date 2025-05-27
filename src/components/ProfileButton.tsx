@@ -1,12 +1,14 @@
 import React from 'react';
 import profile from '@/assets/problem-list/default-profile.svg';
 import { useNavigate } from 'react-router-dom';
+
 type ProfileButtonProps = {
   profileImage?: string; // 프로필 이미지
 };
 
 const ProfileButton = ({ profileImage }: ProfileButtonProps) => {
   const navigate = useNavigate();
+
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     navigate('/profile');
@@ -21,7 +23,7 @@ const ProfileButton = ({ profileImage }: ProfileButtonProps) => {
         target.src = profile;
       }}
       onClick={handleClick}
-      className="w-[60px] h-[60px] relative cursor-pointer"
+      className="w-[60px] h-[60px] relative cursor-pointer rounded-full"
     />
   );
 };

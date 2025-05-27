@@ -55,7 +55,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
         )}
 
         {activeTab === '결과' && (
-          <div className="w-full pt-6 px-5">
+          <div className="w-full py-6 px-5">
             <SubmissionResult resultSummary={submissionResult} />
           </div>
         )}

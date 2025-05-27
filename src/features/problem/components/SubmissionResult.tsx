@@ -31,7 +31,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
 
   if (showCelebration) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-hidden bg-white rounded-2xl shadow-md p-10">
+      <div className="flex flex-col items-center justify-center min-h-[500px] relative overflow-hidden p-10">
         <div className="absolute top-10 animate-bounce text-6xl">🎉</div>
         <div className="absolute top-20 left-10 animate-bounce text-5xl">🎊</div>
         <div className="absolute top-20 right-10 animate-bounce text-5xl">🎊</div>
