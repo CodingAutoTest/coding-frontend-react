@@ -9,21 +9,20 @@ api.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
 api.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
 
 api.interceptors.request.use((config) => {
-  // 문제 데이터와 테스트 케이스를 가져오는 API는 토큰 체크 제외
-  if (
-    config.url?.includes('/problems') ||
-    config.url?.includes('/testcases/') ||
-    config.url?.includes('/auth/')
-  ) {
-    return config;
+  const token = localStorage.getItem('token');
+  const url = config.url || '';
+
+  // 문제 상태(status) 필터링 또는 단순 로그인 여부로 판단
+  const shouldAddToken =
+    !url.startsWith('/auth') &&
+    !url.startsWith('/tags') &&
+    !url.startsWith('/testcases') &&
+    !(url.startsWith('/problems') && !token); // 로그인한 경우에는 붙임
+
+  if (shouldAddToken && token) {
+    config.headers.Authorization = token;
   }
 
-  const token = localStorage.getItem('token');
-  if (!token) {
-    // 토큰이 없으면 API 요청을 중단
-    return Promise.reject(new Error('No token available'));
-  }
-  config.headers.Authorization = token;
   return config;
 });
 
