@@ -1,4 +1,5 @@
 import { FC, useState, useEffect } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 import MainHeader from '@/components/MainHeader';
@@ -135,9 +136,12 @@ const ProfileSettingPage: FC = () => {
     try {
       await modifyProfile(payload);
       show('success', '프로필이 수정되었습니다!');
-    } catch (e: any) {
-      if (e?.response?.status === 409) setNameError('사용자 이름이 중복되었습니다.');
-      else show('info', '프로필 수정 중 오류가 발생했습니다.');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        setNameError('사용자 이름이 중복되었습니다.');
+      } else {
+        show('info', '프로필 수정 중 오류가 발생했습니다.');
+      }
     }
   };
 
@@ -165,9 +169,12 @@ const ProfileSettingPage: FC = () => {
       setCurrentPw('');
       setNewPw('');
       setConfirmPw('');
-    } catch (e: any) {
-      if (e?.response?.status === 400) setCurrentPwError('현재 비밀번호가 일치하지 않습니다.');
-      else show('info', '비밀번호 변경 중 오류가 발생했습니다.');
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 400) {
+        setCurrentPwError('현재 비밀번호가 일치하지 않습니다.');
+      } else {
+        show('info', '비밀번호 변경 중 오류가 발생했습니다.');
+      }
     }
   };
 

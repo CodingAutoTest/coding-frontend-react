@@ -1,4 +1,4 @@
-import { api, unwrap } from '@/lib/axios';
+import { api } from '@/lib/axios';
 
 /* DTO */
 export interface ModifyProfileDto {
@@ -46,4 +46,4 @@ export const removeUser = () => api.post<void>('/users/remove');
 
 /* 5) 프리미엄 해지 */
 export const savePremium = (subscribe: boolean) =>
-  api.post('/users/save', { subscribe }).then(() => {}); // unwrap 필요 X
+  api.post('/users/save', { subscribe }).then(() => {});
