@@ -2,8 +2,8 @@ import { useState, FC } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import defaultProfileImg from '@/assets/images/profile.png';
-import defaultBgImg from '@/assets/images/background.png';
+import defaultProfileImg from '@/assets/profile.svg';
+import defaultBgImg from '@/assets/background.png';
 
 import TierChart from '@/features/profile/components/TierChart';
 import TagChart from '@/features/profile/components/TagChart';
@@ -14,10 +14,6 @@ import { mapTierData, mapTagData } from '@/features/profile/utils/chartMapper';
 import LoadingSpinner from '@/features/profile/components/LoadingSpinner';
 import MainHeader from '@/components/MainHeader';
 import { getTierInfo } from '@/features/profile/utils/getTierInfo';
-
-// type ProfileProps = {
-//   showEdit?: boolean;
-// };
 
 const Profile: FC = () => {
   const navigate = useNavigate();
@@ -78,7 +74,7 @@ const Profile: FC = () => {
               type="button"
               onClick={() => navigate('/profile-setting')}
               className="ml-auto mt-5 flex items-center rounded-xl
-                         bg-slate-600/50 px-6 py-3 hover:bg-slate-600/70"
+                         bg-PRIMARY px-6 py-3 hover:bg-[#3B55A9]"
             >
               <span className="text-lg text-black">프로필 편집</span>
             </button>

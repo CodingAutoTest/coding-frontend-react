@@ -7,6 +7,7 @@ export interface UserProfileResponse {
   solvedCount: number;
   profileImage: string;
   backgroundImage: string | null;
+  premiumStatus: boolean;
   tierCount: Record<number, number>;
   tagCount: Record<string, number>;
   solvedCountByDate: Record<string, number>;

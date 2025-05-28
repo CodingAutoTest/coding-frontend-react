@@ -54,7 +54,7 @@ const RankingHeader: FC<Props> = ({
         <tbody className="text-base text-DEFAULT font-regular font-inter">
           <tr
             className="hover:bg-gray-50 transition border-b border-divider-DEFAULT cursor-pointer"
-            onClick={() => navigate('/users/my-pages')}
+            onClick={() => navigate('/profile')}
           >
             <td className="w-[100px] h-[22px] py-[22px] text-center">{rank}</td>
             <td className="w-[100px] h-[22px] py-[22px] text-center">

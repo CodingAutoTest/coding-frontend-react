@@ -1,20 +1,24 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import MainHeader from '@/components/MainHeader';
 import FileUpload from '@/features/profile-setting/components/FileUpload';
 import TextInput from '@/features/profile-setting/components/TextInput';
 import ActionButton from '@/features/profile-setting/components/ActionButton';
-import ConfirmSection from '@/features/profile-setting/components/InfoAction';
+import InfoAction from '@/features/profile-setting/components/InfoAction';
 import Modal, { ModalKind } from '@/features/profile-setting/components/Modal';
 import UserDeleteModal from '@/features/profile-setting/components/UserDeleteModal';
+import CancelPremiumModal from '@/features/profile-setting/components/PremiumCancelModal';
 
 import {
   modifyProfile,
   uploadImages,
   changePassword,
   removeUser,
+  savePremium,
 } from '@/features/profile-setting/api/userSettingApi';
+
+import { getUserProfile } from '@/features/profile/api/getProfile';
 
 import defaultProfileImg from '@/assets/images/profileSetting.png';
 import defaultBgImg from '@/assets/images/backgroundSetting.png';
@@ -51,6 +55,46 @@ const ProfileSettingPage: FC = () => {
   });
   const show = (kind: ModalKind, msg = '') => setModal({ open: true, kind, msg });
   const hide = () => setModal((m) => ({ ...m, open: false }));
+
+  /* ---------- 프리미엄 상태 ---------- */
+  const [premium, setPremium] = useState(false); // true = 구독중
+  const [cancelOpen, setCancelOpen] = useState(false); // 해지 확인 모달
+
+  // 마운트 시 현재 구독 상태 조회
+  useEffect(() => {
+    getUserProfile()
+      .then((p) => setPremium(!!p.premiumStatus)) // ✅ setPremium 사용
+      .catch(() => {}); // 실패 시 무시
+  }, []);
+
+  // 프리미엄 해지
+  const handleCancelPremium = () => {
+    show('loading', '프리미엄을 해지하는 중입니다…');
+    savePremium(false)
+      .then(() => {
+        setPremium(false);
+        show('success', '프리미엄이 해지되었습니다!');
+      })
+      .catch(() => show('info', '해지 중 오류가 발생했습니다.'))
+      .finally(() => setCancelOpen(false));
+  };
+
+  const premiumBlock = premium ? (
+    <InfoAction
+      title="프리미엄"
+      description="프리미엄을 구독하고 있습니다!"
+      buttonText="해지하기"
+      buttonClassName="bg-[#DF0404] hover:bg-red-700"
+      onClick={() => setCancelOpen(true)}
+    />
+  ) : (
+    <InfoAction
+      title="프리미엄"
+      description="프리미엄을 구독하여 다양한 혜택을 이용해 보세요!"
+      buttonText="구독하기"
+      onClick={() => nav('/premium')}
+    />
+  );
 
   /* =========================================================
      이미지 업로드
@@ -278,7 +322,7 @@ const ProfileSettingPage: FC = () => {
       </section>
 
       {/* ================= 계정 삭제 ================= */}
-      <ConfirmSection
+      <InfoAction
         title="계정 삭제"
         description="계정 삭제 시 프로필 및 풀이 정보가 삭제됩니다."
         buttonText="계정 삭제"
@@ -286,20 +330,20 @@ const ProfileSettingPage: FC = () => {
       />
 
       {/* ================= 프리미엄 ================= */}
-      <div className="mb-10">
-        <ConfirmSection
-          title="프리미엄"
-          description="프리미엄을 구독하여 다양한 혜택을 이용해 보세요!"
-          buttonText="구독하기"
-          onClick={() => nav('/premium')}
-        />
-      </div>
+      <div className="mb-10">{premiumBlock}</div>
 
       {/* ---------------- 공통 모달 ---------------- */}
       <Modal open={modal.open} kind={modal.kind} message={modal.msg} onClose={hide} />
 
       {/* ---------------- 계정 삭제 확인 모달 ---------------- */}
       <UserDeleteModal open={delOpen} onClose={() => setDelOpen(false)} onConfirm={confirmDelete} />
+
+      {/* 프리미엄 해지 확인 모달 – 계정 삭제 모달 재사용 */}
+      <CancelPremiumModal
+        open={cancelOpen}
+        onClose={() => setCancelOpen(false)}
+        onConfirm={handleCancelPremium}
+      />
     </main>
   );
 };
