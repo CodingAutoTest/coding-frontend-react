@@ -15,7 +15,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
   const [audio] = useState<HTMLAudioElement | null>(
     typeof Audio !== 'undefined' ? new Audio('/assets/sound/congrats.wav') : null,
   );
-
+  console.log('resultSummary:', resultSummary);
   useEffect(() => {
     if (resultSummary?.aiFeedbackDto.totalScore === 40) {
       setShowCelebration(true);
@@ -84,7 +84,7 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
           <div className="flex flex-col">
             <span className="text-xs text-gray-400">결과</span>
             <span className="text-lg font-inter font-bold text-DEFAULT">
-              {isEmpty ? '???' : resultSummary.error}
+              {isEmpty ? '???' : resultSummary.judge0Status}
             </span>
           </div>
         </div>

@@ -11,5 +11,6 @@ export type SubmissionResultType = {
     totalScore?: number;
   };
   feedbacks: string[];
-  error?: string;
+  judge0Status?: string;
+  judge0Stdout?: string;
 };
