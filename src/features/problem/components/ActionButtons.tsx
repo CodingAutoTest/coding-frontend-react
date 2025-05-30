@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useProblemStore } from '@/features/problem/stores/useProblemStore';
 import { useCodeExecution } from '@/features/problem/hooks/useCodeExecution';
 import { useCodeSubmit } from '@/features/problem/hooks/useCodeSubmit';
-import { TestCaseType } from '@/features/problem/types/problem.type';
+import { TestCaseType, SubmissionResultType } from '@/features/problem/types/problem.type';
 import { IMAGES } from '@/constants/images';
 import { LoginModal } from '@/components/LoginModal';
 import { TabType } from '../constants/tab.constants';
@@ -12,7 +12,7 @@ type ActionButtonsProps = {
   testCases: TestCaseType[];
   setActiveTab: (tab: TabType) => void;
   onStopTimer: () => void;
-  onSubmit: (submissionId: string) => Promise<void>;
+  onSubmit: (result: SubmissionResultType) => Promise<void>;
 };
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -21,7 +21,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   onStopTimer,
   onSubmit,
 }) => {
-  const { code, language } = useProblemStore();
+  const { code } = useProblemStore();
   const { execute } = useCodeExecution();
   const { submit } = useCodeSubmit();
 
@@ -84,8 +84,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
     setModalType('loading');
 
     try {
-      const submissionId = await submit(problemId, code, language);
-      await onSubmit(submissionId);
+      const result = await submit(problemId);
+      await onSubmit(result);
     } catch (error) {
       console.error('제출 오류:', error);
       openAlert('제출 중 오류가 발생했습니다.');

@@ -43,3 +43,30 @@ export type UserType = {
   name: string;
   profileImage: string;
 };
+
+export type SubmissionResultType = {
+  status: string;
+  passedCount: number;
+  totalCount: number;
+  aiFeedbackDto: {
+    accuracy: number;
+    efficiency: number;
+    readability: number;
+    testCoverage: number;
+    feedback?: string;
+    totalScore?: number;
+  };
+  feedbacks: string[];
+  judge0Status?: string;
+  judge0Stdout?: string;
+};
+
+export type SubmissionHistoryType = {
+  submissionId: number;
+  createdAt: string;
+  language: string;
+  executionTime: number;
+  memoryUsed: number;
+  status: boolean;
+  userName: string;
+};

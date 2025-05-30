@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SubmissionHistoryType } from '../types/submission-history.type';
+import { SubmissionHistoryType } from '../types/problem.type';
 
 type SubmissionHistoryProps = {
   submissions: SubmissionHistoryType[] | null;

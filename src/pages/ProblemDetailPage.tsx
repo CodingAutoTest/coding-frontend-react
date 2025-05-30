@@ -6,13 +6,13 @@ import { Header } from '@/features/problem/components/Header';
 import { ProblemSection } from '@/features/problem/components/ProblemContent';
 import { CodeEditorSection } from '@/features/problem/components/CodeEditorSection';
 import { TabType } from '@/features/problem/constants/tab.constants';
-import { getSubmissionCode } from '@/features/problem/api/problem-result.api';
 import {
+  getSubmissionCode,
   fetchProblemSubmissionResult,
   fetchProblemSubmissionHistory,
-} from '@/features/problem/api/problem-result.api';
-import { useTimerStore } from '@/features/problem/stores/useTimerStore';
-import { SubmissionResultType } from '@/features/problem/types/problem-result.type';
+} from '@/features/problem/api/problem.api';
+import { useTimer } from '@/features/problem/hooks/useTimer';
+import { SubmissionResultType } from '@/features/problem/types/problem.type';
 import { useUserInfo } from '@/features/problem/hooks/useUserInfo';
 
 const ProblemDetailPage: React.FC = () => {
@@ -24,13 +24,13 @@ const ProblemDetailPage: React.FC = () => {
   const { loading, error } = useProblemDetail(problemId);
   const { problemData, testCases, code, language, setCode, setLanguage, setSubmissionHistory } =
     useProblemStore();
-  const { stopTimer } = useTimerStore();
+  const { stopTimer } = useTimer();
 
   const [selectedTestCase, setSelectedTestCase] = useState(0);
   const [isAlgorithmVisible, setIsAlgorithmVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('문제');
-  const [lastViewedSubmissionId, setLastViewedSubmissionId] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<SubmissionResultType | null>(null);
+  const [viewingSubmissionId, setViewingSubmissionId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchInitialData = async () => {
@@ -57,15 +57,16 @@ const ProblemDetailPage: React.FC = () => {
   }, [problemId, setSubmissionHistory, setCode, setLanguage]);
 
   const handleTabChange = async (tab: TabType) => {
-    if (tab === '결과' && lastViewedSubmissionId) {
-      try {
-        const result = await fetchProblemSubmissionResult(lastViewedSubmissionId);
-        setSubmissionResult(result);
-      } catch (error) {
-        console.error('Failed to fetch submission result:', error);
+    if (tab === '결과') {
+      if (viewingSubmissionId) {
+        try {
+          const result = await fetchProblemSubmissionResult(viewingSubmissionId);
+          setSubmissionResult(result);
+        } catch (error) {
+          console.error('Failed to fetch submission result:', error);
+        }
       }
-    } else if (tab === '결과' && !lastViewedSubmissionId) {
-      setSubmissionResult(null);
+      // viewingSubmissionId가 없더라도 현재 submissionResult를 유지
     }
     setActiveTab(tab);
   };
@@ -74,17 +75,17 @@ const ProblemDetailPage: React.FC = () => {
     try {
       const submittedCode = await getSubmissionCode(submissionId);
       setCode(submittedCode);
-      setLastViewedSubmissionId(String(submissionId));
+      setViewingSubmissionId(String(submissionId));
       setActiveTab('문제');
     } catch (error) {
       console.error('Failed to fetch submission code:', error);
     }
   };
 
-  const handleSubmit = async (submissionId: string) => {
+  const handleSubmit = async (result: SubmissionResultType) => {
     try {
-      const result = await fetchProblemSubmissionResult(submissionId);
       setSubmissionResult(result);
+      setViewingSubmissionId(null); // 새로운 제출이므로 이전 제출 내역 보기 상태 초기화
       setActiveTab('결과');
 
       // 제출 내역 업데이트

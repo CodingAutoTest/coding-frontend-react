@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { SubmissionHistoryType } from '../types/submission-history.type';
-import { fetchProblemSubmissionHistory } from '../api/problem-result.api';
+import { SubmissionHistoryType } from '../types/problem.type';
+import { fetchProblemSubmissionHistory } from '../api/problem.api';
 
 export const useSubmissionHistory = (problemId: number) => {
   const [data, setData] = useState<SubmissionHistoryType[] | null>(null);

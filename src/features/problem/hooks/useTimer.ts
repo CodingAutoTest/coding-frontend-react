@@ -1,5 +1,23 @@
 import { useEffect, useRef } from 'react';
-import { useTimerStore } from '../stores/useTimerStore';
+import { create } from 'zustand';
+
+interface TimerState {
+  time: number;
+  isRunning: boolean;
+  startTimer: () => void;
+  stopTimer: () => void;
+  resetTimer: () => void;
+  setTime: (time: number) => void;
+}
+
+const useTimerStore = create<TimerState>((set) => ({
+  time: 0,
+  isRunning: false,
+  startTimer: () => set({ isRunning: true }),
+  stopTimer: () => set({ isRunning: false }),
+  resetTimer: () => set({ time: 0, isRunning: false }),
+  setTime: (time) => set({ time }),
+}));
 
 type UseTimerReturnType = {
   time: number;

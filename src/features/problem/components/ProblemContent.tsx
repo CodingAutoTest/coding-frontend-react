@@ -1,13 +1,24 @@
 import React from 'react';
 import TabBar from './TabBar';
 import { ProblemHeader } from './ProblemHeader';
-import ProblemDescription from './ProblemDescription';
 import { SubmissionResult } from './SubmissionResult';
 import { SubmissionHistory } from './SubmissionHistory';
 import { useProblemStore } from '../stores/useProblemStore';
 import { TABS, TabType } from '../constants/tab.constants';
-import { ProblemType } from '../types/problem.type';
-import { SubmissionResultType } from '../types/problem-result.type';
+import { ProblemType, SubmissionResultType } from '../types/problem.type';
+
+const Divider = () => <div className="bg-problem-DIVIDER h-[1px] w-full my-3" />;
+
+const Section = ({ title, content }: { title: string; content: string }) => (
+  <div className="flex flex-col w-full px-5 mb-8">
+    <span className="text-DEFAULT text-xl font-inter mb-2.5">{title}</span>
+    <Divider />
+    <div
+      className="text-DEFAULT text-[15px] font-inter whitespace-pre-line break-words"
+      dangerouslySetInnerHTML={{ __html: content }}
+    />
+  </div>
+);
 
 type ProblemSectionProps = {
   problemData: ProblemType;
@@ -46,11 +57,11 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
               isAlgorithmVisible={isAlgorithmVisible}
               onToggleAlgorithm={() => setIsAlgorithmVisible(!isAlgorithmVisible)}
             />
-            <ProblemDescription
-              description={problemData.description}
-              inputFormat={problemData.inputConstraints}
-              outputFormat={problemData.outputConstraints}
-            />
+            <div className="flex flex-col w-full mt-5">
+              <Section title="문제" content={problemData.description} />
+              <Section title="입력" content={problemData.inputConstraints} />
+              <Section title="출력" content={problemData.outputConstraints} />
+            </div>
           </div>
         )}
 
