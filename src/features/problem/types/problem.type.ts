@@ -58,7 +58,7 @@ export type SubmissionResultType = {
   };
   feedbacks: string[];
   judge0Status?: string;
-  judge0Stdout?: string;
+  judge0Stderr?: string;
 };
 
 export type SubmissionHistoryType = {

@@ -4,9 +4,9 @@ import {
   TestCaseType,
   ProgrammingLanguage,
   ExecuteResultType,
+  SubmissionResultType,
+  SubmissionHistoryType,
 } from '@/features/problem/types/problem.type';
-import { SubmissionResultType } from '@/features/problem/types/problem-result.type';
-import { SubmissionHistoryType } from '@/features/problem/types/submission-history.type';
 
 interface ProblemStore {
   // 문제 + 테스트케이스

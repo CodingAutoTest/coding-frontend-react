@@ -73,12 +73,17 @@ const ProblemDetailPage: React.FC = () => {
 
   const handleViewSubmissionCode = async (submissionId: number) => {
     try {
-      const submittedCode = await getSubmissionCode(submissionId);
-      setCode(submittedCode);
+      const [code, result] = await Promise.all([
+        getSubmissionCode(submissionId),
+        fetchProblemSubmissionResult(String(submissionId)),
+      ]);
+
       setViewingSubmissionId(String(submissionId));
-      setActiveTab('문제');
+      setCode(code);
+      setSubmissionResult(result);
+      setActiveTab('콘솔');
     } catch (error) {
-      console.error('Failed to fetch submission code:', error);
+      console.error('Failed to fetch submission:', error);
     }
   };
 

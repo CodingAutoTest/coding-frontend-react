@@ -3,6 +3,7 @@ import TabBar from './TabBar';
 import { ProblemHeader } from './ProblemHeader';
 import { SubmissionResult } from './SubmissionResult';
 import { SubmissionHistory } from './SubmissionHistory';
+import { Console } from './Console';
 import { useProblemStore } from '../stores/useProblemStore';
 import { TABS, TabType } from '../constants/tab.constants';
 import { ProblemType, SubmissionResultType } from '../types/problem.type';
@@ -42,7 +43,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
   isAnonymous,
 }) => {
   const { submissionHistory } = useProblemStore();
-
+  console.log(submissionResult?.judge0Stderr);
   return (
     <div className="w-1/2 bg-problem-COMPONENT_HEADER rounded-[10px] shadow-md flex flex-col">
       <div className="sticky top-[80px] z-40 bg-problem-COMPONENT_HEADER rounded-t-[10px]">
@@ -91,6 +92,12 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
                 onViewCode={onViewSubmissionCode}
               />
             )}
+          </div>
+        )}
+
+        {activeTab === '콘솔' && (
+          <div className="w-full h-full p-4">
+            <Console output={submissionResult?.judge0Stderr || '> Ready to execute...'} />
           </div>
         )}
       </div>
