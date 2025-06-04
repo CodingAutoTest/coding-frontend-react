@@ -1,21 +1,37 @@
-import React, { useState } from 'react';
-import { Timer } from '@/features/problem/components/Timer';
-import { useUserInfo } from '../hooks/useUserInfo';
-import { useTimer } from '../hooks/useTimer';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { Timer } from '@/features/problem/components/Timer';
+import { useTimer } from '../hooks/useTimer';
+
 import { IMAGES } from '@/constants/images';
 import { LoginModal } from '@/components/LoginModal';
+
+import { useAuthStore } from '@/stores/useAuthStore';
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
   const { isRunning, formattedTime, startTimer, stopTimer, resetTimer } = useTimer();
-  const { user, loading } = useUserInfo();
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const user = useAuthStore((s) => s.user);
+  const [showLogin, setShowLogin] = useState(false);
 
+  /* 프로필 이미지 */
+  const [profileImage, setProfileImage] = useState<string>(IMAGES.ICONS.PROFILE);
+
+  /* user 변경 시 프로필 이미지 결정 */
+  useEffect(() => {
+    if (!user) {
+      setProfileImage(IMAGES.ICONS.PROFILE);
+      return;
+    }
+
+    setProfileImage(user.profileImage ?? IMAGES.ICONS.PROFILE);
+  }, [user]);
+
+  /* 프로필 클릭 시 */
   const handleProfileClick = () => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setShowLoginModal(true);
+    if (!user) {
+      setShowLogin(true);
       return;
     }
     navigate('/profile');
@@ -24,7 +40,7 @@ export const Header: React.FC = () => {
   return (
     <>
       <header className="w-full h-[80px] px-[38px] flex items-center justify-between bg-problem-BACKGROUND">
-        {/* 왼쪽: 로고 + 메뉴 */}
+        {/* ─── 왼쪽: 로고 + 메뉴 ─── */}
         <div className="flex items-center gap-3">
           <img
             src={IMAGES.LOGO.DEFAULT}
@@ -42,7 +58,7 @@ export const Header: React.FC = () => {
           />
         </div>
 
-        {/* 가운데: 타이머 */}
+        {/* ─── 가운데: 타이머 ─── */}
         <Timer
           formattedTime={formattedTime}
           isRunning={isRunning}
@@ -51,22 +67,38 @@ export const Header: React.FC = () => {
           onReset={resetTimer}
         />
 
-        {/* 오른쪽: 사용자 이름 + 프로필 */}
+        {/* ─── 오른쪽: 사용자 이름 + 프로필 ─── */}
         <div className="flex items-center gap-3">
-          <span className="text-DEFAULT text-medium whitespace-nowrap font-inter">
-            {loading ? '불러오는 중...' : `${user?.name ?? '익명'}님`}
-          </span>
-          <img
-            src={user?.profileImage || IMAGES.ICONS.PROFILE}
-            alt="profile"
-            className="w-[40px] h-[40px] rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
-            onClick={handleProfileClick}
-            draggable={false}
-          />
+          {user ? (
+            <>
+              <span className="text-DEFAULT text-medium whitespace-nowrap font-inter">
+                {user.name}님
+              </span>
+              <img
+                src={profileImage}
+                alt="profile"
+                className="w-[40px] h-[40px] rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={handleProfileClick}
+                draggable={false}
+              />
+            </>
+          ) : (
+            <>
+              <span className="text-DEFAULT text-medium whitespace-nowrap font-inter">익명님</span>
+              <img
+                src={IMAGES.ICONS.PROFILE}
+                alt="profile"
+                className="w-[40px] h-[40px] rounded-full object-cover cursor-pointer hover:opacity-80 transition-opacity"
+                onClick={handleProfileClick}
+                draggable={false}
+              />
+            </>
+          )}
         </div>
       </header>
 
-      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      {/* 로그인 모달 */}
+      <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
     </>
   );
 };

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { fetchUser } from '../api/problem.api';
-import { UserType } from '../types/problem.api.type';
-
+import { UserType } from '../types/problem.type';
+import { fetchMe } from '@/features/auth/api/getAuth';
 export const useUserInfo = () => {
   const [user, setUser] = useState<UserType | null>({
     name: '익명',
@@ -19,7 +18,7 @@ export const useUserInfo = () => {
       }
 
       try {
-        const userInfo = await fetchUser();
+        const userInfo = await fetchMe();
         setUser(userInfo);
         setLoading(false);
       } catch (err) {

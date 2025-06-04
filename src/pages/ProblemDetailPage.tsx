@@ -1,116 +1,123 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useProblemDetail } from '@/features/problem/hooks/useProblemDetail';
-import { useProblemStore } from '@/features/problem/stores/useProblemStore';
+
 import { Header } from '@/features/problem/components/Header';
 import { ProblemSection } from '@/features/problem/components/ProblemContent';
 import { CodeEditorSection } from '@/features/problem/components/CodeEditorSection';
-import { TabType } from '@/features/problem/constants/tab.constants';
+
+import { useProblemDetail } from '@/features/problem/hooks/useProblemDetail';
+import { useProblemStore } from '@/features/problem/stores/useProblemStore';
+import { useTimer } from '@/features/problem/hooks/useTimer';
+
 import {
   getSubmissionCode,
   fetchProblemSubmissionResult,
   fetchProblemSubmissionHistory,
 } from '@/features/problem/api/problem.api';
-import { useTimer } from '@/features/problem/hooks/useTimer';
+
+import { TabType } from '@/features/problem/constants/tab.constants';
 import { SubmissionResultType } from '@/features/problem/types/problem.type';
-import { useUserInfo } from '@/features/problem/hooks/useUserInfo';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 const ProblemDetailPage: React.FC = () => {
+  /* ───────── 라우팅 & 파라미터 ───────── */
   const { id } = useParams<{ id: string }>();
   const problemId = Number(id);
-  const { user } = useUserInfo();
-  const isAnonymous = !user || user.name === '익명';
 
-  const { loading, error } = useProblemDetail(problemId);
+  /* ───────── 전역 상태 ───────── */
+  const user = useAuthStore((s) => s.user); // 로그인 여부
+  const isAnonymous = !user;
+
+  /* ───────── 문제 데이터 ───────── */
+  const { loading: detailLoading, error } = useProblemDetail(problemId);
   const { problemData, testCases, code, language, setCode, setLanguage, setSubmissionHistory } =
     useProblemStore();
+
+  /* ───────── 타이머 ───────── */
   const { stopTimer } = useTimer();
 
+  /* ───────── 로컬 UI 상태 ───────── */
   const [selectedTestCase, setSelectedTestCase] = useState(0);
   const [isAlgorithmVisible, setIsAlgorithmVisible] = useState(false);
   const [activeTab, setActiveTab] = useState<TabType>('문제');
   const [submissionResult, setSubmissionResult] = useState<SubmissionResultType | null>(null);
   const [viewingSubmissionId, setViewingSubmissionId] = useState<string | null>(null);
 
+  /* ───────── 제출 히스토리 최초 로드 ───────── */
   useEffect(() => {
-    const fetchInitialData = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        return;
-      }
-
+    if (!user) return; // 로그인한 사용자만
+    (async () => {
       try {
         const history = await fetchProblemSubmissionHistory(problemId);
         setSubmissionHistory(history);
-      } catch (error) {
-        console.error('Failed to fetch submission history:', error);
+      } catch (e) {
+        console.error('제출 내역 로딩 실패:', e);
       }
-    };
+    })();
 
-    fetchInitialData();
-
-    // cleanup 함수: 페이지를 나갈 때 코드 초기화
+    /** 언마운트 시 코드/언어 초기화 */
     return () => {
       setCode('');
       setLanguage('python');
     };
-  }, [problemId, setSubmissionHistory, setCode, setLanguage]);
+  }, [problemId, user, setSubmissionHistory, setCode, setLanguage]);
 
+  /* ───────── 탭 전환 ───────── */
   const handleTabChange = async (tab: TabType) => {
-    if (tab === '결과') {
-      if (viewingSubmissionId) {
-        try {
-          const result = await fetchProblemSubmissionResult(viewingSubmissionId);
-          setSubmissionResult(result);
-        } catch (error) {
-          console.error('Failed to fetch submission result:', error);
-        }
+    if (tab === '결과' && viewingSubmissionId) {
+      try {
+        const res = await fetchProblemSubmissionResult(viewingSubmissionId);
+        setSubmissionResult(res);
+      } catch (e) {
+        console.error('결과 로딩 실패:', e);
       }
-      // viewingSubmissionId가 없더라도 현재 submissionResult를 유지
     }
     setActiveTab(tab);
   };
 
+  /* ───────── 제출 코드/결과 열람 ───────── */
   const handleViewSubmissionCode = async (submissionId: number) => {
     try {
-      const [code, result] = await Promise.all([
+      const [src, res] = await Promise.all([
         getSubmissionCode(submissionId),
         fetchProblemSubmissionResult(String(submissionId)),
       ]);
-
+      setSubmissionResult(null); // 코드 보기 시 결과 초기화
+      setActiveTab('문제');
       setViewingSubmissionId(String(submissionId));
-      setCode(code);
-      setSubmissionResult(result);
+      setCode(src);
+      setSubmissionResult(res);
       setActiveTab('콘솔');
-    } catch (error) {
-      console.error('Failed to fetch submission:', error);
+    } catch (e) {
+      console.error('제출 열람 실패:', e);
     }
   };
 
-  const handleSubmit = async (result: SubmissionResultType) => {
-    try {
-      setSubmissionResult(result);
-      setViewingSubmissionId(null); // 새로운 제출이므로 이전 제출 내역 보기 상태 초기화
-      setActiveTab('결과');
+  /* ───────── 코드 제출 후 ───────── */
+  const handleSubmit = async (res: SubmissionResultType) => {
+    setSubmissionResult(null); // 제출 시 결과 초기화
+    setViewingSubmissionId(null);
+    setActiveTab('결과');
+    setSubmissionResult(res);
 
-      // 제출 내역 업데이트
+    try {
       const history = await fetchProblemSubmissionHistory(problemId);
       setSubmissionHistory(history);
-    } catch (error) {
-      console.error('Failed to fetch submission result:', error);
+    } catch (e) {
+      console.error('제출 히스토리 갱신 실패:', e);
     }
   };
 
-  if (loading) return <div>로딩 중...</div>;
+  /* ───────── 렌더 ───────── */
+  if (detailLoading) return <div>로딩 중...</div>;
   if (error || !problemData) return <div>문제를 불러오지 못했습니다.</div>;
 
   return (
     <div className="w-full h-screen bg-problem-BACKGROUND">
       <Header />
 
-      {/* Main */}
-      <main className="h-[calc(100vh-80px)] flex flex-row px-[38px] pb-[20px] gap-[20px]">
-        {/* 왼쪽 섹션 */}
+      <main className="h-[calc(100vh-80px)] flex px-[38px] pb-[20px] gap-[20px]">
+        {/* 왼쪽: 문제 설명/결과/제출 기록 */}
         <ProblemSection
           problemData={problemData}
           activeTab={activeTab}
@@ -122,7 +129,7 @@ const ProblemDetailPage: React.FC = () => {
           isAnonymous={isAnonymous}
         />
 
-        {/* 오른쪽 섹션 */}
+        {/* 오른쪽: 코드 에디터 */}
         <CodeEditorSection
           language={language}
           code={code}
@@ -132,7 +139,6 @@ const ProblemDetailPage: React.FC = () => {
           selectedTestCase={selectedTestCase}
           setSelectedTestCase={setSelectedTestCase}
           problemId={problemId}
-          setActiveTab={handleTabChange}
           onStopTimer={stopTimer}
           onSubmit={handleSubmit}
         />

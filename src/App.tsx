@@ -1,5 +1,6 @@
 // src/App.tsx
 import './App.css';
+import { useEffect } from 'react';
 import ProblemList from './pages/ProblemList';
 import { Routes, Route } from 'react-router-dom';
 import RankingPage from './pages/RankingPage';
@@ -12,8 +13,15 @@ import LoginPage from './features/auth/pages/LoginPage';
 import SignupPage from './features/auth/pages/SignupPage';
 import ProfileSetting from './pages/ProfileSetting'; // ✅ 프로필 설정 페이지
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
+import { useAuthStore } from './stores/useAuthStore';
 
 function App() {
+  const refresh = useAuthStore((s) => s.refresh);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
   return (
     <Routes>
       <Route path="/" element={<HomePage />} /> {/* ✅ 루트 경로 추가 */}

@@ -75,9 +75,8 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
         {activeTab === '제출내역' && (
           <div className="w-full h-full">
             {isAnonymous ? (
-              <div className="text-gray-500 text-base text-center py-50 font-inter">
-                제출 내역은 로그인 후 확인할 수 있습니다.
-                <br />
+              <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)] text-gray-500 text-base font-inter">
+                <p className="mb-4">제출 내역은 로그인 후 확인할 수 있습니다.</p>
                 <button
                   type="button"
                   className="text-PRIMARY font-bold bg-transparent border-none p-0 m-0 align-baseline underline cursor-pointer font-inter"
@@ -97,7 +96,7 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
 
         {activeTab === '콘솔' && (
           <div className="w-full h-full p-4">
-            <Console output={submissionResult?.judge0Stderr || '> Ready to execute...'} />
+            <Console output={submissionResult?.judge0Stderr || '> 제출 준비중...'} />
           </div>
         )}
       </div>

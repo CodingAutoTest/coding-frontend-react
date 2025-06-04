@@ -3,7 +3,8 @@ import Editor from '@monaco-editor/react';
 import { TestCaseSection } from './TestCaseSection';
 import { ActionButtons } from './ActionButtons';
 import { TestCaseType, ProgrammingLanguage, SubmissionResultType } from '../types/problem.type';
-import { TabType } from '../constants/tab.constants';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { LoginModal } from '@/components/LoginModal';
 
 type CodeEditorSectionProps = {
   language: ProgrammingLanguage;
@@ -14,7 +15,6 @@ type CodeEditorSectionProps = {
   selectedTestCase: number;
   setSelectedTestCase: (index: number) => void;
   problemId: number;
-  setActiveTab: (tab: TabType) => void;
   onStopTimer: () => void;
   onSubmit: (result: SubmissionResultType) => Promise<void>;
 };
@@ -28,13 +28,21 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
   selectedTestCase,
   setSelectedTestCase,
   problemId,
-  setActiveTab,
   onStopTimer,
   onSubmit,
 }) => {
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = React.useState(false);
+  const [showLogin, setShowLogin] = React.useState(false);
+  const user = useAuthStore((s) => s.user);
+  const isAnonymous = !user;
   const input = testCases[selectedTestCase]?.input || '';
   const output = testCases[selectedTestCase]?.output || '';
+
+  const handleEditorClick = () => {
+    if (isAnonymous) {
+      setShowLogin(true);
+    }
+  };
 
   return (
     <section className="w-1/2 h-full flex flex-col gap-[20px]">
@@ -70,7 +78,19 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
                 )}
               </div>
             </div>
-            <div className="flex-1 h-full">
+            <div className="flex-1 h-full relative">
+              {isAnonymous && (
+                <div
+                  className="absolute inset-0 bg-black/50 flex items-center justify-center z-10 cursor-pointer"
+                  onClick={handleEditorClick}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <span className="text-white text-lg font-inter">
+                      로그인이 필요한 기능입니다
+                    </span>
+                  </div>
+                </div>
+              )}
               <Editor
                 height="100%"
                 defaultLanguage={language}
@@ -88,6 +108,7 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
                     horizontal: 'auto',
                   },
                   fixedOverflowWidgets: true,
+                  readOnly: isAnonymous,
                 }}
               />
             </div>
@@ -97,9 +118,10 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
           <ActionButtons
             problemId={problemId}
             testCases={testCases}
-            setActiveTab={setActiveTab}
             onStopTimer={onStopTimer}
             onSubmit={onSubmit}
+            isAnonymous={isAnonymous}
+            onLoginClick={() => setShowLogin(true)}
           />
         </footer>
       </div>
@@ -113,6 +135,9 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
           output={output}
         />
       </div>
+
+      {/* 로그인 모달 */}
+      <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
     </section>
   );
 };

@@ -3,7 +3,6 @@ import {
   ProblemType,
   TestCaseType,
   ExecuteResultType,
-  UserType,
   SubmissionResultType,
   SubmissionHistoryType,
 } from '../types/problem.type';
@@ -45,11 +44,6 @@ export const submitCode = async (
   });
 
   return unwrap<{ user_submission_problem_id: string }>(response).user_submission_problem_id;
-};
-
-export const fetchUser = async (): Promise<UserType> => {
-  const response = await api.get(`/users/nameAndImage`);
-  return unwrap<UserType>(response);
 };
 
 export const fetchProblemSubmissionResult = async (

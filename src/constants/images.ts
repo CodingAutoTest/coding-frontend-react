@@ -23,6 +23,7 @@ export const IMAGES = {
   ICONS: {
     MENU: menu,
     PROFILE: profile,
+    LOCK: '/images/icons/lock.svg',
   },
   PROBLEM_INFO: {
     TIME_LIMIT: timeLimitIcon,

@@ -17,7 +17,7 @@ export const Console: React.FC<ConsoleProps> = ({ output }) => {
 
       {/* 콘솔 내용 */}
       <div className="flex-1 p-4 font-mono text-sm text-gray-300 overflow-auto">
-        <pre className="whitespace-pre-wrap break-words">{output || '> Ready to execute...'}</pre>
+        <pre className="whitespace-pre-wrap break-words">{output || '> 제출 준비중...'}</pre>
       </div>
     </div>
   );

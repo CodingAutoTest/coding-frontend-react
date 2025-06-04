@@ -1,4 +1,4 @@
-import { LoginForm } from '../components/LoginForm';
+import LoginForm from '../components/LoginForm';
 import { LeftBanner } from '../components/LeftBanner';
 
 export default function LoginPage() {

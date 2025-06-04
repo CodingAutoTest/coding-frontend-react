@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { SubmissionResultType } from '../types/problem.type';
 import { IMAGES } from '@/constants/images';
 import { ScoreCard } from './ScoreCard';
-import { useUserInfo } from '../hooks/useUserInfo';
+import { useAuthStore } from '@/stores/useAuthStore';
 
 type SubmissionResultProps = {
   resultSummary?: SubmissionResultType | null;
 };
 
 export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummary }) => {
-  const { user } = useUserInfo();
+  const { user } = useAuthStore();
   const isAnonymous = !user || user.name === '익명';
   const [showCelebration, setShowCelebration] = useState(false);
   const [audio] = useState<HTMLAudioElement | null>(
@@ -117,7 +117,9 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
 
       <div className="bg-white p-6 rounded-2xl shadow-md w-full">
         <div className="text-lg font-inter mb-4">AI 피드백</div>
-        {isAnonymous ? (
+        {isEmpty ? (
+          <div className="text-gray-500 text-base">제출을 하고 결과를 받아보세요!</div>
+        ) : isAnonymous ? (
           <div className="text-gray-500 text-base text-center py-8 font-inter">
             AI 피드백은 로그인 후 확인할 수 있습니다.
             <br />
@@ -129,8 +131,6 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
               로그인 하러 가기
             </button>
           </div>
-        ) : isEmpty ? (
-          <div className="text-gray-500 text-base">제출을 하고 결과를 받아보세요!</div>
         ) : (
           <>
             <div className="text-gray-700 text-[15px] leading-relaxed whitespace-pre-line">

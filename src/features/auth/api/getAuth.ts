@@ -1,35 +1,48 @@
 import { api } from '@/lib/axios';
-import axios from 'axios';
 
-export type SignupPayload = {
+/* ── 타입 정의 ─────────────────────────────── */
+export type Role = 'user' | 'student' | 'teacher' | 'admin';
+
+export interface User {
+  id: number;
+  name: string;
+  profileImage: string;
+  role: Role;
+  teacherStatus?: 'none' | 'pending' | 'approved' | 'rejected';
+}
+
+export interface SignupPayload {
   email: string;
   pw: string;
   name: string;
-};
-
-export type LoginPayload = {
+  profileImage: string;
+}
+export interface LoginPayload {
   email: string;
   pw: string;
-};
+}
+
+/* ── API 함수 ─────────────────────────────── */
 
 export async function signup(payload: SignupPayload): Promise<void> {
   await api.post('/auth/signup', payload);
 }
 
-export async function login(payload: LoginPayload): Promise<void> {
-  try {
-    const response = await api.post('/auth/login', payload);
-    const token = response.headers['authorization'];
+export async function login(payload: LoginPayload): Promise<{ token: string; user: User }> {
+  const res = await api.post<User>('/auth/login', payload);
 
-    if (!token) {
-      throw new Error('인증 토큰이 없습니다');
-    }
+  // 1) 토큰 추출 (Authorization: Bearer xxx)
+  const raw = res.headers['authorization'];
+  if (!raw) throw new Error('인증 토큰이 없습니다');
+  const token = raw.startsWith('Bearer ') ? raw : `Bearer ${raw}`;
 
-    localStorage.setItem('token', token);
-  } catch (error) {
-    if (axios.isAxiosError(error) && error.response?.status === 401) {
-      throw new Error('이메일 또는 비밀번호가 올바르지 않습니다');
-    }
-    throw error;
-  }
+  // 2) body → User DTO
+  const user = res.data;
+  return { token, user };
+}
+
+/* 토큰 복원용 */
+export async function fetchMe(): Promise<User> {
+  const { data } = await api.get<User>('/auth/me');
+  return data;
 }

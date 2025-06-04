@@ -5,14 +5,14 @@ import { useCodeSubmit } from '@/features/problem/hooks/useCodeSubmit';
 import { TestCaseType, SubmissionResultType } from '@/features/problem/types/problem.type';
 import { IMAGES } from '@/constants/images';
 import { LoginModal } from '@/components/LoginModal';
-import { TabType } from '../constants/tab.constants';
 
 type ActionButtonsProps = {
   problemId: number;
   testCases: TestCaseType[];
-  setActiveTab: (tab: TabType) => void;
   onStopTimer: () => void;
   onSubmit: (result: SubmissionResultType) => Promise<void>;
+  isAnonymous?: boolean;
+  onLoginClick?: () => void;
 };
 
 export const ActionButtons: React.FC<ActionButtonsProps> = ({
@@ -20,6 +20,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   testCases,
   onStopTimer,
   onSubmit,
+  isAnonymous = false,
+  onLoginClick,
 }) => {
   const { code } = useProblemStore();
   const { execute } = useCodeExecution();
@@ -30,9 +32,6 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   const [modalType, setModalType] = useState<'loading' | 'result' | 'alert' | null>(null);
   const [modalMessage, setModalMessage] = useState('');
   const [showLoginModal, setShowLoginModal] = useState(false);
-
-  const token = localStorage.getItem('token');
-  const isAnonymous = !token;
 
   const openAlert = (message: string) => {
     setModalMessage(message);
@@ -71,8 +70,8 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
   };
 
   const handleSubmit = async () => {
-    if (isAnonymous) {
-      setShowLoginModal(true);
+    if (isAnonymous && onLoginClick) {
+      onLoginClick();
       return;
     }
 
