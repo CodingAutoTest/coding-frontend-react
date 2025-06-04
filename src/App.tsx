@@ -12,6 +12,7 @@ import LoginPage from './features/auth/pages/LoginPage';
 import SignupPage from './features/auth/pages/SignupPage';
 import ProfileSetting from './pages/ProfileSetting'; // ✅ 프로필 설정 페이지
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
+import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/profile-setting" element={<ProfileSetting />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/landing" element={<LandingPage />} />
     </Routes>
   );
 }
