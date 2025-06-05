@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // ✅ 추가
 import { LeftBannerProps } from '../types/components.types';
 import logo from '../../../assets/logo_icons/problem_logo.svg';
 
@@ -11,6 +12,8 @@ export function LeftBanner({ title, subtitle }: LeftBannerProps) {
   const titleInputRef = useRef<HTMLInputElement>(null);
   const subtitleInputRef = useRef<HTMLInputElement>(null);
 
+  const navigate = useNavigate(); // ✅ 추가
+
   const handleKeyDown = (e: React.KeyboardEvent, onDone: () => void) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -20,7 +23,12 @@ export function LeftBanner({ title, subtitle }: LeftBannerProps) {
 
   return (
     <div className="w-1/2 bg-[#4B61D1] text-white flex flex-col justify-start px-16 pt-32">
-      <img src={logo} alt="logo" className="w-16 mb-8" />
+      <img
+        src={logo}
+        alt="logo"
+        className="w-16 mb-8 cursor-pointer"
+        onClick={() => navigate('/')} // ✅ 로고 클릭 시 homepage로 이동
+      />
 
       {isEditingTitle ? (
         <input
