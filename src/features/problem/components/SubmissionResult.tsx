@@ -15,7 +15,6 @@ export const SubmissionResult: React.FC<SubmissionResultProps> = ({ resultSummar
   const [audio] = useState<HTMLAudioElement | null>(
     typeof Audio !== 'undefined' ? new Audio('/assets/sound/congrats.wav') : null,
   );
-  console.log('resultSummary:', resultSummary);
   useEffect(() => {
     if (resultSummary?.aiFeedbackDto.totalScore === 40) {
       setShowCelebration(true);

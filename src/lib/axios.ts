@@ -12,28 +12,23 @@ api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   const url = config.url || '';
 
-  // 문제 상태(status) 필터링 또는 단순 로그인 여부로 판단
-  const shouldAddToken =
-    !url.startsWith('/auth') &&
-    !url.startsWith('/tags') &&
-    !url.startsWith('/testcases') &&
-    !(url.startsWith('/problems') && !token); // 로그인한 경우에는 붙임
+  // 인증이 필요한 요청에만 토큰 추가
+  const shouldAddToken = !url.startsWith('/auth');
 
   if (shouldAddToken && token) {
-    config.headers.Authorization = token;
+    config.headers.Authorization = `Bearer ${token}`;
   }
 
   return config;
 });
 
-// api.interceptors.response.use(
-//   (res) => res,
-//   (error) => {
-//     if (error.response?.status >= 400) {
-//       window.location.href = '/error';
-//     }
-//     return Promise.reject(error);
-//   },
-// );
+// 응답 인터셉터 추가
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    console.error('API Error:', error.response?.status, error.response?.data);
+    return Promise.reject(error);
+  },
+);
 
 export const unwrap = <T>(response: AxiosResponse): T => response.data.result.result;

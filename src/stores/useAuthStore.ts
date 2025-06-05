@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import axios from 'axios';
 import * as authApi from '@/features/auth/api/getAuth';
 
 interface AuthState {
@@ -23,31 +22,31 @@ export const useAuthStore = create<AuthState>((set) => ({
     const { token, user } = await authApi.login(payload);
 
     localStorage.setItem('token', token);
-    axios.defaults.headers.common.Authorization = token;
-
+    localStorage.setItem('user', JSON.stringify(user));
     set({ token, user });
   },
 
   /* 로그아웃 */
   logout: () => {
     localStorage.removeItem('token');
-    delete axios.defaults.headers.common.Authorization;
+    localStorage.removeItem('user');
     set({ user: undefined, token: undefined });
   },
 
   /* 새로고침 시 세션 복구 */
   refresh: async () => {
     const token = localStorage.getItem('token');
-    if (!token) return;
+    const savedUser = localStorage.getItem('user');
 
-    axios.defaults.headers.common.Authorization = token;
+    if (!token || !savedUser) return;
 
     try {
-      const me = await authApi.fetchMe();
-      set({ token, user: me });
-    } catch {
+      const user = JSON.parse(savedUser);
+      set({ token, user });
+    } catch (error) {
+      console.error('Refresh - Error:', error);
       localStorage.removeItem('token');
-      delete axios.defaults.headers.common.Authorization;
+      localStorage.removeItem('user');
       set({ user: undefined, token: undefined });
     }
   },

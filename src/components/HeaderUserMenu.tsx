@@ -5,8 +5,14 @@ import HeaderNavButton from './HeaderNavButton';
 import HeaderProfileButton from './ProfileButton';
 
 import { useAuthStore } from '@/stores/useAuthStore';
-import { fetchMe } from '@/features/auth/api/getAuth'; // 프로필 보강용
 import defaultProfile from '@/assets/problem-list/default-profile.svg';
+
+// 프로필 이미지 URL을 완전한 URL로 변환
+function getFullProfileImageUrl(profileImage: string | undefined) {
+  if (!profileImage) return defaultProfile;
+  if (profileImage.startsWith('http')) return profileImage;
+  return `http://localhost:8080${profileImage}`;
+}
 
 export default function HeaderUserMenu() {
   /* 전역 인증 상태 */
@@ -21,33 +27,20 @@ export default function HeaderUserMenu() {
 
   /* 1) user가 바뀔 때 프로필 이미지 결정 */
   useEffect(() => {
-    (async () => {
-      if (!user) {
-        // 미로그인
-        setProfileImage(defaultProfile);
-        return;
-      }
+    if (!user) {
+      // 미로그인
+      setProfileImage(defaultProfile);
+      return;
+    }
 
-      // user 객체에 profileImage 필드가 이미 있으면 사용
-      if ((user as any).profileImage) {
-        setProfileImage((user as any).profileImage);
-        return;
-      }
-
-      // 없으면 /auth/me(혹은 /user/me) 재호출해서 보강
-      try {
-        const me = await fetchMe();
-        setProfileImage(me.profileImage ?? defaultProfile);
-      } catch {
-        setProfileImage(defaultProfile);
-      }
-    })();
+    // user 객체에 profileImage 필드가 있으면 사용
+    setProfileImage(getFullProfileImageUrl(user.profileImage));
   }, [user]);
 
   /* 로그아웃 */
   const handleLogout = () => {
     logout(); // 토큰·user 초기화
-    navigate('/');
+    navigate('/login');
   };
 
   return (

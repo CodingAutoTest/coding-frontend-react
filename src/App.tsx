@@ -14,6 +14,11 @@ import SignupPage from './features/auth/pages/SignupPage';
 import ProfileSetting from './pages/ProfileSetting'; // ✅ 프로필 설정 페이지
 import ResetPasswordPage from './features/auth/pages/ResetPasswordPage';
 import { useAuthStore } from './stores/useAuthStore';
+import ClassGate from './features/class/gates/ClassGate';
+import TeacherClassListPage from './features/class/pages/TeacherClassListPage';
+import StudentClassListPage from './features/class/pages/StudentClassListPage';
+import ClassDetailPage from './features/class/pages/ClassDetailPage';
+import ProblemCreatePage from './features/problem/pages/ProblemCreatePage';
 
 function App() {
   const refresh = useAuthStore((s) => s.refresh);
@@ -26,6 +31,7 @@ function App() {
     <Routes>
       <Route path="/" element={<HomePage />} /> {/* ✅ 루트 경로 추가 */}
       <Route path="/problems" element={<ProblemList />} />
+      <Route path="/problems/create" element={<ProblemCreatePage />} />
       <Route path="/rankings" element={<RankingPage />} />
       <Route path="/premium" element={<PremiumInfoPage />} />
       <Route path="*" element={<ErrorPage />} />
@@ -36,6 +42,12 @@ function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/profile-setting" element={<ProfileSetting />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      {/* 클래스 관련 라우트 */}
+      <Route path="/class" element={<ClassGate />}>
+        <Route index element={<TeacherClassListPage />} />
+        <Route path="student" element={<StudentClassListPage />} />
+        <Route path=":classId" element={<ClassDetailPage />} />
+      </Route>
     </Routes>
   );
 }

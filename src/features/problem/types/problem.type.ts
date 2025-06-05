@@ -70,3 +70,51 @@ export type SubmissionHistoryType = {
   status: boolean;
   userName: string;
 };
+
+export type Difficulty = number;
+export type Category = 'BASIC' | 'ARRAY' | 'STRING' | 'GRAPH' | 'DP' | 'MATH';
+export type Language = 'PYTHON' | 'JAVA' | 'CPP' | 'JAVASCRIPT';
+
+export interface User {
+  id: number;
+  name: string;
+  profileImage: string;
+  role: 'teacher' | 'student';
+}
+
+export interface TestCase {
+  input: string;
+  output: string;
+  isExample: boolean;
+}
+
+export interface Problem {
+  id: number;
+  title: string;
+  description: string;
+  difficulty: Difficulty;
+  category: Category;
+  timeLimit: number;
+  memoryLimit: number;
+  testCases: TestCase[];
+  createdAt: string;
+  updatedAt: string;
+  createdBy: User;
+}
+
+export interface ProblemDescription {
+  description: string;
+  descriptionDetail: string;
+  inputFormat: string;
+  outputFormat: string;
+  constraints: string;
+}
+
+export interface ProblemWithDescription extends Problem {
+  description: string;
+  descriptionDetail: string;
+  inputFormat: string;
+  outputFormat: string;
+  constraints: string;
+  algorithm: string;
+}

@@ -32,7 +32,6 @@ export const getProblems = async (
       ...(search && { search }),
     },
   });
-  console.log('response', response);
   return unwrap<ProblemResponse>(response);
 };
 

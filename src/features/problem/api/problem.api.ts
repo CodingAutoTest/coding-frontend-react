@@ -59,7 +59,6 @@ export const fetchProblemSubmissionHistory = async (
   const response = await api.get<{ result: SubmissionHistoryType[] }>(
     `/submissions/history/${problemId}`,
   );
-  console.log('제출 내역 API 원본 응답:', response);
   return unwrap<SubmissionHistoryType[]>(response);
 };
 

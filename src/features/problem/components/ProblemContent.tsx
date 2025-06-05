@@ -43,7 +43,6 @@ export const ProblemSection: React.FC<ProblemSectionProps> = ({
   isAnonymous,
 }) => {
   const { submissionHistory } = useProblemStore();
-  console.log(submissionResult?.judge0Stderr);
   return (
     <div className="w-1/2 bg-problem-COMPONENT_HEADER rounded-[10px] shadow-md flex flex-col">
       <div className="sticky top-[80px] z-40 bg-problem-COMPONENT_HEADER rounded-t-[10px]">

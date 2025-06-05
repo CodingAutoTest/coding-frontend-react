@@ -17,9 +17,18 @@ export interface SignupPayload {
   name: string;
   profileImage: string;
 }
+
 export interface LoginPayload {
   email: string;
   pw: string;
+}
+
+export interface LoginResponse {
+  userId: number;
+  name: string;
+  profileImage: string;
+  role: Role;
+  accessToken: string;
 }
 
 /* ── API 함수 ─────────────────────────────── */
@@ -29,20 +38,16 @@ export async function signup(payload: SignupPayload): Promise<void> {
 }
 
 export async function login(payload: LoginPayload): Promise<{ token: string; user: User }> {
-  const res = await api.post<User>('/auth/login', payload);
+  const res = await api.post<LoginResponse>('/auth/login', payload);
+  const { userId, name, profileImage, role, accessToken } = res.data;
 
-  // 1) 토큰 추출 (Authorization: Bearer xxx)
-  const raw = res.headers['authorization'];
-  if (!raw) throw new Error('인증 토큰이 없습니다');
-  const token = raw.startsWith('Bearer ') ? raw : `Bearer ${raw}`;
+  // User 객체로 변환
+  const user: User = {
+    id: userId,
+    name,
+    profileImage,
+    role,
+  };
 
-  // 2) body → User DTO
-  const user = res.data;
-  return { token, user };
-}
-
-/* 토큰 복원용 */
-export async function fetchMe(): Promise<User> {
-  const { data } = await api.get<User>('/auth/me');
-  return data;
+  return { token: accessToken, user };
 }

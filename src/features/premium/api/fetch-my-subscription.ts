@@ -19,7 +19,6 @@ export const fetchMySubscription = async (): Promise<SubscriptionInfo | null> =>
     return unwrap<SubscriptionInfo>(response);
   } catch (error: any) {
     if (error.response?.status === 403) {
-      console.log('오류');
       return null;
     }
     throw error;

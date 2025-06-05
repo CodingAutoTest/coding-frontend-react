@@ -47,7 +47,6 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
     if (!code.trim()) return openAlert('코드를 먼저 작성해주세요.');
     if (!testCases.length) return openAlert('테스트 케이스가 없습니다.');
 
-    console.log('실행 버튼 클릭 - 타이머 정지');
     onStopTimer();
     setIsExecuting(true);
     setModalType('loading');

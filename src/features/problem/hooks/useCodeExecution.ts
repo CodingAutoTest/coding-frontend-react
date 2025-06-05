@@ -1,7 +1,7 @@
 import { useProblemStore } from '@/features/problem/stores/useProblemStore';
 import { executeCode } from '../api/problem.api';
 import { useState } from 'react';
-import { ExecuteResultType } from '../types/problem.api.type';
+import { ExecuteResultType } from '@/features/problem/types/problem.type';
 
 export const useCodeExecution = () => {
   const { code, language } = useProblemStore();
