@@ -8,7 +8,7 @@ const Ad = () => {
       </div>
 
       {/* 왼쪽 텍스트 영역 */}
-      <div className="flex flex-col gap-2 z-10">
+      <div className="flex flex-col gap-2">
         <h2 className="text-white text-2xl font-bold font-inter">AI 기반 코딩테스트 코오테</h2>
         <p className="text-white/80 text-sm font-inter">
           실전같은 코딩테스트 환경에서 실력을 키워보세요
