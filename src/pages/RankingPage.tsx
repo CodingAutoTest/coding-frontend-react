@@ -38,7 +38,12 @@ const RankingPage = () => {
         {/* 🔍 검색창 */}
         <div className="w-full">
           <div className="flex justify-end">
-            <SearchBar placeholder="닉네임 검색" onSearch={setSearchName} width="403px" />
+            <SearchBar
+              placeholder="닉네임 검색"
+              onSearch={setSearchName}
+              width="403px"
+              value={searchName}
+            />
           </div>
         </div>
 

@@ -7,6 +7,7 @@ type SearchBarProps = {
   icon?: boolean;
   width?: string;
   debounceTime?: number;
+  value: string;
 };
 
 const SearchBar = ({
@@ -15,8 +16,13 @@ const SearchBar = ({
   icon = true,
   width = '407px',
   debounceTime = 300,
+  value,
 }: SearchBarProps) => {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState(value);
+
+  useEffect(() => {
+    setSearchValue(value);
+  }, [value]);
 
   useEffect(() => {
     const timer = setTimeout(() => {

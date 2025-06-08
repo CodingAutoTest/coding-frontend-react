@@ -23,11 +23,11 @@ const MainFilterMenu: FC = () => {
     handleButtonSelect,
     handleAlgorithmClose,
     setSearch,
+    search,
   } = useFilterStore();
 
   const [algorithmOptions, setAlgorithmOptions] = useState<{ text: string; value: number }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const isLogin = useAuthStore((state) => state.isLogin);
 
   const problemStatusButtonRef = useRef<HTMLButtonElement>(null);
@@ -53,13 +53,6 @@ const MainFilterMenu: FC = () => {
 
     fetchAlgorithmTags();
   }, []);
-
-  const filteredAlgorithmOptions =
-    searchQuery.trim() === ''
-      ? algorithmOptions
-      : algorithmOptions.filter((option) =>
-          option.text.toLowerCase().includes(searchQuery.toLowerCase()),
-        );
 
   const problemStatusOptions = [
     { text: '미해결', value: 'unsolved' },
@@ -146,19 +139,23 @@ const MainFilterMenu: FC = () => {
               />
               <AlgorithmPopup
                 isOpen={isAlgorithmOpen}
-                options={filteredAlgorithmOptions}
+                options={algorithmOptions}
                 selectedValue={selectedAlgorithm}
                 onChange={setSelectedAlgorithm}
                 onClose={handleAlgorithmClose}
                 onApply={setAppliedAlgorithm}
                 isLoading={isLoading}
-                onSearch={setSearchQuery}
               />
             </div>
           </div>
           <ResetButton />
         </div>
-        <SearchBar placeholder="문제 검색" onSearch={handleSearch} debounceTime={300} />
+        <SearchBar
+          placeholder="문제 검색"
+          onSearch={handleSearch}
+          debounceTime={300}
+          value={search}
+        />
       </div>
       <div className="flex flex-wrap gap-2">
         {selectedProblemStatus && (

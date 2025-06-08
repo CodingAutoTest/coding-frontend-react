@@ -13,7 +13,6 @@ type AlgorithmButtonProps = {
   onClose: () => void;
   onApply: (value: number) => void;
   isLoading?: boolean;
-  onSearch: (value: string) => void;
 };
 
 const AlgorithmPopup = ({
@@ -24,17 +23,17 @@ const AlgorithmPopup = ({
   onClose,
   onApply,
   isLoading = false,
-  onSearch,
 }: AlgorithmButtonProps) => {
   const [searchValue, setSearchValue] = useState('');
+  const [filteredOptions, setFilteredOptions] = useState(options);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onSearch(searchValue);
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchValue, onSearch]);
+    const filtered =
+      !searchValue || searchValue.trim() === ''
+        ? options
+        : options.filter((option) => option.text.toLowerCase().includes(searchValue.toLowerCase()));
+    setFilteredOptions(filtered);
+  }, [searchValue, options]);
 
   if (!isOpen) return null;
 
@@ -76,6 +75,7 @@ const AlgorithmPopup = ({
             width="310px"
             onSearch={setSearchValue}
             debounceTime={300}
+            value={searchValue}
           />
         </header>
 
@@ -84,12 +84,12 @@ const AlgorithmPopup = ({
             <div className="w-full h-full flex items-center justify-center">
               <div className="text-DISABLED">로딩 중...</div>
             </div>
-          ) : options.length === 0 ? (
+          ) : filteredOptions.length === 0 ? (
             <div className="w-full h-full flex items-center justify-center">
               <div className="text-DISABLED">검색 결과가 없습니다.</div>
             </div>
           ) : (
-            options.map((option) => (
+            filteredOptions.map((option) => (
               <AlgorithmButton
                 key={option.value}
                 text={option.text}
