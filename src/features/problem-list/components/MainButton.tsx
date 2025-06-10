@@ -1,12 +1,39 @@
 import { forwardRef } from 'react';
 import ArrowIcon from './ArrowIcon';
 
+type ButtonVariant = 'default' | 'selected' | 'disabled';
+
 type MainButtonProps = {
   text: string;
   icon?: boolean;
   disabled?: boolean;
   isSelected?: boolean;
   onSelect?: () => void;
+};
+
+const getButtonStyles = (variant: ButtonVariant) => {
+  const styles = {
+    default: {
+      text: 'text-DEFAULT',
+      bg: 'bg-white',
+      outline: 'outline-DEFAULT',
+      icon: 'text-DEFAULT',
+    },
+    selected: {
+      text: 'text-white',
+      bg: 'bg-PRIMARY',
+      outline: 'outline-PRIMARY',
+      icon: 'text-white',
+    },
+    disabled: {
+      text: 'text-DISABLED',
+      bg: 'bg-white',
+      outline: 'outline-DISABLED',
+      icon: 'text-DISABLED',
+    },
+  };
+
+  return styles[variant];
 };
 
 const MainButton = forwardRef<HTMLButtonElement, MainButtonProps>(
@@ -16,14 +43,13 @@ const MainButton = forwardRef<HTMLButtonElement, MainButtonProps>(
       onSelect?.();
     };
 
-    const textColor = disabled ? 'text-DISABLED' : isSelected ? 'text-white' : 'text-DEFAULT';
-    const bgColor = disabled ? 'bg-white' : isSelected ? 'bg-PRIMARY' : 'bg-white';
-    const outlineColor = disabled
-      ? 'outline-DISABLED'
-      : isSelected
-        ? 'outline-PRIMARY'
-        : 'outline-DEFAULT';
-    const iconColor = disabled ? 'text-DISABLED' : isSelected ? 'text-white' : 'text-DEFAULT';
+    const variant: ButtonVariant = disabled ? 'disabled' : isSelected ? 'selected' : 'default';
+    const {
+      text: textColor,
+      bg: bgColor,
+      outline: outlineColor,
+      icon: iconColor,
+    } = getButtonStyles(variant);
 
     return (
       <button

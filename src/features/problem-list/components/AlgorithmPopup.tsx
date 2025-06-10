@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import AlgorithmButton from './AlgorithmButton';
 import SearchBar from '@/components/SearchBar';
+import { FilterOption } from '../types/filter';
 
-type AlgorithmButtonProps = {
+type AlgorithmPopupProps = {
   isOpen: boolean;
-  options: {
-    text: string;
-    value: number;
-  }[];
+  options: FilterOption<number>[];
   selectedValue: number;
   onChange: (value: number) => void;
   onClose: () => void;
@@ -23,7 +21,7 @@ const AlgorithmPopup = ({
   onClose,
   onApply,
   isLoading = false,
-}: AlgorithmButtonProps) => {
+}: AlgorithmPopupProps) => {
   const [searchValue, setSearchValue] = useState('');
   const [filteredOptions, setFilteredOptions] = useState(options);
 
@@ -38,11 +36,7 @@ const AlgorithmPopup = ({
   if (!isOpen) return null;
 
   const handleChange = (value: number) => {
-    if (value === selectedValue) {
-      onChange(0);
-    } else {
-      onChange(value);
-    }
+    onChange(value === selectedValue ? 0 : value);
   };
 
   const handleOverlayClick = () => {
@@ -56,6 +50,34 @@ const AlgorithmPopup = ({
   const handleApply = () => {
     onApply(selectedValue);
     onClose();
+  };
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="text-DISABLED">로딩 중...</div>
+        </div>
+      );
+    }
+
+    if (filteredOptions.length === 0) {
+      return (
+        <div className="w-full h-full flex items-center justify-center">
+          <div className="text-DISABLED">검색 결과가 없습니다.</div>
+        </div>
+      );
+    }
+
+    return filteredOptions.map((option) => (
+      <AlgorithmButton
+        key={option.value}
+        text={option.text}
+        value={option.value}
+        selectedValue={selectedValue}
+        onChange={handleChange}
+      />
+    ));
   };
 
   return (
@@ -80,25 +102,7 @@ const AlgorithmPopup = ({
         </header>
 
         <main className="flex flex-wrap content-start items-start justify-start w-full h-[434px] gap-4 overflow-y-auto scrollbar-hide">
-          {isLoading ? (
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-DISABLED">로딩 중...</div>
-            </div>
-          ) : filteredOptions.length === 0 ? (
-            <div className="w-full h-full flex items-center justify-center">
-              <div className="text-DISABLED">검색 결과가 없습니다.</div>
-            </div>
-          ) : (
-            filteredOptions.map((option) => (
-              <AlgorithmButton
-                key={option.value}
-                text={option.text}
-                value={option.value}
-                selectedValue={selectedValue}
-                onChange={handleChange}
-              />
-            ))
-          )}
+          {renderContent()}
         </main>
 
         <div className="w-full">

@@ -1,27 +1,25 @@
 import { useRef } from 'react';
 import DropdownMenu from './DropdownMenu';
 import useClickOutside from '@/hooks/useClickOutside';
+import { FilterOption } from '../types/filter';
 
-type DropdownProps = {
+type DropdownProps<T extends string> = {
   isOpen: boolean;
-  options: {
-    text: string;
-    value: string;
-  }[];
-  selectedValue: string;
-  onChange: (value: string) => void;
+  options: FilterOption<T>[];
+  selectedValue: T;
+  onChange: (value: T) => void;
   onClose: () => void;
   buttonRef: React.RefObject<HTMLElement>;
 };
 
-const Dropdown = ({
+const Dropdown = <T extends string>({
   isOpen,
   options,
   selectedValue,
   onChange,
   onClose,
   buttonRef,
-}: DropdownProps) => {
+}: DropdownProps<T>) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useClickOutside([dropdownRef, buttonRef], () => {

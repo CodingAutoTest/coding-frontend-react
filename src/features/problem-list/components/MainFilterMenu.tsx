@@ -1,13 +1,14 @@
-import { FC, useEffect, useState, useRef } from 'react';
+import { FC, useRef } from 'react';
 import MainButton from './MainButton';
 import Dropdown from './Dropdown';
 import AlgorithmPopup from './AlgorithmPopup';
 import TagButton from './TagButton';
 import { useFilterStore } from '../stores/useFilterStore';
-import { getAlgorithmTags } from '../api/tag-api';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { ResetButton } from './ResetButton';
 import SearchBar from '@/components/SearchBar';
+import { PROBLEM_STATUS_OPTIONS, DIFFICULTY_OPTIONS } from '../constants/filter-options';
+import { useAlgorithmTags } from '../hooks/useAlgorithmTags';
 
 const MainFilterMenu: FC = () => {
   const {
@@ -26,48 +27,11 @@ const MainFilterMenu: FC = () => {
     search,
   } = useFilterStore();
 
-  const [algorithmOptions, setAlgorithmOptions] = useState<{ text: string; value: number }[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const { algorithmOptions, isLoading } = useAlgorithmTags();
   const isLogin = useAuthStore((state) => state.isLogin);
 
   const problemStatusButtonRef = useRef<HTMLButtonElement>(null);
   const difficultyButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const fetchAlgorithmTags = async () => {
-      try {
-        setIsLoading(true);
-        const tags = await getAlgorithmTags();
-        const options = tags.map((tag) => ({
-          text: tag.name,
-          value: tag.id,
-        }));
-        setAlgorithmOptions(options);
-      } catch (error) {
-        console.error('Failed to fetch algorithm tags:', error);
-        setAlgorithmOptions([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAlgorithmTags();
-  }, []);
-
-  const problemStatusOptions = [
-    { text: '미해결', value: 'unsolved' },
-    { text: '해결중', value: 'solving' },
-    { text: '해결완료', value: 'solved' },
-  ];
-
-  const difficultyOptions = [
-    { text: '브론즈', value: 'bronze' },
-    { text: '실버', value: 'silver' },
-    { text: '골드', value: 'gold' },
-    { text: '플래티넘', value: 'platinum' },
-    { text: '다이아', value: 'diamond' },
-    { text: '마스터', value: 'master' },
-  ];
 
   const isProblemStatusOpen = selectedButton === 'problemStatus';
   const isDifficultyOpen = selectedButton === 'difficulty';
@@ -77,12 +41,11 @@ const MainFilterMenu: FC = () => {
     setSearch(value);
   };
 
-  const getProblemStatusText = (status: string) => {
-    return problemStatusOptions.find((option) => option.value === status)?.text || '';
-  };
-
-  const getDifficultyText = (difficulty: string) => {
-    return difficultyOptions.find((option) => option.value === difficulty)?.text || '';
+  const getOptionText = (
+    options: typeof PROBLEM_STATUS_OPTIONS | typeof DIFFICULTY_OPTIONS,
+    value: string,
+  ) => {
+    return options.find((option) => option.value === value)?.text || '';
   };
 
   return (
@@ -101,7 +64,7 @@ const MainFilterMenu: FC = () => {
               />
               <Dropdown
                 isOpen={isProblemStatusOpen}
-                options={problemStatusOptions}
+                options={PROBLEM_STATUS_OPTIONS}
                 selectedValue={selectedProblemStatus || ''}
                 onChange={(value) => {
                   if (value === '') {
@@ -124,7 +87,7 @@ const MainFilterMenu: FC = () => {
               />
               <Dropdown
                 isOpen={isDifficultyOpen}
-                options={difficultyOptions}
+                options={DIFFICULTY_OPTIONS}
                 selectedValue={selectedDifficulty}
                 onChange={setSelectedDifficulty}
                 onClose={() => handleButtonSelect('difficulty')}
@@ -160,13 +123,13 @@ const MainFilterMenu: FC = () => {
       <div className="flex flex-wrap gap-2">
         {selectedProblemStatus && (
           <TagButton
-            text={getProblemStatusText(selectedProblemStatus)}
+            text={getOptionText(PROBLEM_STATUS_OPTIONS, selectedProblemStatus)}
             onRemove={() => setSelectedProblemStatus('')}
           />
         )}
         {selectedDifficulty && (
           <TagButton
-            text={getDifficultyText(selectedDifficulty)}
+            text={getOptionText(DIFFICULTY_OPTIONS, selectedDifficulty)}
             onRemove={() => setSelectedDifficulty('')}
           />
         )}

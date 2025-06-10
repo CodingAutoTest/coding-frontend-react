@@ -1,19 +1,24 @@
 import uncheckedIcon from '@/assets/problem-list/unchecked-icon.svg';
 import checkedIcon from '@/assets/problem-list/checked-icon.svg';
 
-type DropdownMenuProps = {
+type DropdownMenuProps<T extends string> = {
   text: string;
-  value: string;
-  selectedValue: string;
-  onChange: (value: string) => void;
+  value: T;
+  selectedValue: T;
+  onChange: (value: T) => void;
 };
 
-const DropdownMenu = ({ text, value, selectedValue, onChange }: DropdownMenuProps) => {
+const DropdownMenu = <T extends string>({
+  text,
+  value,
+  selectedValue,
+  onChange,
+}: DropdownMenuProps<T>) => {
   const isChecked = value === selectedValue;
 
   const handleClick = () => {
     if (isChecked) {
-      onChange('');
+      onChange('' as T);
     } else {
       onChange(value);
     }

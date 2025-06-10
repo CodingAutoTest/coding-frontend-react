@@ -5,16 +5,19 @@ type AlgorithmButtonProps = {
   onChange: (value: number) => void;
 };
 
+const getButtonStyles = (isSelected: boolean) => ({
+  text: isSelected ? 'text-white' : 'text-DEFAULT',
+  bg: isSelected ? 'bg-PRIMARY' : 'bg-white',
+  outline: isSelected ? 'outline-PRIMARY' : 'outline-DISABLED',
+});
+
 const AlgorithmButton = ({ text, value, selectedValue, onChange }: AlgorithmButtonProps) => {
   const handleClick = () => {
     onChange(value);
   };
 
   const isSelected = selectedValue === value;
-
-  const textColor = isSelected ? 'text-white' : 'text-DEFAULT';
-  const bgColor = isSelected ? 'bg-PRIMARY' : 'bg-white';
-  const outlineColor = isSelected ? 'outline-PRIMARY' : 'outline-DISABLED';
+  const { text: textColor, bg: bgColor, outline: outlineColor } = getButtonStyles(isSelected);
 
   return (
     <button
