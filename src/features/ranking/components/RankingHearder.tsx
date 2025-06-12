@@ -1,6 +1,7 @@
 // src/features/ranking/components/RankingHeader.tsx
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
+import defaultProfileImg from '@/assets/profile.svg';
 
 type Props = {
   rank: number;
@@ -66,7 +67,7 @@ const RankingHeader: FC<Props> = ({
             <td className="w-[751px] pl-[100px] text-left py-[22px]">
               <div className="flex items-center space-x-3">
                 <img
-                  src={profileImage || '/tiers/default-profile.svg'}
+                  src={profileImage || defaultProfileImg}
                   alt="프로필 이미지"
                   className="w-6 h-6 rounded-full"
                 />
