@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRankingList } from '../hooks/useRankingList';
 import { getTierImage } from './TierIcon';
 import Pagination from '@/components/Pagination';
-
+import defaultProfileImg from '@/assets/profile.svg';
 type Props = {
   name: string;
   sort: 'rating' | 'solvedCount';
@@ -99,7 +99,7 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
               <td className="w-[751px] pl-[100px] text-left py-[22px]">
                 <div className="flex items-center space-x-3">
                   <img
-                    src={item.profileImage || '/tiers/default-profile.svg'}
+                    src={item.profileImage || defaultProfileImg}
                     alt="프로필"
                     className="w-6 h-6 rounded-full"
                   />

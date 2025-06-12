@@ -5,7 +5,7 @@ import TierBadge from '@/components/TierBadge';
 import StatCard from '@/features/problem/components/StatCard';
 import { useProblemDifficulty } from '@/hooks/useProblemDifficulty';
 import { IMAGES } from '@/constants/images';
-import LoadingSpinner from '@/features/profile/components/LoadingSpinner';
+// import LoadingSpinner from '@/features/problem/components/LoadingModal';
 import { getDifficultyIcon } from '@/constants/difficulty';
 
 type ProblemHeaderProps = {
@@ -36,9 +36,9 @@ export const ProblemHeader: React.FC<ProblemHeaderProps> = ({
   const tierIconSrc = difficulty ? getDifficultyIcon(difficulty.difficulty) : undefined;
   const tierImgLoaded = useImagePreload(tierIconSrc);
 
-  if (!isLoading && difficulty && !tierImgLoaded) {
-    return <LoadingSpinner />;
-  }
+  // if (!isLoading && difficulty && !tierImgLoaded) {
+  //   return <LoadingSpinner />;
+  // }
 
   return (
     <div className="w-full mb-5 px-[22px]">

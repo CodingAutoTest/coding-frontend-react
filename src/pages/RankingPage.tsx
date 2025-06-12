@@ -27,9 +27,11 @@ const RankingPage = () => {
 
   return (
     <>
-      <MainHeader />
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white">
+        <MainHeader />
+      </div>
 
-      <main className="w-full max-w-[1051px] mx-auto gap-[43px] flex flex-col">
+      <main className="w-full max-w-[1051px] mx-auto pt-[116px] gap-[43px] flex flex-col">
         {/* 👤 내 랭킹 or 로그인 안내 */}
         <section className="w-full">
           {myRanking ? <RankingHeader {...myRanking} /> : <NotLoggedInRankingCard />}

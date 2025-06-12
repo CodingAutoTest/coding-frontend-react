@@ -16,8 +16,6 @@ export const fetchMyRanking = async (): Promise<MyRanking | null> => {
     const response = await api.get('/rankings/me');
     return unwrap<MyRanking>(response);
   } catch (_) {
-    // 👇 로그인 안 한 사용자로 판단
-    console.warn('🔒 로그인되지 않은 사용자');
     return null;
   }
 };
