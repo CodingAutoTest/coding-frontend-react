@@ -1,4 +1,4 @@
-// src/features/premium/components/MySubscriptionInfo.tsx
+// src/features/premium/components/MyPremiumInfo.tsx
 import { FC } from 'react';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
   payMethod: string;
 };
 
-const MySubscriptionInfo: FC<Props> = ({
+const MyPremiumInfo: FC<Props> = ({
   planName,
   startDate,
   endDate,
@@ -19,30 +19,49 @@ const MySubscriptionInfo: FC<Props> = ({
   payMethod,
 }) => {
   return (
-    <section className="w-full border border-gray-200 rounded-lg p-6 shadow-sm bg-white">
-      <h2 className="text-xl font-semibold mb-4">내 프리미엄 구독 정보</h2>
-      <ul className="text-base text-gray-700 space-y-2">
-        <li>
-          <strong>플랜 이름:</strong> {planName}
-        </li>
-        <li>
-          <strong>결제 수단:</strong> {payMethod}
-        </li>
-        <li>
-          <strong>결제 금액:</strong> {amount.toLocaleString()}원
-        </li>
-        <li>
-          <strong>시작일:</strong> {new Date(startDate).toLocaleDateString()}
-        </li>
-        <li>
-          <strong>종료일:</strong> {new Date(endDate).toLocaleDateString()}
-        </li>
-        <li>
-          <strong>자동 갱신:</strong> {autoRenewal ? 'ON' : 'OFF'}
-        </li>
-      </ul>
+    <section className="w-full flex flex-col gap-8">
+      {/* ✅ 인트로는 박스 밖에 크게 표시 */}
+      <div>
+        <h1 className="text-6xl font-bold mb-4">프리미엄 정보</h1>
+        <p className="text-gray-500 text-lg">Pricing built for people just like you.</p>
+      </div>
+
+      {/* ✅ 구독 정보 박스 */}
+      <div className="w-full bg-white border border-gray-200 rounded-2xl p-8 shadow-sm space-y-8">
+        <h2 className="text-2xl font-semibold">내 프리미엄 구독 정보</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700 text-base">
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">플랜</span>
+            <span className="font-semibold">
+              <span className="inline-block px-3 py-1 bg-[#FFC130]/20 text-[#FFC130] rounded-full text-sm">
+                {planName}
+              </span>
+            </span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">결제 수단</span>
+            <span className="font-medium">{payMethod.toUpperCase()}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">결제 금액</span>
+            <span className="font-medium">{amount.toLocaleString()}원</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">시작일</span>
+            <span className="font-medium">{new Date(startDate).toLocaleDateString()}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">종료일</span>
+            <span className="font-medium">{new Date(endDate).toLocaleDateString()}</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm text-gray-500">자동 갱신</span>
+            <span className="font-medium">{autoRenewal ? 'ON' : 'OFF'}</span>
+          </div>
+        </div>
+      </div>
     </section>
   );
 };
 
-export default MySubscriptionInfo;
+export default MyPremiumInfo;
