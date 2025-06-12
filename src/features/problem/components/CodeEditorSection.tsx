@@ -52,7 +52,7 @@ export const CodeEditorSection: React.FC<CodeEditorSectionProps> = ({
                 </button>
                 {isLanguageMenuOpen && (
                   <div className="absolute top-full right-0 mt-1 bg-white rounded-lg shadow-lg py-2 min-w-[120px] z-10">
-                    {['python', 'java', 'javascript', 'cpp'].map((lang) => (
+                    {['python'].map((lang) => (
                       <button
                         key={lang}
                         className={`block w-full px-4 py-2 text-left hover:bg-gray-100 ${
