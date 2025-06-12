@@ -231,8 +231,14 @@ const ProfileSettingPage: FC = () => {
     show('loading', '계정을 삭제하는 중입니다…');
     removeUser()
       .then(() => {
+        // ✅ 토큰 삭제
+        localStorage.removeItem('token');
+
         show('success', '계정이 삭제되었습니다.');
+
+        // ✅ 홈으로 이동 후 새로고침
         nav('/');
+        window.location.reload();
       })
       .catch(() => show('info', '계정 삭제 중 오류가 발생했습니다.'))
       .finally(() => {

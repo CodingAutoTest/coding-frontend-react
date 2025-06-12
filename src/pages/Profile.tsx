@@ -85,7 +85,7 @@ const Profile: FC = () => {
                 className="ml-auto mt-5 flex items-center rounded-xl
                          bg-PRIMARY px-6 py-3 hover:bg-[#3B55A9]"
               >
-                <span className="text-lg text-black">프로필 편집</span>
+                <span className="text-lg text-white">프로필 편집</span>
               </button>
             )}
           </div>
