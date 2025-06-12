@@ -32,7 +32,9 @@ const PremiumInfoPage: FC = () => {
       <div className="fixed top-0 left-0 right-0 z-50 bg-white">
         <MainHeader />
       </div>
-      <main className="w-full max-w-[1051px] mx-auto flex flex-col gap-[43px] pt-[116px]">        {subscription ? (
+      <main className="w-full max-w-[1051px] mx-auto flex flex-col gap-[43px] pt-[116px]">
+        {' '}
+        {subscription ? (
           <MySubscriptionInfo {...subscription} />
         ) : (
           <>

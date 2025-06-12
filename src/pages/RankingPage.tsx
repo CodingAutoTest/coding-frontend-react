@@ -36,7 +36,8 @@ const RankingPage = () => {
       <main className="w-full max-w-[1051px] mx-auto pt-[116px] gap-[43px] flex flex-col">
         {/* 👤 내 랭킹 or 로그인 안내 */}
         <section className="w-full">
-          {!isLoading && (myRanking ? <RankingHeader {...myRanking} /> : <NotLoggedInRankingCard />)}
+          {!isLoading &&
+            (myRanking ? <RankingHeader {...myRanking} /> : <NotLoggedInRankingCard />)}
         </section>
 
         {/* 🔍 검색창 */}

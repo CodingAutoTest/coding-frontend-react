@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import { useState, FC, useLayoutEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -21,12 +21,20 @@ const Profile: FC = () => {
 
   const { profile, error } = useUserProfile(userName);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isReady, setIsReady] = useState(false);
 
   const goToPrev = () => setCurrentIndex((i) => Math.max(i - 1, 0));
   const goToNext = (len: number) => setCurrentIndex((i) => Math.min(i + 1, len - 1));
 
   /* ---------- 로딩/에러 ---------- */
-  if (error || !profile) return <div>{error ?? ''}</div>;
+  useLayoutEffect(() => {
+    if (profile || error) {
+      setIsReady(true);
+    }
+  }, [profile, error]);
+
+  // ✅ 로딩 중엔 아무것도 렌더링하지 않음
+  if (!isReady || !profile) return null;
 
   /* ---------- 데이터 가공 ---------- */
   const { name: tierName, progress, need } = getTierInfo(profile.rating);

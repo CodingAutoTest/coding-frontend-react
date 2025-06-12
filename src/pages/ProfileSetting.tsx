@@ -33,8 +33,8 @@ const ProfileSettingPage: FC = () => {
   const [bgPreview, setBgPreview] = useState(defaultBgImg);
 
   /* ---------- 업로드 URL ---------- */
-  const [profileImageUrl, setProfileImageUrl] = useState('');
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+  const [profileImageUrl, setProfileImageUrl] = useState<string | File>('');
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState<string | File>('');
 
   /* ---------- 폼 값 ---------- */
   const [name, setName] = useState('');
@@ -102,45 +102,67 @@ const ProfileSettingPage: FC = () => {
   ========================================================= */
   const handleBgFile = (file: File) => {
     setBgPreview(URL.createObjectURL(file));
-    uploadImages(undefined, file).then(
-      (dto) => dto?.backgroundImageUrl && setBackgroundImageUrl(dto.backgroundImageUrl),
-    );
+    setBackgroundImageUrl(file);
   };
 
   const handleProfileFile = (file: File) => {
     setProfilePreview(URL.createObjectURL(file));
-    uploadImages(file).then(
-      (dto) => dto?.profileImageUrl && setProfileImageUrl(dto.profileImageUrl),
-    );
+    setProfileImageUrl(file);
   };
 
   /* =========================================================
      프로필 수정
   ========================================================= */
   const handleSubmitProfile = async () => {
-    // ❶ 세 항목 모두 비어 있으면 중단
     if (!name.trim() && !profileImageUrl && !backgroundImageUrl) {
       show('info', '변경된 내용이 없습니다.');
       return;
     }
 
-    // ❷ 서버에 보낼 DTO – 비어 있는 값은 제거
-    const payload = {
-      ...(name.trim() && { name: name.trim() }),
-      ...(profileImageUrl && { profileImageUrl }),
-      ...(backgroundImageUrl && { backgroundImageUrl }),
-    };
-
     show('loading', '프로필을 수정 중입니다…');
 
     try {
+      const payload: any = {};
+
+      // 1️⃣ 이미지가 File 타입이면 서버에 업로드
+      const isProfileFile = profileImageUrl && typeof profileImageUrl !== 'string';
+      const isBackgroundFile = backgroundImageUrl && typeof backgroundImageUrl !== 'string';
+
+      if (isProfileFile || isBackgroundFile) {
+        const uploaded = await uploadImages(
+          isProfileFile ? (profileImageUrl as File) : undefined,
+          isBackgroundFile ? (backgroundImageUrl as File) : undefined,
+        );
+
+        if (!uploaded) {
+          show('info', '이미지 업로드 중 오류가 발생했습니다.');
+          return;
+        }
+
+        if (uploaded.profileImageUrl) payload.profileImageUrl = uploaded.profileImageUrl;
+        if (uploaded.backgroundImageUrl) payload.backgroundImageUrl = uploaded.backgroundImageUrl;
+      } else {
+        if (typeof profileImageUrl === 'string') payload.profileImageUrl = profileImageUrl;
+        if (typeof backgroundImageUrl === 'string') payload.backgroundImageUrl = backgroundImageUrl;
+      }
+
+      // 2️⃣ 이름이 변경된 경우 포함
+      if (name.trim()) payload.name = name.trim();
+
+      // 3️⃣ 서버로 전송
       await modifyProfile(payload);
       show('success', '프로필이 수정되었습니다!');
     } catch (err) {
-      if (axios.isAxiosError(err) && err.response?.status === 409) {
-        setNameError('사용자 이름이 중복되었습니다.');
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 409) {
+          setNameError('사용자 이름이 중복되었습니다.');
+        } else if (err.response?.data?.message === '본인 이름입니다.') {
+          setNameError('이미 사용 중인 이름입니다.');
+        } else {
+          show('info', '프로필 수정 중 오류가 발생했습니다.');
+        }
       } else {
-        show('info', '프로필 수정 중 오류가 발생했습니다.');
+        show('info', '예상치 못한 오류가 발생했습니다.');
       }
     }
   };
