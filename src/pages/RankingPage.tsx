@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect } from 'react';
 import MainHeader from '@/components/MainHeader';
 import RankingHeader from '@/features/ranking/components/RankingHearder';
@@ -9,6 +8,7 @@ import NotLoggedInRankingCard from '@/features/ranking/components/NotLoggedInRan
 
 const RankingPage = () => {
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
+  const [isLoading, setIsLoading] = useState(true); // ✅ 추가
   const [searchName, setSearchName] = useState('');
   const [sort, setSort] = useState<'rating' | 'solvedCount'>('rating');
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
@@ -19,7 +19,9 @@ const RankingPage = () => {
         const res = await fetchMyRanking();
         setMyRanking(res);
       } catch (e) {
-        setMyRanking(null); // 로그인 안 한 경우
+        setMyRanking(null);
+      } finally {
+        setIsLoading(false); // ✅ 완료 시 false
       }
     };
     fetch();
@@ -34,7 +36,7 @@ const RankingPage = () => {
       <main className="w-full max-w-[1051px] mx-auto pt-[116px] gap-[43px] flex flex-col">
         {/* 👤 내 랭킹 or 로그인 안내 */}
         <section className="w-full">
-          {myRanking ? <RankingHeader {...myRanking} /> : <NotLoggedInRankingCard />}
+          {!isLoading && (myRanking ? <RankingHeader {...myRanking} /> : <NotLoggedInRankingCard />)}
         </section>
 
         {/* 🔍 검색창 */}
