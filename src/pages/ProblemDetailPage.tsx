@@ -21,7 +21,7 @@ const ProblemDetailPage: React.FC = () => {
   const { user } = useUserInfo();
   const isAnonymous = !user || user.name === '익명';
 
-  const { loading, error } = useProblemDetail(problemId);
+  const { error } = useProblemDetail(problemId);
   const { problemData, testCases, code, language, setCode, setLanguage, setSubmissionHistory } =
     useProblemStore();
   const { stopTimer } = useTimer();
@@ -101,7 +101,7 @@ const ProblemDetailPage: React.FC = () => {
     }
   };
 
-  if (loading) return <div>로딩 중...</div>;
+  // if (loading) return <div>로딩 중...</div>;
   if (error || !problemData) return <div>문제를 불러오지 못했습니다.</div>;
 
   return (

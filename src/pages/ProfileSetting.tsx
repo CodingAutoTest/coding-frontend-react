@@ -220,138 +220,145 @@ const ProfileSettingPage: FC = () => {
 
   /* ========================================================= */
   return (
-    <main className="flex min-h-screen flex-col items-center gap-8 bg-neutral-100">
-      <MainHeader />
+    <>
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white">
+        <MainHeader />
+      </div>
+      <main className="flex min-h-screen flex-col items-center gap-8 bg-neutral-100 pt-[146px]">
+        {/* ================= 기본 정보 ================= */}
+        <section className="w-[912px] rounded-2xl bg-white p-6 shadow-md flex flex-col gap-5">
+          <h2 className="text-xl font-bold text-neutral-800">기본 정보</h2>
 
-      {/* ================= 기본 정보 ================= */}
-      <section className="w-[912px] rounded-2xl bg-white p-6 shadow-md flex flex-col gap-5">
-        <h2 className="text-xl font-bold text-neutral-800">기본 정보</h2>
-
-        <FileUpload
-          id="bg-upload"
-          label="배경사진"
-          previewUrl={bgPreview}
-          onFileChange={handleBgFile}
-          containerClasses="h-44 w-full"
-        />
-
-        <FileUpload
-          id="profile-upload"
-          label="프로필 사진"
-          previewUrl={profilePreview}
-          onFileChange={handleProfileFile}
-          containerClasses="h-16 w-16"
-        />
-
-        <TextInput
-          label="이름"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            setNameError('');
-          }}
-          placeholder="Please enter your username"
-          error={nameError}
-        />
-
-        <div className="mt-4 flex gap-3">
-          <ActionButton
-            text="프로필 수정"
-            onClick={handleSubmitProfile}
-            className="h-10 w-28 bg-indigo-600"
+          <FileUpload
+            id="bg-upload"
+            label="배경사진"
+            previewUrl={bgPreview}
+            onFileChange={handleBgFile}
+            containerClasses="h-44 w-full"
           />
-          <ActionButton
-            text="초기화"
-            onClick={() => {
-              setName('');
-              setProfilePreview(defaultProfileImg);
-              setBgPreview(defaultBgImg);
-              setProfileImageUrl('');
-              setBackgroundImageUrl('');
+
+          <FileUpload
+            id="profile-upload"
+            label="프로필 사진"
+            previewUrl={profilePreview}
+            onFileChange={handleProfileFile}
+            containerClasses="h-16 w-16"
+          />
+
+          <TextInput
+            label="이름"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
               setNameError('');
             }}
-            className="h-10 w-24 bg-zinc-400"
+            placeholder="Please enter your username"
+            error={nameError}
           />
-        </div>
-      </section>
 
-      {/* ================= 비밀번호 변경 ================= */}
-      <section className="w-[912px] rounded-2xl bg-white p-6 shadow-md flex flex-col gap-5">
-        <h2 className="text-xl font-bold text-neutral-800">비밀번호 변경</h2>
+          <div className="mt-4 flex gap-3">
+            <ActionButton
+              text="프로필 수정"
+              onClick={handleSubmitProfile}
+              className="h-10 w-28 bg-indigo-600"
+            />
+            <ActionButton
+              text="초기화"
+              onClick={() => {
+                setName('');
+                setProfilePreview(defaultProfileImg);
+                setBgPreview(defaultBgImg);
+                setProfileImageUrl('');
+                setBackgroundImageUrl('');
+                setNameError('');
+              }}
+              className="h-10 w-24 bg-zinc-400"
+            />
+          </div>
+        </section>
 
-        <TextInput
-          label="현재 비밀번호"
-          type="password"
-          value={currentPw}
-          onChange={(e) => {
-            setCurrentPw(e.target.value);
-            setCurrentPwError('');
-          }}
-          error={currentPwError}
-        />
+        {/* ================= 비밀번호 변경 ================= */}
+        <section className="w-[912px] rounded-2xl bg-white p-6 shadow-md flex flex-col gap-5">
+          <h2 className="text-xl font-bold text-neutral-800">비밀번호 변경</h2>
 
-        <TextInput
-          label="비밀번호"
-          type="password"
-          value={newPw}
-          onChange={handleNewPwChange}
-          placeholder="영문, 숫자, 특수문자 포함 8~20자"
-          error={newPwError}
-        />
-
-        <TextInput
-          label="비밀번호 확인"
-          type="password"
-          value={confirmPw}
-          onChange={handleConfirmPwChange}
-          error={confirmPwError}
-        />
-
-        <div className="mt-2 flex gap-3">
-          <ActionButton
-            text="비밀번호 변경"
-            onClick={handlePwChange}
-            className="h-10 w-28 bg-indigo-600"
-          />
-          <ActionButton
-            text="취소"
-            onClick={() => {
-              setCurrentPw('');
-              setNewPw('');
-              setConfirmPw('');
+          <TextInput
+            label="현재 비밀번호"
+            type="password"
+            value={currentPw}
+            onChange={(e) => {
+              setCurrentPw(e.target.value);
               setCurrentPwError('');
-              setNewPwError('');
-              setConfirmPwError('');
             }}
-            className="h-10 w-24 bg-zinc-400"
+            error={currentPwError}
           />
-        </div>
-      </section>
 
-      {/* ================= 계정 삭제 ================= */}
-      <InfoAction
-        title="계정 삭제"
-        description="계정 삭제 시 프로필 및 풀이 정보가 삭제됩니다."
-        buttonText="계정 삭제"
-        onClick={() => setDelOpen(true)}
-      />
+          <TextInput
+            label="새 비밀번호"
+            type="password"
+            value={newPw}
+            onChange={handleNewPwChange}
+            placeholder="최소 8자리 이상"
+            error={newPwError}
+          />
 
-      {/* ================= 프리미엄 ================= */}
-      <div className="mb-10">{premiumBlock}</div>
+          <TextInput
+            label="새 비밀번호 확인"
+            type="password"
+            value={confirmPw}
+            onChange={handleConfirmPwChange}
+            error={confirmPwError}
+          />
 
-      {/* ---------------- 공통 모달 ---------------- */}
-      <Modal open={modal.open} kind={modal.kind} message={modal.msg} onClose={hide} />
+          <div className="mt-2 flex gap-3">
+            <ActionButton
+              text="비밀번호 변경"
+              onClick={handlePwChange}
+              className="h-10 w-28 bg-indigo-600"
+            />
+            <ActionButton
+              text="취소"
+              onClick={() => {
+                setCurrentPw('');
+                setNewPw('');
+                setConfirmPw('');
+                setCurrentPwError('');
+                setNewPwError('');
+                setConfirmPwError('');
+              }}
+              className="h-10 w-24 bg-zinc-400"
+            />
+          </div>
+        </section>
 
-      {/* ---------------- 계정 삭제 확인 모달 ---------------- */}
-      <UserDeleteModal open={delOpen} onClose={() => setDelOpen(false)} onConfirm={confirmDelete} />
+        {/* ================= 계정 삭제 ================= */}
+        <InfoAction
+          title="계정 삭제"
+          description="계정 삭제 시 프로필 및 풀이 정보가 삭제됩니다."
+          buttonText="계정 삭제"
+          onClick={() => setDelOpen(true)}
+        />
 
-      {/* 프리미엄 해지 확인 모달 – 계정 삭제 모달 재사용 */}
-      <CancelPremiumModal
-        open={cancelOpen}
-        onClose={() => setCancelOpen(false)}
-        onConfirm={handleCancelPremium}
-      />
-    </main>
+        {/* ================= 프리미엄 ================= */}
+        <div className="mb-10">{premiumBlock}</div>
+
+        {/* ---------------- 공통 모달 ---------------- */}
+        <Modal open={modal.open} kind={modal.kind} message={modal.msg} onClose={hide} />
+
+        {/* ---------------- 계정 삭제 확인 모달 ---------------- */}
+        <UserDeleteModal
+          open={delOpen}
+          onClose={() => setDelOpen(false)}
+          onConfirm={confirmDelete}
+        />
+
+        {/* 프리미엄 해지 확인 모달 – 계정 삭제 모달 재사용 */}
+        <CancelPremiumModal
+          open={cancelOpen}
+          onClose={() => setCancelOpen(false)}
+          onConfirm={handleCancelPremium}
+        />
+      </main>
+    </>
   );
 };
 
