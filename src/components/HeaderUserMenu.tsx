@@ -5,12 +5,14 @@ import { useAuthStore } from '@/stores/useAuthStore';
 import { useEffect, useState } from 'react';
 import { fetchUser } from '@/features/problem/api/problem.api';
 import profile from '@/assets/problem-list/default-profile.svg';
+import { useFilterStore } from '@/features/problem-list/stores/useFilterStore';
 
 const HeaderUserMenu = () => {
   const [profileImage, setProfileImage] = useState<string>('');
   const navigate = useNavigate();
   const isLogin = useAuthStore((state) => state.isLogin);
   const checkToken = useAuthStore((state) => state.checkToken);
+  const setSelectedProblemStatus = useFilterStore((state) => state.setSelectedProblemStatus);
 
   useEffect(() => {
     checkToken();
@@ -39,6 +41,7 @@ const HeaderUserMenu = () => {
   const handleLogout = () => {
     localStorage.removeItem('token');
     checkToken();
+    setSelectedProblemStatus('');
     navigate('/');
     window.location.reload();
   };
