@@ -1,19 +1,18 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRankingList } from '../hooks/useRankingList';
+import { useRankingStore } from '../stores/rankingStore';
 import { getTierImage } from './TierIcon';
 import Pagination from '@/components/Pagination';
 import defaultProfileImg from '@/assets/profile.svg';
+
 type Props = {
-  name: string;
-  sort: 'rating' | 'solvedCount';
-  order: 'asc' | 'desc';
   onSortChange: (key: 'rating' | 'solvedCount') => void;
 };
 
-const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
-  const [page, setPage] = useState(0);
-  const { data, totalPages } = useRankingList(page, sort, order, name);
+const RankingTable: FC<Props> = ({ onSortChange }) => {
+  const { page, totalPages, sort, order, setPage } = useRankingStore();
+  const { data } = useRankingList();
   const navigate = useNavigate();
 
   return (
@@ -41,8 +40,8 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                   className={`transition-transform duration-200 ${
-                    sort === 'rating' ? 'text-[#56C364]' : 'text-gray-400'
-                  } ${order === 'asc' && sort === 'rating' ? 'rotate-180' : ''}`}
+                    order === 'asc' && sort === 'rating' ? 'rotate-180' : ''
+                  }`}
                 >
                   <path
                     d="M1.915 0.584961L6.5 5.16996L11.085 0.584961L12.5 1.99996L6.5 7.99996L0.5 1.99996L1.915 0.584961Z"
@@ -114,7 +113,7 @@ const RankingTable: FC<Props> = ({ name, sort, order, onSortChange }) => {
         </tbody>
       </table>
 
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={(p) => setPage(p)} />
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </section>
   );
 };

@@ -1,15 +1,11 @@
 import { useEffect, useState } from 'react';
 import { fetchRankingList } from '../api/fetch-ranking-list';
 import { RankingItem } from '../types/ranking-types';
+import { useRankingStore } from '../stores/rankingStore';
 
-export const useRankingList = (
-  page: number,
-  sort: 'rating' | 'solvedCount',
-  order: 'asc' | 'desc',
-  name: string,
-) => {
+export const useRankingList = () => {
+  const { page, sort, order, name, setTotalPages } = useRankingStore();
   const [data, setData] = useState<RankingItem[]>([]);
-  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +14,7 @@ export const useRankingList = (
       setTotalPages(res.totalPages);
     };
     fetchData();
-  }, [page, sort, order, name]);
+  }, [page, sort, order, name, setTotalPages]);
 
-  return { data, totalPages };
+  return { data };
 };

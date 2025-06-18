@@ -5,13 +5,13 @@ import RankingTable from '@/features/ranking/components/RankingTable';
 import SearchBar from '@/components/SearchBar';
 import { fetchMyRanking, MyRanking } from '@/features/ranking/api/fetch-my-ranking';
 import NotLoggedInRankingCard from '@/features/ranking/components/NotLoggedInRankingCard';
+import { useRankingStore } from '@/features/ranking/stores/rankingStore';
 
 const RankingPage = () => {
   const [myRanking, setMyRanking] = useState<MyRanking | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // ✅ 추가
-  const [searchName, setSearchName] = useState('');
-  const [sort, setSort] = useState<'rating' | 'solvedCount'>('rating');
-  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { name, setSearchName, setSort } = useRankingStore();
 
   useEffect(() => {
     const fetch = async () => {
@@ -21,7 +21,7 @@ const RankingPage = () => {
       } catch (e) {
         setMyRanking(null);
       } finally {
-        setIsLoading(false); // ✅ 완료 시 false
+        setIsLoading(false);
       }
     };
     fetch();
@@ -47,25 +47,13 @@ const RankingPage = () => {
               placeholder="닉네임 검색"
               onSearch={setSearchName}
               width="403px"
-              value={searchName}
+              value={name}
             />
           </div>
         </div>
 
         {/* 📊 전체 랭킹 테이블 */}
-        <RankingTable
-          name={searchName}
-          sort={sort}
-          order={order}
-          onSortChange={(key) => {
-            if (sort === key) {
-              setOrder(order === 'asc' ? 'desc' : 'asc');
-            } else {
-              setSort(key);
-              setOrder('desc');
-            }
-          }}
-        />
+        <RankingTable onSortChange={setSort} />
       </main>
     </>
   );
